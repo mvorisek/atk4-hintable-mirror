@@ -21,6 +21,7 @@ final class Method
     public static function methodName($targetClass)
     {
         $cl = MagicPropAndMethod::class;
+
         return new $cl($targetClass, MagicPropAndMethod::TYPE_METHOD_NAME);
     }
 
@@ -35,6 +36,7 @@ final class Method
     public static function methodNameFull($targetClass)
     {
         $cl = MagicPropAndMethod::class;
+
         return new $cl($targetClass, MagicPropAndMethod::TYPE_METHOD_NAME_FULL);
     }
 
@@ -49,6 +51,7 @@ final class Method
     public static function methodClosure($targetClass)
     {
         $cl = MagicPropAndMethod::class;
+
         return new $cl($targetClass, MagicPropAndMethod::TYPE_METHOD_CLOSURE);
     }
 
@@ -63,6 +66,7 @@ final class Method
     public static function methodClosureProtected($targetClass)
     {
         $cl = MagicPropAndMethod::class;
+
         return new $cl($targetClass, MagicPropAndMethod::TYPE_METHOD_CLOSURE_PROTECTED);
     }
 }

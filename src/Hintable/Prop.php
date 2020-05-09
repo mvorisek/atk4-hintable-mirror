@@ -21,6 +21,7 @@ final class Prop
     public static function prop($targetClass)
     {
         $cl = MagicPropAndMethod::class;
+
         return new $cl($targetClass, MagicPropAndMethod::TYPE_PROPERTY);
     }
 
@@ -35,6 +36,7 @@ final class Prop
     public static function propFull($targetClass)
     {
         $cl = MagicPropAndMethod::class;
+
         return new $cl($targetClass, MagicPropAndMethod::TYPE_PROPERTY_FULL);
     }
 }

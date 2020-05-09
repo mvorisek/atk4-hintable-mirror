@@ -29,7 +29,7 @@ class MagicPropAndMethod
     /**
      * @param object|string $targetClass
      *
-     * @deprecated Atk internal only, to use this class use Prop class or Method class.
+     * @deprecated atk4/core internal only, to use this class use Prop class or Method class
      */
     public function __construct($targetClass, string $type)
     {
@@ -40,6 +40,7 @@ class MagicPropAndMethod
     public function throwNotSupported(): void
     {
         $opName = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
+
         throw new Exception('Operation "' . $opName . '" not supported');
     }
 
@@ -66,7 +67,6 @@ class MagicPropAndMethod
         $this->throwNotSupported();
     }
 
-
     public function __isset(string $name): bool
     {
         $this->throwNotSupported();
@@ -90,6 +90,7 @@ class MagicPropAndMethod
     protected function buildFullName(string $name): string
     {
         $cl = $this->_atk__core__magic_self_class__class;
+
         return (is_string($cl) ? (new \ReflectionClass($cl))->getName() : get_class($cl)) . '::' . $name;
     }
 
@@ -121,6 +122,7 @@ class MagicPropAndMethod
 
         if ($this->_atk__core__magic_self_class__type === self::TYPE_METHOD_CLOSURE) {
             $cl = $this->_atk__core__magic_self_class__class;
+
             return (static function () use ($cl, $name) {
                 return \Closure::fromCallable([$cl, $name]);
             })();
@@ -128,6 +130,7 @@ class MagicPropAndMethod
 
         if ($this->_atk__core__magic_self_class__type === self::TYPE_METHOD_CLOSURE_PROTECTED) {
             $cl = $this->_atk__core__magic_self_class__class;
+
             return \Closure::bind(function () use ($cl, $name) {
                 return \Closure::fromCallable([$cl, $name]);
             }, null, $cl)();
