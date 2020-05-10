@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace atk4\core\Hintable;
 
-use atk4\core\Exception;
-
-class MagicPropAndMethod
+class MagicPropAndMethod extends MagicAbstract
 {
     /** @const string */
     public const TYPE_PROPERTY_NAME = 'p_n';
@@ -21,92 +19,17 @@ class MagicPropAndMethod
     /** @const string Closure will be bound to the target class */
     public const TYPE_METHOD_CLOSURE_PROTECTED = 'm_cp';
 
-    /** @var object|string */
-    protected $_atk__core__magic_self_class__class;
-    /** @var string */
-    protected $_atk__core__magic_self_class__type;
-
-    /**
-     * @param object|string $targetClass
-     */
-    public function __construct($targetClass, string $type)
-    {
-        if (is_string($targetClass)) {
-            $targetClass = (new \ReflectionClass($targetClass))->getName();
-        }
-
-        $this->_atk__core__magic_self_class__class = $targetClass;
-        $this->_atk__core__magic_self_class__type = $type;
-    }
-
-    protected function throwNotSupported(): void
-    {
-        $opName = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
-
-        throw new Exception('Operation "' . $opName . '" not supported');
-    }
-
-    public function __debugInfo(): array
-    {
-        return [
-            'class' => $this->_atk__core__magic_self_class__class,
-            'type' => $this->_atk__core__magic_self_class__type,
-        ];
-    }
-
-    public function __sleep(): array
-    {
-        $this->throwNotSupported();
-    }
-
-    public function __wakeup(): void
-    {
-        $this->throwNotSupported();
-    }
-
-    public function __clone()
-    {
-        $this->throwNotSupported();
-    }
-
-    public function __isset(string $name): bool
-    {
-        $this->throwNotSupported();
-    }
-
-    public function __set(string $name, $value): void
-    {
-        $this->throwNotSupported();
-    }
-
-    public function __unset(string $name): void
-    {
-        $this->throwNotSupported();
-    }
-
-    public static function __callStatic(string $name, array $args): void
-    {
-        (new static(\stdClass::class, 'static'))->throwNotSupported();
-    }
-
-    protected function buildFullName(string $name): string
-    {
-        $cl = $this->_atk__core__magic_self_class__class;
-
-        return (is_string($cl) ? $cl : get_class($cl)) . '::' . $name;
-    }
-
     public function __get(string $name): string
     {
-        if ($this->_atk__core__magic_self_class__type === self::TYPE_PROPERTY_NAME) {
+        if ($this->_atk__core__hintable_magic__type === self::TYPE_PROPERTY_NAME) {
             return $name;
         }
 
-        if ($this->_atk__core__magic_self_class__type === self::TYPE_PROPERTY_NAME_FULL) {
-            return $this->buildFullName($name);
+        if ($this->_atk__core__hintable_magic__type === self::TYPE_PROPERTY_NAME_FULL) {
+            return $this->_atk__core__hintable_magic__buildFullName($name);
         }
 
-        $this->throwNotSupported();
+        $this->_atk__core__hintable_magic__throwNotSupported();
     }
 
     /**
@@ -114,30 +37,28 @@ class MagicPropAndMethod
      */
     public function __call(string $name, array $args)
     {
-        if ($this->_atk__core__magic_self_class__type === self::TYPE_METHOD_NAME) {
+        if ($this->_atk__core__hintable_magic__type === self::TYPE_METHOD_NAME) {
             return $name;
         }
 
-        if ($this->_atk__core__magic_self_class__type === self::TYPE_METHOD_NAME_FULL) {
-            return $this->buildFullName($name);
+        if ($this->_atk__core__hintable_magic__type === self::TYPE_METHOD_NAME_FULL) {
+            return $this->_atk__core__hintable_magic__buildFullName($name);
         }
 
-        if ($this->_atk__core__magic_self_class__type === self::TYPE_METHOD_CLOSURE) {
-            $cl = $this->_atk__core__magic_self_class__class;
+        $cl = $this->_atk__core__hintable_magic__class;
 
+        if ($this->_atk__core__hintable_magic__type === self::TYPE_METHOD_CLOSURE) {
             return (static function () use ($cl, $name) {
                 return \Closure::fromCallable([$cl, $name]);
             })();
         }
 
-        if ($this->_atk__core__magic_self_class__type === self::TYPE_METHOD_CLOSURE_PROTECTED) {
-            $cl = $this->_atk__core__magic_self_class__class;
-
+        if ($this->_atk__core__hintable_magic__type === self::TYPE_METHOD_CLOSURE_PROTECTED) {
             return \Closure::bind(function () use ($cl, $name) {
                 return \Closure::fromCallable([$cl, $name]);
             }, null, $cl)();
         }
 
-        $this->throwNotSupported();
+        $this->_atk__core__hintable_magic__throwNotSupported();
     }
 }
