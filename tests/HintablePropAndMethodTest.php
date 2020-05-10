@@ -69,18 +69,26 @@ class HintablePropAndMethodTest extends AtkPhpunit\TestCase
         $cl = new HintablePropAndMethodMock();
         $this->assertSame(HintablePropAndMethodMock::class . '::priv', $cl->methodClosureProtected()->priv()());
         $this->assertSame(HintablePropAndMethodMock::class . '::privStat', $cl->methodClosureProtected()->privStat()());
+    }
 
-        // private method in anonymous class
+    public function testMethodClosureAnonymous()
+    {
         $cl = new class() extends \stdClass {
             private function privAnon()
             {
                 return __METHOD__;
             }
-        };
-        $this->assertSame(\stdClass::class . '::privAnon', $cl->methodClosureProtected()->privAnon()());
 
-        // anonymous class passed by its anonymous/generated string name
-        $this->assertSame(\stdClass::class . '::privAnon', Method::methodClosureProtected(get_class($cl))->privAnon());
+            private static function privAnonStat()
+            {
+                return __METHOD__;
+            }
+        };
+
+        $this->assertSame(get_class($cl) . '::privAnon', Method::methodClosureProtected($cl)->privAnon()());
+
+        $this->assertSame(get_class($cl) . '::privAnonStat', Method::methodClosureProtected($cl)->privAnonStat()());
+        $this->assertSame(get_class($cl) . '::privAnonStat', Method::methodClosureProtected(get_class($cl))->privAnonStat()());
     }
 }
 

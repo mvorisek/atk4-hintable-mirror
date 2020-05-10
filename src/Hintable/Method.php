@@ -44,7 +44,7 @@ class Method
      * Returns a magic class, document it using phpdoc as an instance of the target class,
      * any method call returns its Closure bound to static.
      *
-     * @param object|string $targetClass
+     * @param object|string $targetClass string is supported only for static methods
      *
      * @return object
      */
@@ -59,7 +59,7 @@ class Method
      * Returns a magic class, document it using phpdoc as an instance of the target class,
      * any method call returns its Closure bound to the target class.
      *
-     * @param object|string $targetClass
+     * @param object|string $targetClass string is supported only for static methods
      *
      * @return object
      */
