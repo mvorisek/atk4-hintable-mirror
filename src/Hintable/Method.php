@@ -11,7 +11,7 @@ class Method
     }
 
     /**
-     * Returns a magic class that pretends to be instance of this class, but in reality
+     * Returns a magic class, document it using phpdoc as an instance of the target class,
      * any method call returns its (short) name.
      *
      * @param object|string $targetClass
@@ -26,7 +26,7 @@ class Method
     }
 
     /**
-     * Returns a magic class that pretends to be instance of this class, but in reality
+     * Returns a magic class, document it using phpdoc as an instance of the target class,
      * any method call returns its full name, ie. class name + "::" + short name.
      *
      * @param object|string $targetClass
@@ -41,7 +41,7 @@ class Method
     }
 
     /**
-     * Returns a magic class that pretends to be instance of this class, but in reality
+     * Returns a magic class, document it using phpdoc as an instance of the target class,
      * any method call returns its Closure bound to static.
      *
      * @param object|string $targetClass
@@ -56,7 +56,7 @@ class Method
     }
 
     /**
-     * Returns a magic class that pretends to be instance of this class, but in reality
+     * Returns a magic class, document it using phpdoc as an instance of the target class,
      * any method call returns its Closure bound to the target class.
      *
      * @param object|string $targetClass

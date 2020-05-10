@@ -11,7 +11,7 @@ class Prop
     }
 
     /**
-     * Returns a magic class that pretends to be instance of this class, but in reality
+     * Returns a magic class, document it using phpdoc as an instance of the target class,
      * any property returns its (short) name.
      *
      * @param object|string $targetClass
@@ -26,7 +26,7 @@ class Prop
     }
 
     /**
-     * Returns a magic class that pretends to be instance of this class, but in reality
+     * Returns a magic class, document it using phpdoc as an instance of the target class,
      * any property returns its full name, ie. class name + "::" + short name.
      *
      * @param object|string $targetClass
