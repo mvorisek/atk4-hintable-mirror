@@ -41,7 +41,7 @@ class MagicPropAndMethod
         $this->_atk__core__magic_self_class__type = $type;
     }
 
-    public function throwNotSupported(): void
+    protected function throwNotSupported(): void
     {
         $opName = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
 
@@ -88,7 +88,7 @@ class MagicPropAndMethod
 
     public static function __callStatic(string $name, array $args): void
     {
-        $this->throwNotSupported();
+        (new static(\stdClass::class, 'static'))->throwNotSupported();
     }
 
     protected function buildFullName(string $name): string
