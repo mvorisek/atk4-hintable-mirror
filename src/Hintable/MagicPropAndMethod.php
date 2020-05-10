@@ -33,6 +33,10 @@ class MagicPropAndMethod
      */
     public function __construct($targetClass, string $type)
     {
+        if (is_string($targetClass)) {
+            $targetClass = (new \ReflectionClass($targetClass))->getName();
+        }
+
         $this->_atk__core__magic_self_class__class = $targetClass;
         $this->_atk__core__magic_self_class__type = $type;
     }
@@ -91,7 +95,7 @@ class MagicPropAndMethod
     {
         $cl = $this->_atk__core__magic_self_class__class;
 
-        return (is_string($cl) ? (new \ReflectionClass($cl))->getName() : get_class($cl)) . '::' . $name;
+        return (is_string($cl) ? $cl : get_class($cl)) . '::' . $name;
     }
 
     public function __get(string $name): string
