@@ -12,9 +12,9 @@ trait PropTrait
      *
      * @return static
      */
-    public function prop()
+    public function propName()
     {
-        return Prop::prop($this);
+        return Prop::propName($this);
     }
 
     /**
@@ -23,8 +23,8 @@ trait PropTrait
      *
      * @return static
      */
-    public function propFull()
+    public function propNameFull()
     {
-        return Prop::propFull($this);
+        return Prop::propNameFull($this);
     }
 }

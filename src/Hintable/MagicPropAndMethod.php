@@ -9,9 +9,9 @@ use atk4\core\Exception;
 class MagicPropAndMethod
 {
     /** @const string */
-    public const TYPE_PROPERTY = 'p_n';
+    public const TYPE_PROPERTY_NAME = 'p_n';
     /** @const string */
-    public const TYPE_PROPERTY_FULL = 'p_nf';
+    public const TYPE_PROPERTY_NAME_FULL = 'p_nf';
     /** @const string */
     public const TYPE_METHOD_NAME = 'm_n';
     /** @const string */
@@ -98,11 +98,11 @@ class MagicPropAndMethod
 
     public function __get(string $name): string
     {
-        if ($this->_atk__core__magic_self_class__type === self::TYPE_PROPERTY) {
+        if ($this->_atk__core__magic_self_class__type === self::TYPE_PROPERTY_NAME) {
             return $name;
         }
 
-        if ($this->_atk__core__magic_self_class__type === self::TYPE_PROPERTY_FULL) {
+        if ($this->_atk__core__magic_self_class__type === self::TYPE_PROPERTY_NAME_FULL) {
             return $this->buildFullName($name);
         }
 

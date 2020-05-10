@@ -16,19 +16,19 @@ use atk4\core\Hintable\PropTrait;
  */
 class HintablePropAndMethodTest extends AtkPhpunit\TestCase
 {
-    public function testProp()
+    public function testPropName()
     {
         $cl = new HintablePropAndMethodMock();
-        $this->assertSame('x', $cl->prop()->x);
-        $this->assertSame('y', $cl->prop()->y);
+        $this->assertSame('x', $cl->propName()->x);
+        $this->assertSame('y', $cl->propName()->y);
     }
 
-    public function testPropFull()
+    public function testPropNameFull()
     {
         $cl = new HintablePropAndMethodMock();
-        $this->assertSame(HintablePropAndMethodMock::class . '::x', $cl->propFull()->x);
-        $this->assertSame(HintablePropAndMethodMock::class . '::y', $cl->propFull()->y);
-        $this->assertSame(\stdClass::class . '::z', Prop::propFull(\stdClass::class)->z);
+        $this->assertSame(HintablePropAndMethodMock::class . '::x', $cl->propNameFull()->x);
+        $this->assertSame(HintablePropAndMethodMock::class . '::y', $cl->propNameFull()->y);
+        $this->assertSame(\stdClass::class . '::z', Prop::propNameFull(\stdClass::class)->z);
     }
 
     public function testMethodName()

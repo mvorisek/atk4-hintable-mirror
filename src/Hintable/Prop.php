@@ -18,11 +18,11 @@ class Prop
      *
      * @return object
      */
-    public static function prop($targetClass)
+    public static function propName($targetClass)
     {
         $cl = MagicPropAndMethod::class;
 
-        return new $cl($targetClass, MagicPropAndMethod::TYPE_PROPERTY);
+        return new $cl($targetClass, MagicPropAndMethod::TYPE_PROPERTY_NAME);
     }
 
     /**
@@ -33,10 +33,10 @@ class Prop
      *
      * @return object
      */
-    public static function propFull($targetClass)
+    public static function propNameFull($targetClass)
     {
         $cl = MagicPropAndMethod::class;
 
-        return new $cl($targetClass, MagicPropAndMethod::TYPE_PROPERTY_FULL);
+        return new $cl($targetClass, MagicPropAndMethod::TYPE_PROPERTY_NAME_FULL);
     }
 }
