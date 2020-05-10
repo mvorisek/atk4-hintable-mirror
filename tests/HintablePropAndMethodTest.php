@@ -90,27 +90,6 @@ class HintablePropAndMethodTest extends AtkPhpunit\TestCase
         $this->assertSame(get_class($cl) . '::privAnonStat', Method::methodClosureProtected($cl)->privAnonStat()());
         $this->assertSame(get_class($cl) . '::privAnonStat', Method::methodClosureProtected(get_class($cl))->privAnonStat()());
     }
-
-    /**
-     * Make sure MagicPropAndMethod::getClass() and MagicPropAndMethod::getType() methods are not public.
-     */
-    public function testMethodGetClassVisibility()
-    {
-        $cl = new class() extends \stdClass {
-            private function getClass()
-            {
-                return __METHOD__;
-            }
-
-            private function getType()
-            {
-                return __METHOD__;
-            }
-        };
-
-        $this->assertSame(HintablePropAndMethodMock::class . '::getClass', $cl->methodClosureProtected()->getClass()());
-        $this->assertSame(HintablePropAndMethodMock::class . '::getType', $cl->methodClosureProtected()->getType()());
-    }
 }
 
 // @codingStandardsIgnoreStart

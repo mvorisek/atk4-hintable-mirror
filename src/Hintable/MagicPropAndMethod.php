@@ -39,28 +39,18 @@ class MagicPropAndMethod
         $this->_atk__core__magic_self_class__type = $type;
     }
 
-    private function getClass()
-    {
-        return $this->_atk__core__magic_self_class__class;
-    }
-
-    private function getType(): string
-    {
-        return $this->_atk__core__magic_self_class__type;
-    }
-
     protected function throwNotSupported(): void
     {
         $opName = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
 
-        throw new Exception('Operation "' . $opName . '" is not supported for type "' . $this->getType() . '"');
+        throw new Exception('Operation "' . $opName . '" not supported');
     }
 
     public function __debugInfo(): array
     {
         return [
-            'class' => $this->getClass(),
-            'type' => $this->getType(),
+            'class' => $this->_atk__core__magic_self_class__class,
+            'type' => $this->_atk__core__magic_self_class__type,
         ];
     }
 
@@ -96,23 +86,23 @@ class MagicPropAndMethod
 
     public static function __callStatic(string $name, array $args): void
     {
-        (new static(\stdClass::class, 'static/unknown'))->throwNotSupported();
+        (new static(\stdClass::class, 'static'))->throwNotSupported();
     }
 
     protected function buildFullName(string $name): string
     {
-        $cl = $this->getClass();
+        $cl = $this->_atk__core__magic_self_class__class;
 
         return (is_string($cl) ? $cl : get_class($cl)) . '::' . $name;
     }
 
     public function __get(string $name): string
     {
-        if ($this->getType() === self::TYPE_PROPERTY_NAME) {
+        if ($this->_atk__core__magic_self_class__type === self::TYPE_PROPERTY_NAME) {
             return $name;
         }
 
-        if ($this->getType() === self::TYPE_PROPERTY_NAME_FULL) {
+        if ($this->_atk__core__magic_self_class__type === self::TYPE_PROPERTY_NAME_FULL) {
             return $this->buildFullName($name);
         }
 
@@ -124,28 +114,28 @@ class MagicPropAndMethod
      */
     public function __call(string $name, array $args)
     {
-        if ($this->getType() === self::TYPE_METHOD_NAME) {
+        if ($this->_atk__core__magic_self_class__type === self::TYPE_METHOD_NAME) {
             return $name;
         }
 
-        if ($this->getType() === self::TYPE_METHOD_NAME_FULL) {
+        if ($this->_atk__core__magic_self_class__type === self::TYPE_METHOD_NAME_FULL) {
             return $this->buildFullName($name);
         }
 
-        if ($this->getType() === self::TYPE_METHOD_CLOSURE) {
-            $cl = $this->getClass();
+        if ($this->_atk__core__magic_self_class__type === self::TYPE_METHOD_CLOSURE) {
+            $cl = $this->_atk__core__magic_self_class__class;
 
             return (static function () use ($cl, $name) {
                 return \Closure::fromCallable([$cl, $name]);
             })();
         }
 
-        if ($this->getType() === self::TYPE_METHOD_CLOSURE_PROTECTED) {
-            $cl = $this->getClass();
+        if ($this->_atk__core__magic_self_class__type === self::TYPE_METHOD_CLOSURE_PROTECTED) {
+            $cl = $this->_atk__core__magic_self_class__class;
 
             return \Closure::bind(function () use ($cl, $name) {
                 return \Closure::fromCallable([$cl, $name]);
-            }, is_object($cl) ? $cl : null, $cl)();
+            }, null, $cl)();
         }
 
         $this->throwNotSupported();
