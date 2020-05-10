@@ -16,7 +16,7 @@ final class Prop
      *
      * @param object|string $targetClass
      *
-     * @return static
+     * @return object
      */
     public static function prop($targetClass)
     {
@@ -31,7 +31,7 @@ final class Prop
      *
      * @param object|string $targetClass
      *
-     * @return static
+     * @return object
      */
     public static function propFull($targetClass)
     {

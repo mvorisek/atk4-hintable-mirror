@@ -16,7 +16,7 @@ final class Method
      *
      * @param object|string $targetClass
      *
-     * @return static
+     * @return object
      */
     public static function methodName($targetClass)
     {
@@ -31,7 +31,7 @@ final class Method
      *
      * @param object|string $targetClass
      *
-     * @return static
+     * @return object
      */
     public static function methodNameFull($targetClass)
     {
@@ -46,7 +46,7 @@ final class Method
      *
      * @param object|string $targetClass
      *
-     * @return static
+     * @return object
      */
     public static function methodClosure($targetClass)
     {
@@ -61,7 +61,7 @@ final class Method
      *
      * @param object|string $targetClass
      *
-     * @return static
+     * @return object
      */
     public static function methodClosureProtected($targetClass)
     {
