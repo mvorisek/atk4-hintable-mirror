@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace atk4\core\Hintable;
 
-final class Prop
+class Prop
 {
     private function __construct()
     {
