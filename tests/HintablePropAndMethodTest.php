@@ -50,15 +50,24 @@ class HintablePropAndMethodTest extends AtkPhpunit\TestCase
     {
         $cl = new HintablePropAndMethodMock();
         $this->assertSame(HintablePropAndMethodMock::class . '::pub', $cl->methodClosure()->pub()());
-        $this->assertSame(HintablePropAndMethodMock::class . '::pubStat', $cl->methodClosure()::pubStat()());
+    }
+
+    public function testMethodClosureStatic()
+    {
+        $cl = new HintablePropAndMethodMock();
+
+        // calling static method as instance method is valid in PHP
+        // and also the only supported option by us
         $this->assertSame(HintablePropAndMethodMock::class . '::pubStat', $cl->methodClosure()->pubStat()());
+
+        $this->expectException(Exception::class);
+        $this->assertSame(HintablePropAndMethodMock::class . '::pubStat', $cl->methodClosure()::pubStat()());
     }
 
     public function testMethodClosureProtected()
     {
         $cl = new HintablePropAndMethodMock();
         $this->assertSame(HintablePropAndMethodMock::class . '::priv', $cl->methodClosureProtected()->priv()());
-        $this->assertSame(HintablePropAndMethodMock::class . '::privStat', $cl->methodClosureProtected()::privStat()());
         $this->assertSame(HintablePropAndMethodMock::class . '::privStat', $cl->methodClosureProtected()->privStat()());
 
         // private method in anonymous class
