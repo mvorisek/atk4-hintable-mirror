@@ -28,8 +28,6 @@ class MagicPropAndMethod
 
     /**
      * @param object|string $targetClass
-     *
-     * @deprecated atk4/core internal only, to use this class use Prop class or Method class
      */
     public function __construct($targetClass, string $type)
     {
