@@ -56,7 +56,7 @@ class MagicPropAndMethod extends MagicAbstract
         if ($this->_atk__core__hintable_magic__type === self::TYPE_METHOD_CLOSURE_PROTECTED) {
             return \Closure::bind(function () use ($cl, $name) {
                 return \Closure::fromCallable([$cl, $name]);
-            }, null, $cl)();
+            }, is_object($cl) ? $cl : null, $cl)();
         }
 
         $this->_atk__core__hintable_magic__throwNotSupported();
