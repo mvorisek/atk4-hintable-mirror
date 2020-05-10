@@ -20,9 +20,9 @@ class Method
      */
     public static function methodName($targetClass)
     {
-        $cl = MagicPropAndMethod::class;
+        $cl = MagicMethod::class;
 
-        return new $cl($targetClass, MagicPropAndMethod::TYPE_METHOD_NAME);
+        return new $cl($targetClass, MagicMethod::TYPE_METHOD_NAME);
     }
 
     /**
@@ -35,9 +35,9 @@ class Method
      */
     public static function methodNameFull($targetClass)
     {
-        $cl = MagicPropAndMethod::class;
+        $cl = MagicMethod::class;
 
-        return new $cl($targetClass, MagicPropAndMethod::TYPE_METHOD_NAME_FULL);
+        return new $cl($targetClass, MagicMethod::TYPE_METHOD_NAME_FULL);
     }
 
     /**
@@ -50,9 +50,9 @@ class Method
      */
     public static function methodClosure($targetClass)
     {
-        $cl = MagicPropAndMethod::class;
+        $cl = MagicMethod::class;
 
-        return new $cl($targetClass, MagicPropAndMethod::TYPE_METHOD_CLOSURE);
+        return new $cl($targetClass, MagicMethod::TYPE_METHOD_CLOSURE);
     }
 
     /**
@@ -65,8 +65,8 @@ class Method
      */
     public static function methodClosureProtected($targetClass)
     {
-        $cl = MagicPropAndMethod::class;
+        $cl = MagicMethod::class;
 
-        return new $cl($targetClass, MagicPropAndMethod::TYPE_METHOD_CLOSURE_PROTECTED);
+        return new $cl($targetClass, MagicMethod::TYPE_METHOD_CLOSURE_PROTECTED);
     }
 }

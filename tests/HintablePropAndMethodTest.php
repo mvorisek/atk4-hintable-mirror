@@ -12,7 +12,7 @@ use atk4\core\Hintable\Prop;
 use atk4\core\Hintable\PropTrait;
 
 /**
- * @coversDefaultClass \atk4\core\Hintable\MagicPropAndMethod
+ * @coversDefaultClass \atk4\core\Hintable\MagicAbstract
  */
 class HintablePropAndMethodTest extends AtkPhpunit\TestCase
 {
