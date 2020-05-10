@@ -105,7 +105,7 @@ class HintablePropAndMethodMock
         return __METHOD__;
     }
 
-    public static function pubstat()
+    public static function pubStat()
     {
         return __METHOD__;
     }
