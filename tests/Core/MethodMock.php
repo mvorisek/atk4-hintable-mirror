@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Mvorisek\Atk4\Hintable\Tests\Core;
 
 use Mvorisek\Atk4\Hintable\Core\MethodTrait;
-use Mvorisek\Atk4\Hintable\Core\PropTrait;
 
-class PropAndMethodMock
+class MethodMock
 {
-    use PropTrait;
     use MethodTrait;
 
     private function priv()
@@ -30,5 +28,10 @@ class PropAndMethodMock
     public static function pubStat()
     {
         return __METHOD__;
+    }
+
+    protected function ignoreUnused(): string
+    {
+        return $this->priv() . "\n" . static::privStat();
     }
 }
