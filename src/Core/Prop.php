@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace atk4\core\Hintable;
+namespace Mvorisek\Atk4\Hintable\Core;
 
 class Prop
 {
