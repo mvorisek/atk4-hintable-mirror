@@ -1,0 +1,14 @@
+/build
+/vendor
+/composer.lock
+.idea
+nbproject
+
+local
+*.local
+*.local.*
+cache
+*.cache
+*.cache.*
+
+/phpunit.xml
