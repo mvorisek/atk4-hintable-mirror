@@ -117,7 +117,12 @@ class HintableModel extends Model
     {
         $hProps = $this->getHintableProps();
         if (isset($hProps[$name])) {
-            return $this->get($hProps[$name]->fieldName);
+            $fieldName = $hProps[$name]->fieldName;
+            if ($this->hasRef($fieldName) && !$this->hasField($fieldName)) {
+                return $this->ref($fieldName);
+            }
+
+            return $this->get($fieldName);
         }
 
         return $this->{$name}; // default behaviour
