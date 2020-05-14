@@ -118,8 +118,12 @@ class HintableModel extends Model
         $hProps = $this->getHintableProps();
         if (isset($hProps[$name])) {
             $hProp = $hProps[$name];
-            if ($hProp->refType === HintablePropertyDef::REF_TYPE_ONE || $hProp->refType === HintablePropertyDef::REF_TYPE_MANY) {
+            if ($hProp->refType === HintablePropertyDef::REF_TYPE_ONE) {
                 return $this->ref($hProp->fieldName);
+            } elseif ($hProp->refType === HintablePropertyDef::REF_TYPE_MANY) {
+                // @TODO, probably return an iterator
+                // values should be loaded on access in any case
+                throw new Exception('REF_TYPE_MANY ref type is not implemented yet');
             }
 
             return $this->get($hProp->fieldName);
