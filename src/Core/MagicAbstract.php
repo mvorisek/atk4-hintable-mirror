@@ -94,9 +94,6 @@ abstract class MagicAbstract
         $this->_atk__core__hintable_magic__throwNotSupported();
     }
 
-    /**
-     * @return string|\Closure
-     */
     public function __call(string $name, array $args)
     {
         $this->_atk__core__hintable_magic__throwNotSupported();
