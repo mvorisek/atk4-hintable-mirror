@@ -17,6 +17,13 @@ class HintablePropertyDef
     /** @const string Like protected property */
     public const VISIBILITY_PROTECTED = 'protected';
 
+    /** @const int Field is not a reference */
+    public const REF_TYPE_NONE = 0;
+    /** @const int */
+    public const REF_TYPE_ONE = 1;
+    /** @const int */
+    public const REF_TYPE_MANY = 2;
+
     /** @var self[] */
     private static $_cacheDefsByClass = [];
 
@@ -28,6 +35,8 @@ class HintablePropertyDef
     public $fieldName;
     /** @var string[] */
     public $allowedTypes;
+    /** @var int */
+    public $refType;
     /** @var string */
     public $visibility;
 
@@ -77,12 +86,13 @@ class HintablePropertyDef
 
     protected static function createFromClassDocLine(string $className, string $classDocLine): ?self
     {
-        if (!preg_match('~^@property ([^\$()]+?) \$([^ ]+) .*@Atk\\\\Field\(((?:[^()"]+|="[^"]*")*)\)~s', $classDocLine, $matches)) {
+        if (!preg_match('~^@property ([^\$()]+?) \$([^ ]+) .*@Atk\\\\(Field|RefOne|RefMany)\(((?:[^()"]+|="[^"]*")*)\)~s', $classDocLine, $matches)) {
             return null;
         }
 
         $allowedTypes = static::parseDocType($matches[1]);
-        $opts = static::parseDocAtkFieldOptions($matches[3]);
+        $refType = ['RefOne' => self::REF_TYPE_ONE, 'RefMany' => self::REF_TYPE_MANY][$matches[3]] ?? self::REF_TYPE_NONE;
+        $opts = static::parseDocAtkFieldOptions($matches[4]);
 
         $fieldName = null;
         $visibility = null;
@@ -93,7 +103,7 @@ class HintablePropertyDef
                 $visibility = $v;
             } else {
                 throw new Exception([
-                    'Hintable property has invalid @Atk\\Field option',
+                    'Hintable property has invalid @Atk\\' . $matches[3] .  ' option',
                     'key' => $k,
                     'value' => $v,
                 ]);
@@ -101,6 +111,7 @@ class HintablePropertyDef
         }
 
         $def = new static($className, $matches[2], $fieldName ?? $matches[2], $allowedTypes);
+        $def->refType = $refType;
         $def->visibility = $visibility ?? self::VISIBILITY_PUBLIC;
 
         return $def;
