@@ -100,6 +100,8 @@ class HintableModel extends Model
     {
         // do not check if get_class($this) === this base class or if class is anonymous
 
+        // also test if ref type is matching the field/ref type
+
         // @TODO
     }
 
