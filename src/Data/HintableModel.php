@@ -151,9 +151,12 @@ class HintableModel extends Model
             // @TODO check visibility - also for __isset, __get, __unset
             // @TODO check value type
 
-            $this->set($hProps[$name]->fieldName, $value);
+            if ($name !== 'id') {
+                $this->set($hProps[$name]->fieldName, $value);
 
-            return;
+                return;
+            }
+
         }
 
         // default behaviour
