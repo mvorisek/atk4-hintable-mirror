@@ -112,10 +112,14 @@ class HintableModel extends Model
             return true;
         }
 
-        return isset($this->{$name}); // default behaviour
+        // default behaviour
+        if (!property_exists($this, $name) && method_exists(parent::class, '__isset')) {
+            return parent::__isset($name);
+        }
+        return isset($this->{$name});
     }
 
-    public function __get(string $name)
+    public function &__get(string $name)
     {
         $hProps = $this->getHintableProps();
         if (isset($hProps[$name])) {
@@ -128,10 +132,16 @@ class HintableModel extends Model
                 throw new Exception('REF_TYPE_MANY ref type is not implemented yet');
             }
 
-            return $this->get($hProp->fieldName);
+            $resNoRef = $this->get($hProp->fieldName);
+
+            return $resNoRef;
         }
 
-        return $this->{$name}; // default behaviour
+        // default behaviour
+        if (!property_exists($this, $name) && method_exists(parent::class, '__get')) {
+            return parent::__get($name);
+        }
+        return $this->{$name};
     }
 
     public function __set(string $name, $value): void
@@ -146,7 +156,13 @@ class HintableModel extends Model
             return;
         }
 
-        $this->{$name} = $value; // default behaviour
+        // default behaviour
+        if (!property_exists($this, $name) && method_exists(parent::class, '__set')) {
+            parent::__set($name, $value);
+
+            return;
+        }
+        $this->{$name} = $value;
     }
 
     public function __unset(string $name): void
@@ -158,7 +174,13 @@ class HintableModel extends Model
             return;
         }
 
-        unset($this->{$name}); // default behaviour
+        // default behaviour
+        if (!property_exists($this, $name) && method_exists(parent::class, '__unset')) {
+            parent::__unset($name);
+
+            return;
+        }
+        unset($this->{$name});
     }
 
     public function init(): void
