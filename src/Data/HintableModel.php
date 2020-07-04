@@ -142,6 +142,8 @@ class HintableModel extends Model
             // @TODO check value type
 
             $this->set($hProps[$name]->fieldName, $value);
+
+            return;
         }
 
         $this->{$name} = $value; // default behaviour
@@ -152,6 +154,8 @@ class HintableModel extends Model
         $hProps = $this->getHintableProps();
         if (isset($hProps[$name])) {
             $this->setNull($hProps[$name]->fieldName);
+
+            return;
         }
 
         unset($this->{$name}); // default behaviour
