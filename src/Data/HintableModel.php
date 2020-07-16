@@ -125,7 +125,9 @@ class HintableModel extends Model
         if (isset($hProps[$name])) {
             $hProp = $hProps[$name];
             if ($hProp->refType === HintablePropertyDef::REF_TYPE_ONE) {
-                return $this->ref($hProp->fieldName);
+                $v = $this->ref($hProp->fieldName);
+
+                return $v;
             } elseif ($hProp->refType === HintablePropertyDef::REF_TYPE_MANY) {
                 // @TODO, probably return an iterator
                 // values should be loaded on access in any case
