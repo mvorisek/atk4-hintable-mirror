@@ -11,7 +11,7 @@ use Mvorisek\Atk4\Hintable\Data\HintableModel;
  */
 class Simple extends HintableModel
 {
-    public function init(): void
+    protected function init(): void
     {
         parent::init();
 

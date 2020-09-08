@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Mvorisek\Atk4\Hintable\Data;
 
 use atk4\data\Model;
+use atk4\data\Exception;
 use Mvorisek\Atk4\Hintable\Core\MagicAbstract;
 
 /**
@@ -75,7 +76,7 @@ class HintableModel extends Model
             foreach ($cls as $cl) {
                 \Closure::bind(function () use ($defs, $cl) {
                     foreach ($defs as $def) {
-                        if (array_key_exists($def->name, get_object_vars($this)) && $def->name !== 'id') {
+                        if (array_key_exists($def->name, get_object_vars($this))) {
                             throw new Exception([
                                 'Hintable properties must remain magical, they must be not defined in the code',
                                 'property' => $def->name,
@@ -153,11 +154,9 @@ class HintableModel extends Model
             // @TODO check visibility - also for __isset, __get, __unset
             // @TODO check value type
 
-            if ($name !== 'id') {
-                $this->set($hProps[$name]->fieldName, $value);
+            $this->set($hProps[$name]->fieldName, $value);
 
-                return;
-            }
+            return;
 
         }
 
@@ -188,7 +187,7 @@ class HintableModel extends Model
         unset($this->{$name});
     }
 
-    public function init(): void
+    protected function init(): void
     {
         parent::init();
 
