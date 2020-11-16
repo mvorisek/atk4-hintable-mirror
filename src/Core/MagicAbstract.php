@@ -30,11 +30,9 @@ abstract class MagicAbstract
     {
         $opName = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
 
-        throw new Exception([
-            'Operation "' . $opName . '" is not supported',
-            'target_class' => $this->_atk__core__hintable_magic__class,
-            'type' => $this->_atk__core__hintable_magic__type,
-        ]);
+        throw (new Exception('Operation "' . $opName . '" is not supported'))
+            ->addMoreInfo('target_class', $this->_atk__core__hintable_magic__class)
+            ->addMoreInfo('type', $this->_atk__core__hintable_magic__type);
     }
 
     protected function _atk__core__hintable_magic__buildFullName(string $name): string

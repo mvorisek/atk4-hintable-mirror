@@ -1,8 +1,8 @@
-/build
 /vendor
 /composer.lock
-.idea
-nbproject
+.idea/
+nbproject/
+.DS_Store/
 
 local
 *.local

@@ -62,11 +62,9 @@ class HintablePropertyDef
                 $def = static::createFromClassDocLine($refClass->getName(), $l);
                 if ($def !== null) {
                     if (isset($defs[$def->name])) {
-                        throw new Exception([
-                            'Hintable property is defined twice within the same class',
-                            'property' => $def->name,
-                            'class' => $refClass->getName(),
-                        ]);
+                        throw (new Exception('Hintable property is defined twice within the same class'))
+                            ->addMoreInfo('property', $def->name)
+                            ->addMoreInfo('class', $refClass->getName());
                     }
 
                     $defs[$def->name] = $def;
@@ -102,11 +100,9 @@ class HintablePropertyDef
             } elseif ($k === 'visibility') {
                 $visibility = $v;
             } else {
-                throw new Exception([
-                    'Hintable property has invalid @Atk\\' . $matches[3] .  ' option',
-                    'key' => $k,
-                    'value' => $v,
-                ]);
+                throw (new Exception('Hintable property has invalid @Atk\\' . $matches[3] . ' option'))
+                    ->addMoreInfo('key', $k)
+                    ->addMoreInfo('value', $v);
             }
         }
 
@@ -141,10 +137,8 @@ class HintablePropertyDef
         foreach (preg_split('~(?:[^",]+|="[^"]*")*\K,~', $doc) as $opt) {
             if (!preg_match('~^([^"=]+)=(?:([^"=]+)|"(.*)")$~s', $opt, $matches)
                 || ($matches[2] !== '' && $matches[2] !== (string) (int) $matches[2])) {
-                throw new Exception([
-                    'Hintable property has invalid @Atk\\Field option syntax',
-                    'value' => $opt,
-                ]);
+                throw (new Exception('Hintable property has invalid @Atk\\Field option syntax'))
+                    ->addMoreInfo('value', $opt);
             }
             $opts[trim($matches[1])] = $matches[2] !== '' ? (int) $matches[2] : trim($matches[3]);
         }
@@ -181,11 +175,9 @@ class HintablePropertyDef
             }
         }
 
-        throw new Exception([
-            'Value type of hintable property is restricted, value is not allowed',
-            'allowed_types' => $this->allowedTypes,
-            'value' => $val,
-        ]);
+        throw (new Exception('Value type of hintable property is restricted, value is not allowed'))
+            ->addMoreInfo('allowed_types', $this->allowedTypes)
+            ->addMoreInfo('value', $val);
     }
 
     /**

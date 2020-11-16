@@ -1,0 +1,7 @@
+include:
+  - project: mahalux/php-ci
+    file: /templates/shared.yml
+  - project: mahalux/php-ci
+    file: /templates/php-cs.yml
+  - project: mahalux/php-ci
+    file: /templates/php-phpunit.yml
