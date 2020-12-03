@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Mvorisek\Atk4\Hintable\Data;
 
-use atk4\data\Exception;
+use Atk4\Data\Exception;
 
 // @TODO or using Doctrine Annotation? https://www.doctrine-project.org/projects/doctrine-annotations/en/latest/index.html#reading-annotations
 

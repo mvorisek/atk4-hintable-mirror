@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Mvorisek\Atk4\Hintable\Tests\Data;
 
-use atk4\core\AtkPhpunit;
+use Atk4\Core\AtkPhpunit;
 
 /**
  * @coversDefaultClass \Mvorisek\Atk4\Hintable\Core\Prop

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Mvorisek\Atk4\Hintable\Data;
 
-use atk4\data\Exception;
-use atk4\data\Model;
+use Atk4\Data\Exception;
+use Atk4\Data\Model;
 use Mvorisek\Atk4\Hintable\Core\MagicAbstract;
 
 /**

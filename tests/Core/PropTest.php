@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Mvorisek\Atk4\Hintable\Tests\Core;
 
-use atk4\core\AtkPhpunit;
-use atk4\core\Exception;
+use Atk4\Core\AtkPhpunit;
+use Atk4\Core\Exception;
 use Mvorisek\Atk4\Hintable\Core\Prop;
 
 /**

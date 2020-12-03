@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Mvorisek\Atk4\Hintable\Core;
 
-use atk4\core\Exception;
+use Atk4\Core\Exception;
 
 abstract class MagicAbstract
 {
