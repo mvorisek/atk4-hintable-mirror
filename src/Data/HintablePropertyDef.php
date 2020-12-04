@@ -56,29 +56,29 @@ class HintablePropertyDef
      */
     public static function createFromClassDoc(string $className): array
     {
-        $refClass = new \ReflectionClass($className);
+        $classRefl = new \ReflectionClass($className);
 
-        if (!isset(self::$_cacheDefsByClass[$refClass->getName()])) {
+        if (!isset(self::$_cacheDefsByClass[$classRefl->getName()])) {
             $defs = [];
-            $classDoc = preg_replace('~\s+~', ' ', preg_replace('~^\s*(?:/\s*)?\*+(?:/\s*$)?|\s*\*+/\s*$~m', '', $refClass->getDocComment()));
+            $classDoc = preg_replace('~\s+~', ' ', preg_replace('~^\s*(?:/\s*)?\*+(?:/\s*$)?|\s*\*+/\s*$~m', '', $classRefl->getDocComment() ?: ''));
             foreach (preg_split('~(?<!\w)(?=@property(?!\w))~', $classDoc) as $l) {
-                $def = static::createFromClassDocLine($refClass->getName(), $l);
+                $def = static::createFromClassDocLine($classRefl->getName(), $l);
                 if ($def !== null) {
                     if (isset($defs[$def->name])) {
                         throw (new Exception('Hintable property is defined twice within the same class'))
                             ->addMoreInfo('property', $def->name)
-                            ->addMoreInfo('class', $refClass->getName());
+                            ->addMoreInfo('class', $classRefl->getName());
                     }
 
                     $defs[$def->name] = $def;
                 }
             }
 
-            self::$_cacheDefsByClass[$refClass->getName()] = $defs;
+            self::$_cacheDefsByClass[$classRefl->getName()] = $defs;
         }
 
         $defs = [];
-        foreach (self::$_cacheDefsByClass[$refClass->getName()] as $k => $def) {
+        foreach (self::$_cacheDefsByClass[$classRefl->getName()] as $k => $def) {
             $defs[$k] = clone $def;
         }
 
