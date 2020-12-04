@@ -26,11 +26,11 @@ abstract class MagicAbstract
         $this->_atk__core__hintable_magic__type = $type;
     }
 
-    protected function _atk__core__hintable_magic__throwNotSupported(): void
+    protected function _atk__core__hintable_magic__createNotSupportedException(): Exception
     {
         $opName = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
 
-        throw (new Exception('Operation "' . $opName . '" is not supported'))
+        return (new Exception('Operation "' . $opName . '" is not supported'))
             ->addMoreInfo('target_class', $this->_atk__core__hintable_magic__class)
             ->addMoreInfo('type', $this->_atk__core__hintable_magic__type);
     }
@@ -42,58 +42,75 @@ abstract class MagicAbstract
         return (is_string($cl) ? $cl : get_class($cl)) . '::' . $name;
     }
 
+    /**
+     * @return mixed[]
+     */
     public function __debugInfo(): array
     {
-        $this->_atk__core__hintable_magic__throwNotSupported();
+        throw $this->_atk__core__hintable_magic__createNotSupportedException();
     }
 
     public function __sleep(): array
     {
-        $this->_atk__core__hintable_magic__throwNotSupported();
+        throw $this->_atk__core__hintable_magic__createNotSupportedException();
     }
 
     public function __wakeup(): void
     {
-        $this->_atk__core__hintable_magic__throwNotSupported();
+        throw $this->_atk__core__hintable_magic__createNotSupportedException();
     }
 
     public function __clone()
     {
-        $this->_atk__core__hintable_magic__throwNotSupported();
+        throw $this->_atk__core__hintable_magic__createNotSupportedException();
     }
 
+    /**
+     * @return mixed
+     */
     public function __invoke()
     {
-        $this->_atk__core__hintable_magic__throwNotSupported();
+        throw $this->_atk__core__hintable_magic__createNotSupportedException();
     }
 
     public function __isset(string $name): bool
     {
-        $this->_atk__core__hintable_magic__throwNotSupported();
+        throw $this->_atk__core__hintable_magic__createNotSupportedException();
     }
 
+    /**
+     * @param mixed $value
+     */
     public function __set(string $name, $value): void
     {
-        $this->_atk__core__hintable_magic__throwNotSupported();
+        throw $this->_atk__core__hintable_magic__createNotSupportedException();
     }
 
     public function __unset(string $name): void
     {
-        $this->_atk__core__hintable_magic__throwNotSupported();
+        throw $this->_atk__core__hintable_magic__createNotSupportedException();
     }
 
+    /**
+     * @param string[] $args
+     */
     public static function __callStatic(string $name, array $args): void
     {
-        (new static(\stdClass::class, 'static'))->_atk__core__hintable_magic__throwNotSupported();
+        throw (new static(\stdClass::class, 'static'))->_atk__core__hintable_magic__createNotSupportedException();
     }
 
     public function __get(string $name): string
     {
-        $this->_atk__core__hintable_magic__throwNotSupported();
+        throw $this->_atk__core__hintable_magic__createNotSupportedException();
     }
 
+    /**
+     * @param string[] $args
+     *
+     * @return mixed
+     */
     public function __call(string $name, array $args)
     {
-        $this->_atk__core__hintable_magic__throwNotSupported();
+        throw $this->_atk__core__hintable_magic__createNotSupportedException();
     }
 }

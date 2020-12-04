@@ -13,17 +13,17 @@ use Mvorisek\Atk4\Hintable\Core\Prop;
  */
 class PropTest extends AtkPhpunit\TestCase
 {
-    public function testPropName()
+    public function testPropName(): void
     {
         $cl = new PropMock();
         $this->assertSame('x', $cl->propName()->x);
         $this->assertSame('y', $cl->propName()->y);
-        $this->assertSame('z', $cl->propName()->z);
+        $this->assertSame('z', $cl->propName()->z); // @phpstan-ignore-line
 
         $this->assertSame('xx', $cl->{$cl->propName()->x});
     }
 
-    public function testPropNameFull()
+    public function testPropNameFull(): void
     {
         $cl = new PropMock();
         $this->assertSame(PropMock::class . '::x', $cl->propNameFull()->x);
@@ -31,7 +31,7 @@ class PropTest extends AtkPhpunit\TestCase
         $this->assertSame(\stdClass::class . '::z', Prop::propNameFull(\stdClass::class)->z);
     }
 
-    public function testCallError()
+    public function testCallError(): void
     {
         $cl = new PropMock();
         $this->expectException(Exception::class);

@@ -10,28 +10,23 @@ class MethodMock
 {
     use MethodTrait;
 
-    private function priv()
+    private function priv(): string
     {
         return __METHOD__;
     }
 
-    public function pub()
+    public function pub(): string
     {
         return __METHOD__;
     }
 
-    private static function privStat()
+    private static function privStat(): string
     {
         return __METHOD__;
     }
 
-    public static function pubStat()
+    public static function pubStat(): string
     {
         return __METHOD__;
-    }
-
-    protected function ignoreUnused(): string
-    {
-        return $this->priv() . "\n" . static::privStat();
     }
 }

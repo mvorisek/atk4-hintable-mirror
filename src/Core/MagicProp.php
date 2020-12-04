@@ -21,6 +21,6 @@ class MagicProp extends MagicAbstract
             return $this->_atk__core__hintable_magic__buildFullName($name);
         }
 
-        $this->_atk__core__hintable_magic__throwNotSupported();
+        throw $this->_atk__core__hintable_magic__createNotSupportedException();
     }
 }

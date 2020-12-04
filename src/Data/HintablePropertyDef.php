@@ -24,7 +24,7 @@ class HintablePropertyDef
     /** @const int */
     public const REF_TYPE_MANY = 2;
 
-    /** @var self[] */
+    /** @var array<string, static[]> */
     private static $_cacheDefsByClass = [];
 
     /** @var string */
@@ -40,6 +40,9 @@ class HintablePropertyDef
     /** @var string */
     public $visibility;
 
+    /**
+     * @param string[] $allowedTypes
+     */
     public function __construct(string $className, string $name, string $fieldName, array $allowedTypes)
     {
         $this->className = $className;
@@ -82,6 +85,9 @@ class HintablePropertyDef
         return $defs;
     }
 
+    /**
+     * @return static|null
+     */
     protected static function createFromClassDocLine(string $className, string $classDocLine): ?self
     {
         if (!preg_match('~^@property ([^\$()]+?) \$([^ ]+) .*@Atk\\\\(Field|RefOne|RefMany)\(((?:[^()"]+|="[^"]*")*)\)~s', $classDocLine, $matches)) {
@@ -113,6 +119,9 @@ class HintablePropertyDef
         return $def;
     }
 
+    /**
+     * @return string[]
+     */
     protected static function parseDocType(string $doc): array
     {
         $types = [];
@@ -127,6 +136,9 @@ class HintablePropertyDef
         return array_unique($types);
     }
 
+    /**
+     * @return string[]
+     */
     protected static function parseDocAtkFieldOptions(string $doc): array
     {
         if (trim($doc) === '') {

@@ -10,11 +10,8 @@ class PropMock
 {
     use PropTrait;
 
+    /** @var string */
     public $x = 'xx';
+    /** @var string */
     private $z = 'zz';
-
-    protected function ignoreUnused(): string
-    {
-        return $this->z;
-    }
 }

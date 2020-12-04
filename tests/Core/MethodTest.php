@@ -13,14 +13,14 @@ use Mvorisek\Atk4\Hintable\Core\Method;
  */
 class MethodTest extends AtkPhpunit\TestCase
 {
-    public function testMethodName()
+    public function testMethodName(): void
     {
         $cl = new MethodMock();
         $this->assertSame('x', $cl->methodName()->x());
         $this->assertSame('y', $cl->methodName()->y());
     }
 
-    public function testMethodNameFull()
+    public function testMethodNameFull(): void
     {
         $cl = new MethodMock();
         $this->assertSame(MethodMock::class . '::x', $cl->methodNameFull()->x());
@@ -28,20 +28,20 @@ class MethodTest extends AtkPhpunit\TestCase
         $this->assertSame(\stdClass::class . '::z', Method::methodNameFull(\stdClass::class)->z());
     }
 
-    public function testGetterError()
+    public function testGetterError(): void
     {
         $cl = new MethodMock();
         $this->expectException(Exception::class);
-        gettype($cl->methodName()->unsupported);
+        $cl->methodName()->unsupported; // @phpstan-ignore-line
     }
 
-    public function testMethodClosure()
+    public function testMethodClosure(): void
     {
         $cl = new MethodMock();
         $this->assertSame(MethodMock::class . '::pub', $cl->methodClosure()->pub()());
     }
 
-    public function testMethodClosureStatic()
+    public function testMethodClosureStatic(): void
     {
         $cl = new MethodMock();
 
@@ -53,22 +53,22 @@ class MethodTest extends AtkPhpunit\TestCase
         $this->assertSame(MethodMock::class . '::pubStat', $cl->methodClosure()::pubStat()());
     }
 
-    public function testMethodClosureProtected()
+    public function testMethodClosureProtected(): void
     {
         $cl = new MethodMock();
-        $this->assertSame(MethodMock::class . '::priv', $cl->methodClosureProtected()->priv()());
-        $this->assertSame(MethodMock::class . '::privStat', $cl->methodClosureProtected()->privStat()());
+        $this->assertSame(MethodMock::class . '::priv', $cl->methodClosureProtected()->priv()()); // @phpstan-ignore-line
+        $this->assertSame(MethodMock::class . '::privStat', $cl->methodClosureProtected()->privStat()()); // @phpstan-ignore-line
     }
 
-    public function testMethodClosureAnonymous()
+    public function testMethodClosureAnonymous(): void
     {
         $cl = new class() extends \stdClass {
-            private function privAnon()
+            private function privAnon(): string
             {
                 return __METHOD__;
             }
 
-            private static function privAnonStat()
+            private static function privAnonStat(): string
             {
                 return __METHOD__;
             }

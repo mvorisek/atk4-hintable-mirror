@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mvorisek\Atk4\Hintable\Data;
 
+use Atk4\Data\Exception;
 use Mvorisek\Atk4\Hintable\Core\MagicAbstract;
 
 class MagicModelField extends MagicAbstract
@@ -20,9 +21,15 @@ class MagicModelField extends MagicAbstract
     {
         $model = $this->_atk__data__hintable_magic__getModel();
 
-        $hProps = \Closure::bind(function () use ($model) {
+        $hProps = \Closure::bind(function () use ($model): array {
             return $model->getHintableProps();
         }, null, HintableModel::class)();
+
+        if (!isset($hProps[$name])) {
+            throw (new Exception('Hintable property is not defined'))
+                ->addMoreInfo('property', $name)
+                ->addMoreInfo('class', get_class($model));
+        }
 
         return $hProps[$name];
     }
@@ -33,6 +40,6 @@ class MagicModelField extends MagicAbstract
             return $this->_atk__data__hintable_magic__getModelPropDef($name)->fieldName;
         }
 
-        $this->_atk__core__hintable_magic__throwNotSupported();
+        throw $this->_atk__core__hintable_magic__createNotSupportedException();
     }
 }

@@ -74,7 +74,7 @@ class HintableModel extends Model
 
             // IMPORTANT: check if all hintable property are not set, otherwise the magic functions will not work!
             foreach ($cls as $cl) {
-                \Closure::bind(function () use ($defs, $cl) {
+                \Closure::bind(function () use ($defs, $cl): void {
                     foreach ($defs as $def) {
                         if (array_key_exists($def->name, get_object_vars($this))) {
                             throw (new Exception('Hintable properties must remain magical, they must be not defined in the code'))
@@ -113,12 +113,15 @@ class HintableModel extends Model
 
         // default behaviour
         if (!property_exists($this, $name) && method_exists(parent::class, '__isset')) {
-            return parent::__isset($name);
+            return parent::__isset($name); // @phpstan-ignore-line
         }
 
         return isset($this->{$name});
     }
 
+    /**
+     * @return mixed
+     */
     public function &__get(string $name)
     {
         $hProps = $this->getHintableProps();
@@ -141,12 +144,15 @@ class HintableModel extends Model
 
         // default behaviour
         if (!property_exists($this, $name) && method_exists(parent::class, '__get')) {
-            return parent::__get($name);
+            return parent::__get($name); // @phpstan-ignore-line
         }
 
         return $this->{$name};
     }
 
+    /**
+     * @param mixed $value
+     */
     public function __set(string $name, $value): void
     {
         $hProps = $this->getHintableProps();
@@ -161,7 +167,7 @@ class HintableModel extends Model
 
         // default behaviour
         if (!property_exists($this, $name) && method_exists(parent::class, '__set')) {
-            parent::__set($name, $value);
+            parent::__set($name, $value); // @phpstan-ignore-line
 
             return;
         }
@@ -179,7 +185,7 @@ class HintableModel extends Model
 
         // default behaviour
         if (!property_exists($this, $name) && method_exists(parent::class, '__unset')) {
-            parent::__unset($name);
+            parent::__unset($name); // @phpstan-ignore-line
 
             return;
         }
@@ -203,7 +209,7 @@ class HintableModel extends Model
     {
         // @TODO this object should not support any modifications, ie. unset everything and prevent any calls except fieldName() and cache this class,
         // or better to allow to access
-        return new class(static::class, '') extends MagicAbstract {
+        return new class(static::class, '') extends MagicAbstract { // @phpstan-ignore-line
             public function __call(string $name, array $args)
             {
                 if (in_array($name, ['fieldName'], true)) {
@@ -212,7 +218,7 @@ class HintableModel extends Model
                     return $cl->{$name}();
                 }
 
-                $this->_atk__core__hintable_magic__throwNotSupported();
+                throw $this->_atk__core__hintable_magic__createNotSupportedException();
             }
         };
     }

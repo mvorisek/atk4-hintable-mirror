@@ -42,6 +42,6 @@ class MagicMethod extends MagicAbstract
             }, is_object($cl) ? $cl : null, $cl)();
         }
 
-        $this->_atk__core__hintable_magic__throwNotSupported();
+        throw $this->_atk__core__hintable_magic__createNotSupportedException();
     }
 }

@@ -11,7 +11,7 @@ use Atk4\Core\AtkPhpunit;
  */
 class HintableModelTest extends AtkPhpunit\TestCase
 {
-    public function testFieldName()
+    public function testFieldName(): void
     {
         $cl = new Model\Simple();
         $this->assertSame('x', $cl->fieldName()->x);
