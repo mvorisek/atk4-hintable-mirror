@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Mvorisek\Atk4\Hintable\Tests\Data\Model;
 
-use Mvorisek\Atk4\Hintable\Data\HintableModel;
+use Atk4\Data\Model;
+use Mvorisek\Atk4\Hintable\Data\HintableModelTrait;
 
 /**
  * @property string                       $x           @Atk\Field()
@@ -15,8 +16,10 @@ use Mvorisek\Atk4\Hintable\Data\HintableModel;
  * @property \DateTimeInterface           $dtInterface @Atk\Field()
  * @property \DateTime|\DateTimeImmutable $dtMulti     @Atk\Field()
  */
-class Standard extends HintableModel
+class Standard extends Model
 {
+    use HintableModelTrait;
+
     protected function init(): void
     {
         parent::init();

@@ -8,9 +8,9 @@ use Atk4\Core\AtkPhpunit;
 use Atk4\Data\Exception;
 
 /**
- * @coversDefaultClass \Mvorisek\Atk4\Hintable\Core\Prop
+ * @coversDefaultClass \Mvorisek\Atk4\Hintable\Data\MagicModelField
  */
-class ModelFieldTest extends AtkPhpunit\TestCase
+class HintableModelFieldTest extends AtkPhpunit\TestCase
 {
     public function testFieldName(): void
     {

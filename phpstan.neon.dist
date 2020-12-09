@@ -18,5 +18,4 @@ parameters:
         - '~^Parameter #1 \$name of method Atk4\\Data\\Model::(get|add)Field\(\) expects string, .+ given\.$~'
 
         # TODO check once atk4/data 2.4.x is released (or report to PHPStan), not replicable on my local/Windows machine
-        - '~^Method Mvorisek\\Atk4\\Hintable\\Data\\HintableModel::(hinting|fieldName)\(\) return type has no value type specified in iterable type static\(Mvorisek\\Atk4\\Hintable\\Data\\HintableModel\)\.$~'
-        - '~^Method Mvorisek\\Atk4\\Hintable\\Data\\MagicModelField::_atk__data__hintable_magic__getModel\(\) return type has no value type specified in iterable type Mvorisek\\Atk4\\Hintable\\Data\\HintableModel\.$~'
+        - '~^Method Mvorisek\\Atk4\\Hintable\\Tests\\Data\\Model\\(Simple|Standard)::(hinting|fieldName)\(\) return type has no value type specified in iterable type static\(Mvorisek\\Atk4\\Hintable\\Tests\\Data\\Model\\(Simple|Standard)\)\.$~'

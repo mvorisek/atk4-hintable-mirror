@@ -7,7 +7,7 @@ namespace Mvorisek\Atk4\Hintable\Tests\Data;
 use Atk4\Core\AtkPhpunit;
 
 /**
- * @coversDefaultClass \Mvorisek\Atk4\Hintable\Data\HintableModel
+ * @coversDefaultClass \Mvorisek\Atk4\Hintable\Data\HintableModelTrait
  */
 class HintableModelTest extends AtkPhpunit\TestCase
 {

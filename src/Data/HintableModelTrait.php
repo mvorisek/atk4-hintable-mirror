@@ -9,13 +9,13 @@ use Atk4\Data\Model;
 use Mvorisek\Atk4\Hintable\Core\MagicAbstract;
 
 /**
- * Model with hintable fields support thru magic properties.
+ * Adds hintable fields support to Model thru magic properties.
  *
  * How to define a hintable field:
- *   1. Define model field no later than in init() like:
- *      <code>$m->addField('first_name');</code>
+ *   1. Define model field no later than in Model::init() like:
+ *      <code>$m->addField('firstName');</code>
  *   2. Annotate model property in class phpdoc like:
- *      <code>@property string $first_name @Atk\Field()</code>
+ *      <code>@property string $firstName @Atk\Field()</code>
  *      - use "field_name" parameter to change the target field name, by default mapped to the same name
  *      - use "visibility" parameter to limit the visibility, valid values are:
  *        - "public"     = default, no access restrictions
@@ -26,13 +26,13 @@ use Mvorisek\Atk4\Hintable\Core\MagicAbstract;
  *
  * Usecase - get/set field data:
  *   Simply use the magic property like a regular one, example:
- *   <code>$n = $m->first_name;</code>
- *   <code>$m->first_name = $n;</code>
+ *   <code>$n = $m->firstName;</code>
+ *   <code>$m->firstName = $n;</code>
  *
  * Usecase - get field definition:
- *   <code>$m->getField($m->prop()->first_name);</code>
+ *   <code>$m->getField($m->prop()->firstName);</code>
  */
-class HintableModel extends Model
+trait HintableModelTrait
 {
     /** @var HintablePropertyDef[] */
     private $_hintableProps;
@@ -192,12 +192,14 @@ class HintableModel extends Model
         unset($this->{$name});
     }
 
-    protected function init(): void
-    {
-        parent::init();
-
-        $this->checkRequireAllFieldsHintable(true);
-    }
+    // TODO we can check once initialized (init was called for the 1st time), but not sooner,
+    // otherwise init can not be overridden
+//    protected function init(): void
+//    {
+//        parent::init();
+//
+//        $this->checkRequireAllFieldsHintable(true);
+//    }
 
     /**
      * Returns a magic class that pretends to be instance of this class, but in reality
