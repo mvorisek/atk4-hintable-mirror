@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Mvorisek\Atk4\Hintable\Core;
 
+/**
+ * @template TTargetClass
+ * @template TReturnType
+ * @extends MagicAbstract<TTargetClass, TReturnType>
+ */
 class MagicProp extends MagicAbstract
 {
     /** @const string */

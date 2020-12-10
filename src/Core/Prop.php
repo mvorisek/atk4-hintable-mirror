@@ -17,6 +17,8 @@ class Prop
      * @param object|string $targetClass
      *
      * @return object
+     *
+     * @phpstan-return MagicProp<object, string>
      */
     public static function propName($targetClass)
     {
@@ -32,6 +34,8 @@ class Prop
      * @param object|string $targetClass
      *
      * @return object
+     *
+     * @phpstan-return MagicProp<object, string>
      */
     public static function propNameFull($targetClass)
     {

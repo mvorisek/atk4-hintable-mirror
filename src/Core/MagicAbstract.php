@@ -6,6 +6,10 @@ namespace Mvorisek\Atk4\Hintable\Core;
 
 use Atk4\Core\Exception;
 
+/**
+ * @template TTargetClass
+ * @template TReturnType
+ */
 abstract class MagicAbstract
 {
     /** @var object|string */

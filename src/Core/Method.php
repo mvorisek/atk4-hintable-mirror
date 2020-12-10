@@ -17,6 +17,8 @@ class Method
      * @param object|string $targetClass
      *
      * @return object
+     *
+     * @phpstan-return MagicMethod<object, string>
      */
     public static function methodName($targetClass)
     {
@@ -32,6 +34,8 @@ class Method
      * @param object|string $targetClass
      *
      * @return object
+     *
+     * @phpstan-return MagicMethod<object, string>
      */
     public static function methodNameFull($targetClass)
     {
@@ -47,6 +51,8 @@ class Method
      * @param object|string $targetClass string is supported only for static methods
      *
      * @return object
+     *
+     * @phpstan-return MagicMethod<object, \Closure>
      */
     public static function methodClosure($targetClass)
     {
@@ -62,6 +68,8 @@ class Method
      * @param object|string $targetClass string is supported only for static methods
      *
      * @return object
+     *
+     * @phpstan-return MagicMethod<object, \Closure>
      */
     public static function methodClosureProtected($targetClass)
     {

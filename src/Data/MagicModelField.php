@@ -8,6 +8,11 @@ use Atk4\Data\Exception;
 use Atk4\Data\Model;
 use Mvorisek\Atk4\Hintable\Core\MagicAbstract;
 
+/**
+ * @template TTargetClass
+ * @template TReturnType
+ * @extends MagicAbstract<TTargetClass&Model, TReturnType>
+ */
 class MagicModelField extends MagicAbstract
 {
     /** @const string */

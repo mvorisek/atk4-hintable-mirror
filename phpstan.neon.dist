@@ -5,17 +5,16 @@ parameters:
     excludes_analyse:
         - vendor/
 
-    # TODO review once we drop PHP 7.x support
-    treatPhpDocTypesAsCertain: false
-
     ignoreErrors:
         - '~^Unsafe usage of new static\(\)\.$~'
-        - '~^Access to an undefined property Mvorisek\\Atk4\\Hintable\\Tests\\Core\\(Prop|Method)Mock::\$(x|y|unsupported)\.$~'
-        - '~^Call to an undefined method Mvorisek\\Atk4\\Hintable\\Tests\\Core\\(Prop|Method)Mock::(x|y|unsupported)\(\)\.$~'
-        - '~^Method Mvorisek\\Atk4\\Hintable\\Tests\\Core\\(Prop|Method)Mock::(prop|method)\w+\(\) should return static\([^()]+\) but returns object\.$~'
-
-        # TODO we must help PHPStan to understand our magic (needed for level >= 5)
-        - '~^Parameter #1 \$name of method Atk4\\Data\\Model::(get|add)Field\(\) expects string, .+ given\.$~'
 
         # TODO check once atk4/data 2.4.x is released (or report to PHPStan), not replicable on my local/Windows machine
         - '~^Method Mvorisek\\Atk4\\Hintable\\Tests\\Data\\Model\\(Simple|Standard)::(hinting|fieldName)\(\) return type has no value type specified in iterable type static\(Mvorisek\\Atk4\\Hintable\\Tests\\Data\\Model\\(Simple|Standard)\)\.$~'
+
+services:
+    # help PHPStan to understand our magic (needed for level >= 5)
+    -
+        class: Mvorisek\Atk4\Hintable\Phpstan\MagicReflectionExtension
+        tags:
+            - phpstan.broker.propertiesClassReflectionExtension
+            - phpstan.broker.methodsClassReflectionExtension

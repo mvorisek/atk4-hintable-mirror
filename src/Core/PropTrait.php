@@ -11,10 +11,12 @@ trait PropTrait
      * any property returns its (short) name.
      *
      * @return static
+     *
+     * @phpstan-return MagicProp<static, string>
      */
     public function propName()
     {
-        return Prop::propName($this);
+        return Prop::propName($this); // @phpstan-ignore-line
     }
 
     /**
@@ -22,9 +24,11 @@ trait PropTrait
      * any property returns its full name, ie. class name + "::" + short name.
      *
      * @return static
+     *
+     * @phpstan-return MagicProp<static, string>
      */
     public function propNameFull()
     {
-        return Prop::propNameFull($this);
+        return Prop::propNameFull($this); // @phpstan-ignore-line
     }
 }

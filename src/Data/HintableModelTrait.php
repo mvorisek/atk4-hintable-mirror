@@ -230,6 +230,8 @@ trait HintableModelTrait
      * any property returns its field name.
      *
      * @return static
+     *
+     * @phpstan-return MagicModelField<static, string>
      */
     public function fieldName()
     {

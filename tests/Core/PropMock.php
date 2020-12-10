@@ -11,7 +11,9 @@ class PropMock
     use PropTrait;
 
     /** @var string */
-    public $x = 'xx';
+    public $pub = '_pub_';
     /** @var string */
-    private $z = 'zz';
+    private $priv = '_priv_';
+    /** @var int */
+    public $pubInt = 21;
 }
