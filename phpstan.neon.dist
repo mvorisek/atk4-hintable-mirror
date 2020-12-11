@@ -1,3 +1,6 @@
+includes:
+    - phpstan-ext.neon
+
 parameters:
     level: 6
     paths:
@@ -10,11 +13,3 @@ parameters:
 
         # TODO check once atk4/data 2.4.x is released (or report to PHPStan), not replicable on my local/Windows machine
         - '~^Method Mvorisek\\Atk4\\Hintable\\Tests\\Data\\Model\\(Simple|Standard)::(hinting|fieldName)\(\) return type has no value type specified in iterable type static\(Mvorisek\\Atk4\\Hintable\\Tests\\Data\\Model\\(Simple|Standard)\)\.$~'
-
-services:
-    # help PHPStan to understand our magic (needed for level >= 5)
-    -
-        class: Mvorisek\Atk4\Hintable\Phpstan\MagicReflectionExtension
-        tags:
-            - phpstan.broker.propertiesClassReflectionExtension
-            - phpstan.broker.methodsClassReflectionExtension
