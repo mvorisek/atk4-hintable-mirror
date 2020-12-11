@@ -128,13 +128,37 @@ trait HintableModelTrait
         if (isset($hProps[$name])) {
             $hProp = $hProps[$name];
             if ($hProp->refType === HintablePropertyDef::REF_TYPE_ONE) {
-                $v = $this->ref($hProp->fieldName);
+                /** @var Model */
+                $model = $this->ref($hProp->fieldName);
 
-                return $v;
+                // TODO ensure no more than one Model can load
+//                $model->onHookShort(Model::HOOK_BEFORE_LOAD, \Closure::bind(function () {
+//                    foreach limit 2
+//                }, $model, Model::class));
+
+                return $model;
             } elseif ($hProp->refType === HintablePropertyDef::REF_TYPE_MANY) {
-                // @TODO, probably return an iterator
-                // values should be loaded on access in any case
-                throw new Exception('REF_TYPE_MANY ref type is not implemented yet');
+                /** @var Model */
+                $model = $this->ref($hProp->fieldName);
+
+                // prevent to load directly (without an iterator)
+                \Closure::bind(function () use ($model) {
+                    $model->entityId = '_atk__data__hintable_magic__refMany';
+                }, null, Model::class)();
+                $model->onHookShort(Model::HOOK_AFTER_LOAD, \Closure::bind(function () {
+                    if ($this->entityId === '_atk__data__hintable_magic__refMany') {
+                        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, 4);
+                        if (
+                            count($backtrace) >= 4
+                            && ($backtrace[3]['function'] ?? null) === 'getIterator'
+                            && ($backtrace[3]['object'] ?? null) !== $this
+                        ) {
+                            $this->entityId = null;
+                        }
+                    }
+                }, $model, Model::class), [], -11);
+
+                return $model;
             }
 
             $resNoRef = $this->get($hProp->fieldName);

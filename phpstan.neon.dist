@@ -10,6 +10,3 @@ parameters:
 
     ignoreErrors:
         - '~^Unsafe usage of new static\(\)\.$~'
-
-        # TODO check once atk4/data 2.4.x is released (or report to PHPStan), not replicable on my local/Windows machine
-        - '~^Method Mvorisek\\Atk4\\Hintable\\Tests\\Data\\Model\\(Simple|Standard)::(hinting|fieldName)\(\) return type has no value type specified in iterable type static\(Mvorisek\\Atk4\\Hintable\\Tests\\Data\\Model\\(Simple|Standard)\)\.$~'
