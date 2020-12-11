@@ -8,8 +8,6 @@ use Atk4\Data\Model;
 use Mvorisek\Atk4\Hintable\Data\HintableModelTrait;
 
 /**
- * @property int                          $id          @Atk\Field(visibility="protected_set") Contains ID of the current record.
- *                                                     If the value is null then the record is considered to be new.
  * @property string                       $x           @Atk\Field()
  * @property string                       $y           @Atk\Field(field_name="yy")
  * @property string                       $_name       @Atk\Field(field_name="name") Property Model::name is defined, so we need to use different property name
@@ -29,9 +27,6 @@ class Standard extends Model
     protected function init(): void
     {
         parent::init();
-
-        $this->getField($this->fieldName()->id)->type = 'integer';
-        $this->getField($this->fieldName()->id)->required = true;
 
         $this->addField($this->fieldName()->x, ['type' => 'string', 'required' => true]);
         $this->addField($this->fieldName()->y, ['type' => 'string', 'required' => true]);

@@ -112,10 +112,6 @@ trait HintableModelTrait
         }
 
         // default behaviour
-        if (!property_exists($this, $name) && method_exists(parent::class, '__isset')) {
-            return parent::__isset($name); // @phpstan-ignore-line
-        }
-
         return isset($this->{$name});
     }
 
@@ -167,10 +163,6 @@ trait HintableModelTrait
         }
 
         // default behaviour
-        if (!property_exists($this, $name) && method_exists(parent::class, '__get')) {
-            return parent::__get($name); // @phpstan-ignore-line
-        }
-
         return $this->{$name};
     }
 
@@ -190,11 +182,6 @@ trait HintableModelTrait
         }
 
         // default behaviour
-        if (!property_exists($this, $name) && method_exists(parent::class, '__set')) {
-            parent::__set($name, $value); // @phpstan-ignore-line
-
-            return;
-        }
         $this->{$name} = $value;
     }
 
@@ -208,11 +195,6 @@ trait HintableModelTrait
         }
 
         // default behaviour
-        if (!property_exists($this, $name) && method_exists(parent::class, '__unset')) {
-            parent::__unset($name); // @phpstan-ignore-line
-
-            return;
-        }
         unset($this->{$name});
     }
 

@@ -1,3 +1,6 @@
+variables:
+  CI_PHP_BEFORE_INSTALL_SCRIPT: composer config version 1.999999
+
 include:
   - project: mahalux/php-ci
     file: /templates/shared.yml
