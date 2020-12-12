@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Mvorisek\Atk4\Hintable\Tests\Data\Model;
 
 use Atk4\Data\Model;
-use Mvorisek\Atk4\Hintable\Data\HintableModelTrait;
 
 /**
  * @property string   $x     @Atk\Field()
@@ -14,8 +13,6 @@ use Mvorisek\Atk4\Hintable\Data\HintableModelTrait;
  */
 class Simple extends Model
 {
-    use HintableModelTrait;
-
     public $table = 'simple'; // @phpstan-ignore-line issue with phpstan
 
     protected function init(): void
