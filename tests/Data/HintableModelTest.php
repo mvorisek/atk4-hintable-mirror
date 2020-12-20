@@ -14,26 +14,26 @@ class HintableModelTest extends AtkPhpunit\TestCase
 {
     public function testFieldName(): void
     {
-        $cl = new Model\Simple();
-        $this->assertSame('simple', $cl->table);
-        $this->assertSame('x', $cl->fieldName()->x);
+        $model = new Model\Simple();
+        $this->assertSame('simple', $model->table);
+        $this->assertSame('x', $model->fieldName()->x);
         $this->assertSame('x', Model\Simple::hinting()->fieldName()->x);
 
-        $cl = new Model\Standard();
-        $this->assertSame('prefix_standard', $cl->table);
-        $this->assertSame('x', $cl->fieldName()->x);
-        $this->assertSame('yy', $cl->fieldName()->y);
-        $this->assertSame('id', $cl->fieldName()->id);
-        $this->assertSame('name', $cl->fieldName()->_name);
-        $this->assertSame('simpleOne', $cl->fieldName()->simpleOne);
-        $this->assertSame('simpleMany', $cl->fieldName()->simpleMany);
+        $model = new Model\Standard();
+        $this->assertSame('prefix_standard', $model->table);
+        $this->assertSame('x', $model->fieldName()->x);
+        $this->assertSame('yy', $model->fieldName()->y);
+        $this->assertSame('id', $model->fieldName()->id);
+        $this->assertSame('name', $model->fieldName()->_name);
+        $this->assertSame('simpleOne', $model->fieldName()->simpleOne);
+        $this->assertSame('simpleMany', $model->fieldName()->simpleMany);
     }
 
     public function testFieldNameUndeclaredException(): void
     {
-        $cl = new Model\Simple();
+        $model = new Model\Simple();
         $this->expectException(Exception::class);
-        $cl->fieldName()->y; // @phpstan-ignore-line
+        $model->fieldName()->y; // @phpstan-ignore-line
     }
 
     protected function createDatabaseForRefTest(): \Atk4\Data\Persistence
@@ -79,41 +79,41 @@ class HintableModelTest extends AtkPhpunit\TestCase
 
     public function testRefOneGetter(): void
     {
-        $cl = new Model\Standard();
-        $cl->invokeInit();
-        $this->assertInstanceOf(Model\Simple::class, $cl->simpleOne);
+        $model = new Model\Standard();
+        $model->invokeInit();
+        $this->assertInstanceOf(Model\Simple::class, $model->simpleOne);
 
         $db = $this->createDatabaseForRefTest();
 
-        $cl = new Model\Simple($db);
-        $this->assertSame(2, (clone $cl)->load(2)->ref->id);
-        $this->assertSame(2, (clone $cl)->load(3)->ref->id);
+        $model = new Model\Simple($db);
+        $this->assertSame(2, (clone $model)->load(2)->ref->id);
+        $this->assertSame(2, (clone $model)->load(3)->ref->id);
 
-        $cl = new Model\Standard($db);
-        $this->assertSame(1, $cl->simpleOne->loadAny()->id);
-        $this->assertSame(3, $cl->load(2)->simpleOne->id);
+        $model = new Model\Standard($db);
+        $this->assertSame(1, $model->simpleOne->loadAny()->id);
+        $this->assertSame(3, $model->load(2)->simpleOne->id);
     }
 
     public function testRefManyGetter(): void
     {
         // TODO seems like a bug in atk4/data
-//        $cl = new Model\Standard();
-//        $cl->invokeInit();
-//        $this->assertInstanceOf(Model\Simple::class, $cl->simpleMany);
+//        $model = new Model\Standard();
+//        $model->invokeInit();
+//        $this->assertInstanceOf(Model\Simple::class, $model->simpleMany);
 
         $db = $this->createDatabaseForRefTest();
 
-        $cl = new Model\Standard($db);
+        $model = new Model\Standard($db);
         $this->assertSame([2 => 2, 3 => 3], array_map(function (Model\Simple $model) {
             return $model->id;
-        }, iterator_to_array($cl->load(2)->simpleMany)));
+        }, iterator_to_array($model->load(2)->simpleMany)));
     }
 
     public function testRefManyGetterDirectLoadException(): void
     {
         $db = $this->createDatabaseForRefTest();
-        $cl = new Model\Standard($db);
+        $model = new Model\Standard($db);
         $this->expectException(Exception::class);
-        $cl->simpleMany->loadAny();
+        $model->simpleMany->loadAny();
     }
 }
