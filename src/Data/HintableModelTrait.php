@@ -18,9 +18,9 @@ use Mvorisek\Atk4\Hintable\Core\MagicAbstract;
  *      <code>@property string $firstName @Atk\Field()</code>
  *      - use "field_name" parameter to change the target field name, by default mapped to the same name
  *      - use "visibility" parameter to limit the visibility, valid values are:
- *        - "public"     = default, no access restrictions
+ *        - "public"        = default, no access restrictions
  *        - "protected_set" = property can not be set outside the Model class
- *        - "protected"  = like protected property
+ *        - "protected"     = like protected property
  *      - regular class property MUST NOT be defined as there is no way to unset it when the class is created
  *        at least by "<code>ReflectionClass::newInstanceWithoutConstructor()</code>"
  *
@@ -29,8 +29,9 @@ use Mvorisek\Atk4\Hintable\Core\MagicAbstract;
  *   <code>$n = $m->firstName;</code>
  *   <code>$m->firstName = $n;</code>
  *
- * Usecase - get field definition:
- *   <code>$m->getField($m->prop()->firstName);</code>
+ * Usecase - get field name/definition:
+ *   <code>$m->fieldName()->firstName;</code>
+ *   <code>$m->getField($m->fieldName()->firstName);</code>
  */
 trait HintableModelTrait
 {
