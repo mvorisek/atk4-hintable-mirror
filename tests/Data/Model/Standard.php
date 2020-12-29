@@ -19,7 +19,7 @@ use Atk4\Data\Model;
  */
 class Standard extends Model
 {
-    public $table = 'prefix_standard'; // @phpstan-ignore-line issue with phpstan
+    public $table = 'prefix_standard';
 
     protected function init(): void
     {

@@ -13,7 +13,7 @@ use Atk4\Data\Model;
  */
 class Simple extends Model
 {
-    public $table = 'simple'; // @phpstan-ignore-line issue with phpstan
+    public $table = 'simple';
 
     protected function init(): void
     {
