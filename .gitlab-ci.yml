@@ -1,5 +1,6 @@
 variables:
   CI_PHP_BEFORE_INSTALL_SCRIPT: composer config version 1.999999
+  CI_PHP_AFTER_INSTALL_SCRIPT: if [ -n "$CI_PHP_REQUIRE_PHPSTAN" ]; then php -d phar.readonly=0 patch-phpstan-static-type-issue-4267.php vendor/phpstan/phpstan/phpstan.phar; fi
 
 include:
   - project: mahalux/php-ci
