@@ -9,7 +9,7 @@ use Atk4\Data\Model;
 use Mvorisek\Atk4\Hintable\Core\MagicAbstract;
 
 /**
- * @template TTargetClass
+ * @template TTargetClass of object
  * @template TReturnType
  * @extends MagicAbstract<TTargetClass&Model, TReturnType>
  */

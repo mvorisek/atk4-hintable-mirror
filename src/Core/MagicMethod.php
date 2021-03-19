@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Mvorisek\Atk4\Hintable\Core;
 
 /**
- * @template TTargetClass
+ * @template TTargetClass of object
  * @template TReturnType
  * @extends MagicAbstract<TTargetClass, TReturnType>
  */
