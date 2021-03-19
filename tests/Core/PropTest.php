@@ -45,6 +45,10 @@ class PropTest extends AtkPhpunit\TestCase
         $mock = new PropMock();
         $this->assertSame(21, $mock->pubInt);
         $this->expectException(\TypeError::class);
+        \PHPStan\dumpType(\Atk4\Data\Model::hinting());
+        \PHPStan\dumpType(\Atk4\Data\Model::hinting()->fieldName());
+        \PHPStan\dumpType($mock->propName());
+        \PHPStan\dumpType($mock->propName()->pubInt);
         $this->assertSame('unused', chr($mock->propName()->pubInt)); // @phpstan-ignore-line
     }
 }
