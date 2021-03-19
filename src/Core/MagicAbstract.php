@@ -7,7 +7,7 @@ namespace Mvorisek\Atk4\Hintable\Core;
 use Atk4\Core\Exception;
 
 /**
- * @template TTargetClass
+ * @template TTargetClass of object
  * @template TReturnType
  */
 abstract class MagicAbstract
