@@ -117,17 +117,13 @@ class HintableModelTest extends AtkPhpunit\TestCase
         $model->simpleMany->loadAny();
     }
 
-    /**
-     * Test for fix for patch-phpstan-static-type-issue-4267.php,
-     * related with https://github.com/phpstan/phpstan/issues/4267 .
-     */
     public function testPhpstanModelIteratorAggregate(): void
     {
         $db = $this->createDatabaseForRefTest();
         $model = new Model\Simple($db);
-        $this->assertNotNull((clone $model)->loadAny()->x);
+        $this->assertIsString((clone $model)->loadAny()->x);
         foreach ($model as $modelItem) {
-            $this->assertNotNull($modelItem->x);
+            $this->assertIsString($modelItem->x);
         }
     }
 }

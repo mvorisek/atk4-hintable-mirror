@@ -40,10 +40,11 @@ class PropTest extends AtkPhpunit\TestCase
         $mock->propName()->unsupported(); // @phpstan-ignore-line
     }
 
-    public function testPhpstanStringType(): void
+    public function testPhpstanPropNameStringType(): void
     {
         $mock = new PropMock();
         $this->assertSame(21, $mock->pubInt);
+        $this->assertIsString($mock->propName()->pubInt);
         $this->expectException(\TypeError::class);
         $this->assertSame('unused', chr($mock->propName()->pubInt)); // @phpstan-ignore-line
     }
