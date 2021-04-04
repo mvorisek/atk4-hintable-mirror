@@ -1,35 +1,38 @@
 {
-  "name": "mahalux/atk4-hintable",
-  "type": "library",
-  "description": "Hintable extension for atk4 libraries",
-  "homepage": "https://www.mahalux.com/",
-  "license": "proprietary",
-  "authors": [
-    {"name": "Michael Voříšek", "email": "mvorisek@mvorisek.cz"}
-  ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "config": {
-    "sort-packages": true
-  },
-  "require": {
-    "php": ">=7.3",
-    "atk4/data": "^2.4 || dev-develop"
-  },
-  "require-dev": {
-    "friendsofphp/php-cs-fixer": "^2.16",
-    "johnkary/phpunit-speedtrap": "^3.2",
-    "phpstan/phpstan": "^0.12.82",
-    "phpunit/phpunit": "^9.3"
-  },
-  "autoload": {
-    "psr-4": {
-      "Mvorisek\\Atk4\\Hintable\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Mvorisek\\Atk4\\Hintable\\Tests\\": "tests/"
-    }
-  }
+    "name": "mahalux/atk4-hintable",
+    "type": "library",
+    "description": "Hintable extension for atk4 libraries",
+    "homepage": "https://www.mahalux.com/",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Michael Voříšek",
+            "email": "mvorisek@mvorisek.cz"
+        }
+    ],
+    "require": {
+        "php": ">=7.3",
+        "atk4/data": "^2.4 || dev-develop"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "johnkary/phpunit-speedtrap": "^3.2",
+        "phpstan/phpstan": "^0.12.82",
+        "phpunit/phpunit": "^9.3"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Mvorisek\\Atk4\\Hintable\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mvorisek\\Atk4\\Hintable\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
