@@ -128,10 +128,11 @@ trait HintableModelTrait
                 /** @var Model */
                 $model = $this->ref($hProp->fieldName);
 
-                // TODO ensure no more than one Model can load
-//                $model->onHookShort(Model::HOOK_BEFORE_LOAD, \Closure::bind(function () {
-//                    foreach limit 2
-//                }, $model, Model::class));
+                // ensure no more than one record can load
+                // TOOD this is quite dirty, as extra query to DB is sent
+                $model->onHookShort(Model::HOOK_AFTER_LOAD, \Closure::bind(function () {
+                    (clone $this)->loadOne();
+                }, $model, Model::class), [], -11);
 
                 return $model;
             } elseif ($hProp->refType === HintablePropertyDef::REF_TYPE_MANY) {

@@ -94,6 +94,14 @@ class HintableModelTest extends AtkPhpunit\TestCase
         $this->assertSame(3, $model->load(2)->simpleOne->id);
     }
 
+    public function testRefOneGetterMultipleLoadException(): void
+    {
+        $db = $this->createDatabaseForRefTest();
+        $model = new Model\Standard($db);
+        $this->expectException(Exception::class);
+        $model->simpleOne->loadAny();
+    }
+
     public function testRefManyGetter(): void
     {
         // TODO seems like a bug in atk4/data
