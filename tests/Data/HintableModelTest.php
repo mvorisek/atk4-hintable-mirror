@@ -65,64 +65,86 @@ class HintableModelTest extends AtkPhpunit\TestCase
             ->save();
 
         $simpleA
-            ->set($simpleA->fieldName()->refId, $standardA->id)
+            ->set(Model\Simple::hinting()->fieldName()->refId, $standardA->id)
             ->save();
         $simpleB1
-            ->set($simpleA->fieldName()->refId, $standardB->id)
+            ->set(Model\Simple::hinting()->fieldName()->refId, $standardB->id)
             ->save();
         $simpleB2
-            ->set($simpleA->fieldName()->refId, $standardB->id)
+            ->set(Model\Simple::hinting()->fieldName()->refId, $standardB->id)
             ->save();
 
         return $db;
     }
 
-    public function testRefOneGetter(): void
+    public function testRefBasic(): void
+    {
+        $db = $this->createDatabaseForRefTest();
+
+        $model = new Model\Simple($db);
+        $this->assertSame(1, (clone $model)->load(1)->ref->id);
+        $this->assertSame(2, (clone $model)->load(2)->ref->id);
+        $this->assertSame(2, (clone $model)->load(3)->ref->id);
+    }
+
+    public function testRefNoData(): void
     {
         $model = new Model\Standard();
         $model->invokeInit();
         $this->assertInstanceOf(Model\Simple::class, $model->simpleOne);
 
-        $db = $this->createDatabaseForRefTest();
-
-        $model = new Model\Simple($db);
-        $this->assertSame(2, (clone $model)->load(2)->ref->id);
-        $this->assertSame(2, (clone $model)->load(3)->ref->id);
-
-        $model = new Model\Standard($db);
-        $this->assertSame(1, $model->simpleOne->loadAny()->id);
-        $this->assertSame(3, $model->load(2)->simpleOne->id);
-    }
-
-    public function testRefOneGetterMultipleLoadException(): void
-    {
-        $db = $this->createDatabaseForRefTest();
-        $model = new Model\Standard($db);
-        $this->expectException(Exception::class);
-        $model->simpleOne->loadAny();
-    }
-
-    public function testRefManyGetter(): void
-    {
         // TODO seems like a bug in atk4/data
-//        $model = new Model\Standard();
-//        $model->invokeInit();
-//        $this->assertInstanceOf(Model\Simple::class, $model->simpleMany);
+        $this->markTestSkipped(); // @phpstan-ignore-next-line
+        $model = new Model\Standard();
+        $model->invokeInit();
+        $this->assertInstanceOf(Model\Simple::class, $model->simpleMany);
+    }
 
+    public function testRefOne(): void
+    {
         $db = $this->createDatabaseForRefTest();
 
         $model = new Model\Standard($db);
+        $this->assertInstanceOf(Model\Simple::class, $model->simpleOne);
+        $this->assertSame(1, (clone $model)->simpleOne->loadAny()->id);
+        $this->assertSame(3, (clone $model)->load(2)->simpleOne->id);
+    }
+
+    public function testRefMany(): void
+    {
+        $db = $this->createDatabaseForRefTest();
+
+        $model = new Model\Standard($db);
+        $this->assertInstanceOf(Model\Simple::class, $model->simpleMany);
+        $this->assertSame(1, $model->simpleMany->loadAny()->id);
+//        $this->assertSame(2, $model->load(2)->simpleMany->loadAny()->id);
+
         $this->assertSame([2 => 2, 3 => 3], array_map(function (Model\Simple $model) {
             return $model->id;
         }, iterator_to_array($model->load(2)->simpleMany)));
     }
 
-    public function testRefManyGetterDirectLoadException(): void
+    public function testRefManyIsUnload(): void
+    {
+        $db = $this->createDatabaseForRefTest();
+        $model = new Model\Standard($db);
+        $this->assertNull($model->load(2)->simpleMany->id);
+    }
+
+    public function testRefOneLoadOneException(): void
     {
         $db = $this->createDatabaseForRefTest();
         $model = new Model\Standard($db);
         $this->expectException(Exception::class);
-        $model->simpleMany->loadAny();
+        $model->simpleOne->loadOne();
+    }
+
+    public function testRefManyLoadOneException(): void
+    {
+        $db = $this->createDatabaseForRefTest();
+        $model = new Model\Standard($db);
+        $this->expectException(Exception::class);
+        $model->simpleMany->loadOne();
     }
 
     public function testPhpstanModelIteratorAggregate(): void

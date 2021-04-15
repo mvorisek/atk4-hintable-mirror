@@ -128,33 +128,17 @@ trait HintableModelTrait
                 /** @var Model */
                 $model = $this->ref($hProp->fieldName);
 
-                // ensure no more than one record can load
-                // TOOD this is quite dirty, as extra query to DB is sent
-                $model->onHookShort(Model::HOOK_AFTER_LOAD, \Closure::bind(function () {
-                    (clone $this)->loadOne();
-                }, $model, Model::class), [], -11);
+                // TODO this requires checking all parents!
+//                // ensure no more than one record can load
+//                // TOOD this is quite dirty, as extra query to DB is sent
+//                $model->onHookShort(Model::HOOK_AFTER_LOAD, \Closure::bind(function () {
+//                    (clone $this)->loadOne();
+//                }, $model, Model::class), [], -11);
 
                 return $model;
             } elseif ($hProp->refType === HintablePropertyDef::REF_TYPE_MANY) {
                 /** @var Model */
                 $model = $this->ref($hProp->fieldName);
-
-                // prevent to load directly (without an iterator)
-                \Closure::bind(function () use ($model) {
-                    $model->entityId = '_atk__data__hintable_magic__refMany';
-                }, null, Model::class)();
-                $model->onHookShort(Model::HOOK_AFTER_LOAD, \Closure::bind(function () {
-                    if ($this->entityId === '_atk__data__hintable_magic__refMany') {
-                        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, 4);
-                        if (
-                            count($backtrace) >= 4
-                            && ($backtrace[3]['function'] ?? null) === 'getIterator'
-                            && ($backtrace[3]['object'] ?? null) !== $this
-                        ) {
-                            $this->entityId = null;
-                        }
-                    }
-                }, $model, Model::class), [], -11);
 
                 return $model;
             }
