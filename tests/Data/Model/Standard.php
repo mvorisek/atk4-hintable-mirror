@@ -7,15 +7,15 @@ namespace Mvorisek\Atk4\Hintable\Tests\Data\Model;
 use Atk4\Data\Model;
 
 /**
- * @property string                       $x           @Atk\Field()
- * @property string                       $y           @Atk\Field(field_name="yy")
- * @property string                       $_name       @Atk\Field(field_name="name") Property Model::name is defined, so we need to use different property name
- * @property \DateTimeImmutable           $dtImmutable @Atk\Field()
- * @property \DateTimeInterface           $dtInterface @Atk\Field()
- * @property \DateTime|\DateTimeImmutable $dtMulti     @Atk\Field()
- * @property int                          $simpleOneId @Atk\Field()
- * @property Simple                       $simpleOne   @Atk\RefOne()
- * @property Simple                       $simpleMany  @Atk\RefMany()
+ * @property string                       $x           @Atk4\Field()
+ * @property string                       $y           @Atk4\Field(field_name="yy")
+ * @property string                       $_name       @Atk4\Field(field_name="name") Property Model::name is defined, so we need to use different property name
+ * @property \DateTimeImmutable           $dtImmutable @Atk4\Field()
+ * @property \DateTimeInterface           $dtInterface @Atk4\Field()
+ * @property \DateTime|\DateTimeImmutable $dtMulti     @Atk4\Field()
+ * @property int                          $simpleOneId @Atk4\Field()
+ * @property Simple                       $simpleOne   @Atk4\RefOne()
+ * @property Simple                       $simpleMany  @Atk4\RefMany()
  */
 class Standard extends Model
 {

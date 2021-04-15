@@ -90,7 +90,7 @@ class HintablePropertyDef
      */
     protected static function createFromClassDocLine(string $className, string $classDocLine): ?self
     {
-        if (!preg_match('~^@property ([^\$()]+?) \$([^ ]+) .*@Atk\\\\(Field|RefOne|RefMany)\(((?:[^()"]+|="[^"]*")*)\)~s', $classDocLine, $matches)) {
+        if (!preg_match('~^@property ([^\$()]+?) \$([^ ]+) .*@Atk4\\\\(Field|RefOne|RefMany)\(((?:[^()"]+|="[^"]*")*)\)~s', $classDocLine, $matches)) {
             return null;
         }
 
@@ -106,7 +106,7 @@ class HintablePropertyDef
             } elseif ($k === 'visibility') {
                 $visibility = $v;
             } else {
-                throw (new Exception('Hintable property has invalid @Atk\\' . $matches[3] . ' option'))
+                throw (new Exception('Hintable property has invalid @Atk4\\' . $matches[3] . ' option'))
                     ->addMoreInfo('key', $k)
                     ->addMoreInfo('value', $v);
             }
@@ -149,7 +149,7 @@ class HintablePropertyDef
         foreach (preg_split('~(?:[^",]+|="[^"]*")*\K,~', $doc) as $opt) {
             if (!preg_match('~^([^"=]+)=(?:([^"=]+)|"(.*)")$~s', $opt, $matches)
                 || ($matches[2] !== '' && $matches[2] !== (string) (int) $matches[2])) {
-                throw (new Exception('Hintable property has invalid @Atk\\Field option syntax'))
+                throw (new Exception('Hintable property has invalid @Atk4\\Field option syntax'))
                     ->addMoreInfo('value', $opt);
             }
             $opts[trim($matches[1])] = $matches[2] !== '' ? (int) $matches[2] : trim($matches[3]);

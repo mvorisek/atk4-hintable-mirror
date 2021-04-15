@@ -7,9 +7,9 @@ namespace Mvorisek\Atk4\Hintable\Tests\Data\Model;
 use Atk4\Data\Model;
 
 /**
- * @property string   $x     @Atk\Field()
- * @property int      $refId @Atk\Field()
- * @property Standard $ref   @Atk\RefOne()
+ * @property string   $x     @Atk4\Field()
+ * @property int      $refId @Atk4\Field()
+ * @property Standard $ref   @Atk4\RefOne()
  */
 class Simple extends Model
 {
