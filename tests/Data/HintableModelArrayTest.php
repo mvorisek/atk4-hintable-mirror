@@ -128,7 +128,7 @@ class HintableModelArrayTest extends AtkPhpunit\TestCase
         $model = new Model\Standard($db);
         $this->assertInstanceOf(Model\Simple::class, $model->simpleMany);
         $this->assertSame(1, $model->simpleMany->loadAny()->id);
-//        $this->assertSame(2, $model->load(12)->simpleMany->loadAny()->id);
+        $this->assertSame(2, $model->load(12)->simpleMany->loadAny()->id);
 
         $this->assertSame([2 => 2, 3 => 3], array_map(function (Model\Simple $model) {
             return $model->id;
