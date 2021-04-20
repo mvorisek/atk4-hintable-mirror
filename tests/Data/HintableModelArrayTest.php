@@ -6,11 +6,12 @@ namespace Mvorisek\Atk4\Hintable\Tests\Data;
 
 use Atk4\Core\AtkPhpunit;
 use Atk4\Data\Exception;
+use Atk4\Data\Persistence;
 
 /**
  * @coversDefaultClass \Mvorisek\Atk4\Hintable\Data\HintableModelTrait
  */
-class HintableModelTest extends AtkPhpunit\TestCase
+class HintableModelArrayTest extends AtkPhpunit\TestCase
 {
     public function testFieldName(): void
     {
@@ -36,9 +37,14 @@ class HintableModelTest extends AtkPhpunit\TestCase
         $model->fieldName()->y; // @phpstan-ignore-line
     }
 
-    protected function createDatabaseForRefTest(): \Atk4\Data\Persistence
+    protected function createPersistence(): Persistence
     {
-        $db = new \Atk4\Data\Persistence\Array_();
+        return new \Atk4\Data\Persistence\Array_();
+    }
+
+    protected function createDatabaseForRefTest(): Persistence
+    {
+        $db = $this->createPersistence();
 
         $simpleA = (new Model\Simple($db))
             ->set(Model\Simple::hinting()->fieldName()->x, 'a')
@@ -94,7 +100,7 @@ class HintableModelTest extends AtkPhpunit\TestCase
         $this->assertInstanceOf(Model\Simple::class, $model->simpleOne);
 
         // TODO seems like a bug in atk4/data
-        $this->markTestSkipped(); // @phpstan-ignore-next-line
+        $this->markTestSkipped('Atk4 does not support traversing 1:N reference without persistence'); // @phpstan-ignore-next-line
         $model = new Model\Standard();
         $model->invokeInit();
         $this->assertInstanceOf(Model\Simple::class, $model->simpleMany);
