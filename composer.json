@@ -12,7 +12,7 @@
     ],
     "require": {
         "php": ">=7.3",
-        "atk4/data": "^2.4 || dev-develop"
+        "atk4/data": "^2.5 || dev-develop"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",

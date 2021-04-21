@@ -46,39 +46,44 @@ class HintableModelArrayTest extends AtkPhpunit\TestCase
     {
         $db = $this->createPersistence();
 
-        $simpleA = (new Model\Simple($db))
-            ->set(Model\Simple::hinting()->fieldName()->x, 'a')
-            ->save();
-        $simpleB1 = (new Model\Simple($db))
-            ->set(Model\Simple::hinting()->fieldName()->x, 'b1')
-            ->save();
-        $simpleB2 = (new Model\Simple($db))
-            ->set(Model\Simple::hinting()->fieldName()->x, 'b2')
-            ->save();
+        $db->atomic(function () use ($db) {
+            $simple1 = (new Model\Simple($db))
+                ->set(Model\Simple::hinting()->fieldName()->x, 'a')
+                ->save();
+            $simple2 = (new Model\Simple($db))
+                ->set(Model\Simple::hinting()->fieldName()->x, 'b1')
+                ->save();
+            $simple3 = (new Model\Simple($db))
+                ->set(Model\Simple::hinting()->fieldName()->x, 'b2')
+                ->save();
 
-        $standardTemplate = (new Model\Standard($db))
-            ->set(Model\Standard::hinting()->fieldName()->x, 'xx')
-            ->set(Model\Standard::hinting()->fieldName()->y, 'yy')
-            ->set(Model\Standard::hinting()->fieldName()->_name, 'zz')
-            ->set(Model\Standard::hinting()->fieldName()->dtImmutable, new \DateTime('2000-1-1 12:00:00'))
-            ->set(Model\Standard::hinting()->fieldName()->dtInterface, new \DateTimeImmutable('2000-2-1 12:00:00'))
-            ->set(Model\Standard::hinting()->fieldName()->dtMulti, new \DateTimeImmutable('2000-3-1 12:00:00'));
-        $standardA = (clone $standardTemplate)
-            ->set(Model\Standard::hinting()->fieldName()->simpleOneId, $simpleA->id)
-            ->save();
-        $standardB = (clone $standardTemplate)
-            ->set(Model\Standard::hinting()->fieldName()->simpleOneId, $simpleB2->id)
-            ->save();
+            $standardTemplate = (new Model\Standard($db))
+                ->set(Model\Standard::hinting()->fieldName()->x, 'xx')
+                ->set(Model\Standard::hinting()->fieldName()->y, 'yy')
+                ->set(Model\Standard::hinting()->fieldName()->_name, 'zz')
+                ->set(Model\Standard::hinting()->fieldName()->dtImmutable, new \DateTime('2000-1-1 12:00:00'))
+                ->set(Model\Standard::hinting()->fieldName()->dtInterface, new \DateTimeImmutable('2000-2-1 12:00:00'))
+                ->set(Model\Standard::hinting()->fieldName()->dtMulti, new \DateTimeImmutable('2000-3-1 12:00:00'));
+            for ($i = 0; $i < 10; ++$i) {
+                (clone $standardTemplate)->save()->delete();
+            }
+            $standard11 = (clone $standardTemplate)
+                ->set(Model\Standard::hinting()->fieldName()->simpleOneId, $simple1->id)
+                ->save();
+            $standard12 = (clone $standardTemplate)
+                ->set(Model\Standard::hinting()->fieldName()->simpleOneId, $simple3->id)
+                ->save();
 
-        $simpleA
-            ->set(Model\Simple::hinting()->fieldName()->refId, $standardA->id)
-            ->save();
-        $simpleB1
-            ->set(Model\Simple::hinting()->fieldName()->refId, $standardB->id)
-            ->save();
-        $simpleB2
-            ->set(Model\Simple::hinting()->fieldName()->refId, $standardB->id)
-            ->save();
+            $simple1
+                ->set(Model\Simple::hinting()->fieldName()->refId, $standard11->id)
+                ->save();
+            $simple2
+                ->set(Model\Simple::hinting()->fieldName()->refId, $standard12->id)
+                ->save();
+            $simple3
+                ->set(Model\Simple::hinting()->fieldName()->refId, $standard12->id)
+                ->save();
+        });
 
         return $db;
     }
@@ -88,9 +93,9 @@ class HintableModelArrayTest extends AtkPhpunit\TestCase
         $db = $this->createDatabaseForRefTest();
 
         $model = new Model\Simple($db);
-        $this->assertSame(1, (clone $model)->load(1)->ref->id);
-        $this->assertSame(2, (clone $model)->load(2)->ref->id);
-        $this->assertSame(2, (clone $model)->load(3)->ref->id);
+        $this->assertSame(11, (clone $model)->load(1)->ref->id);
+        $this->assertSame(12, (clone $model)->load(2)->ref->id);
+        $this->assertSame(12, (clone $model)->load(3)->ref->id);
     }
 
     public function testRefNoData(): void
@@ -113,7 +118,7 @@ class HintableModelArrayTest extends AtkPhpunit\TestCase
         $model = new Model\Standard($db);
         $this->assertInstanceOf(Model\Simple::class, $model->simpleOne);
         $this->assertSame(1, (clone $model)->simpleOne->loadAny()->id);
-        $this->assertSame(3, (clone $model)->load(2)->simpleOne->id);
+        $this->assertSame(3, (clone $model)->load(12)->simpleOne->id);
     }
 
     public function testRefMany(): void
@@ -123,18 +128,18 @@ class HintableModelArrayTest extends AtkPhpunit\TestCase
         $model = new Model\Standard($db);
         $this->assertInstanceOf(Model\Simple::class, $model->simpleMany);
         $this->assertSame(1, $model->simpleMany->loadAny()->id);
-//        $this->assertSame(2, $model->load(2)->simpleMany->loadAny()->id);
+//        $this->assertSame(2, $model->load(12)->simpleMany->loadAny()->id);
 
         $this->assertSame([2 => 2, 3 => 3], array_map(function (Model\Simple $model) {
             return $model->id;
-        }, iterator_to_array($model->load(2)->simpleMany)));
+        }, iterator_to_array($model->load(12)->simpleMany)));
     }
 
     public function testRefManyIsUnload(): void
     {
         $db = $this->createDatabaseForRefTest();
         $model = new Model\Standard($db);
-        $this->assertNull($model->load(2)->simpleMany->id);
+        $this->assertNull($model->load(12)->simpleMany->id);
     }
 
     public function testRefOneLoadOneException(): void

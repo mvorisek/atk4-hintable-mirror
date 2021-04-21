@@ -14,11 +14,11 @@ class HintableModelSqlTest extends HintableModelArrayTest
 {
     protected function createPersistence(): Persistence
     {
-        $persistence = new Persistence\Sql('sqlite::memory:');
+        $db = new Persistence\Sql('sqlite::memory:');
 
-        (new Migration(new Model\Simple($persistence)))->dropIfExists()->create();
-        (new Migration(new Model\Standard($persistence)))->dropIfExists()->create();
+        (new Migration(new Model\Simple($db)))->create();
+        (new Migration(new Model\Standard($db)))->create();
 
-        return $persistence;
+        return $db;
     }
 }
