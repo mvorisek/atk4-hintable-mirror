@@ -47,17 +47,17 @@ class HintableModelArrayTest extends AtkPhpunit\TestCase
         $db = $this->createPersistence();
 
         $db->atomic(function () use ($db) {
-            $simple1 = (new Model\Simple($db))
+            $simple1 = (new Model\Simple($db))->createEntity()
                 ->set(Model\Simple::hinting()->fieldName()->x, 'a')
                 ->save();
-            $simple2 = (new Model\Simple($db))
+            $simple2 = (new Model\Simple($db))->createEntity()
                 ->set(Model\Simple::hinting()->fieldName()->x, 'b1')
                 ->save();
-            $simple3 = (new Model\Simple($db))
+            $simple3 = (new Model\Simple($db))->createEntity()
                 ->set(Model\Simple::hinting()->fieldName()->x, 'b2')
                 ->save();
 
-            $standardTemplate = (new Model\Standard($db))
+            $standardTemplate = (new Model\Standard($db))->createEntity()
                 ->set(Model\Standard::hinting()->fieldName()->x, 'xx')
                 ->set(Model\Standard::hinting()->fieldName()->y, 'yy')
                 ->set(Model\Standard::hinting()->fieldName()->_name, 'zz')
@@ -135,11 +135,11 @@ class HintableModelArrayTest extends AtkPhpunit\TestCase
         }, iterator_to_array($model->load(12)->simpleMany)));
     }
 
-    public function testRefManyIsUnload(): void
+    public function testRefManyIsNotEntity(): void
     {
         $db = $this->createDatabaseForRefTest();
         $model = new Model\Standard($db);
-        $this->assertNull($model->load(12)->simpleMany->id);
+        $this->assertFalse($model->load(12)->simpleMany->isEntity());
     }
 
     public function testRefOneLoadOneException(): void

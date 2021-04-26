@@ -124,23 +124,22 @@ trait HintableModelTrait
         $hProps = $this->getHintableProps();
         if (isset($hProps[$name])) {
             $hProp = $hProps[$name];
-            if ($hProp->refType === HintablePropertyDef::REF_TYPE_ONE) {
+            if ($hProp->refType !== HintablePropertyDef::REF_TYPE_NONE) {
                 /** @var Model */
                 $model = $this->ref($hProp->fieldName);
 
-                // TODO this requires checking all parents!
-//                // ensure no more than one record can load
-//                // TOOD this is quite dirty, as extra query to DB is sent
-//                $model->onHookShort(Model::HOOK_AFTER_LOAD, \Closure::bind(function () {
-//                    (clone $this)->loadOne();
-//                }, $model, Model::class), [], -11);
+                if ($hProp->refType === HintablePropertyDef::REF_TYPE_ONE) {
+                    // TODO this requires checking all parents!
+//                    // ensure no more than one record can load
+//                    // TOOD this is quite dirty, as extra query to DB is sent
+//                    $model->onHookShort(Model::HOOK_AFTER_LOAD, \Closure::bind(function () {
+//                        (clone $this)->loadOne();
+//                    }, $model, Model::class), [], -11);
 
-                return $model;
-            } elseif ($hProp->refType === HintablePropertyDef::REF_TYPE_MANY) {
-                /** @var Model */
-                $model = $this->ref($hProp->fieldName);
-
-                return $model;
+                    return $model;
+                } elseif ($hProp->refType === HintablePropertyDef::REF_TYPE_MANY) {
+                    return $model;
+                }
             }
 
             $resNoRef = $this->get($hProp->fieldName);
