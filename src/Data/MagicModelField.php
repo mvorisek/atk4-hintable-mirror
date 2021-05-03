@@ -9,8 +9,8 @@ use Atk4\Data\Model;
 use Mvorisek\Atk4\Hintable\Core\MagicAbstract;
 
 /**
- * @template TTargetClass of object
- * @template TReturnType
+ * @template-covariant TTargetClass of object
+ * @template-covariant TReturnType
  * @extends MagicAbstract<TTargetClass&Model, TReturnType>
  */
 class MagicModelField extends MagicAbstract
@@ -19,7 +19,7 @@ class MagicModelField extends MagicAbstract
     public const TYPE_FIELD_NAME = 'field_n';
 
     /**
-     * @return array{Model, string}
+     * @return array{Model, class-string<Model>}
      */
     protected function _atk__data__hintable_magic__getModelWithHintableTraitClass(): array
     {

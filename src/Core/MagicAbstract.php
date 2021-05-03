@@ -7,18 +7,18 @@ namespace Mvorisek\Atk4\Hintable\Core;
 use Atk4\Core\Exception;
 
 /**
- * @template TTargetClass of object
- * @template TReturnType
+ * @template-covariant TTargetClass of object
+ * @template-covariant TReturnType
  */
 abstract class MagicAbstract
 {
-    /** @var object|string */
+    /** @var TTargetClass|class-string<TTargetClass> */
     protected $_atk__core__hintable_magic__class;
     /** @var string */
     protected $_atk__core__hintable_magic__type;
 
     /**
-     * @param object|string $targetClass
+     * @param TTargetClass|class-string<TTargetClass> $targetClass
      */
     public function __construct($targetClass, string $type)
     {
@@ -96,7 +96,7 @@ abstract class MagicAbstract
     }
 
     /**
-     * @param string[] $args
+     * @param mixed[] $args
      */
     public static function __callStatic(string $name, array $args): void
     {
@@ -109,7 +109,7 @@ abstract class MagicAbstract
     }
 
     /**
-     * @param string[] $args
+     * @param mixed[] $args
      *
      * @return mixed
      */

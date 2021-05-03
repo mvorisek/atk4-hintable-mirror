@@ -45,6 +45,8 @@ trait HintableModelTrait
     protected $requireAllFieldsHintable = true;
 
     /**
+     * @param class-string<Model> $className
+     *
      * @return HintablePropertyDef[]
      */
     protected function createHintablePropsFromClassDoc(string $className): array

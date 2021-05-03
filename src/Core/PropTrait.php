@@ -16,7 +16,7 @@ trait PropTrait
      */
     public function propName()
     {
-        return Prop::propName($this); // @phpstan-ignore-line
+        return Prop::propName($this); // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/4945
     }
 
     /**

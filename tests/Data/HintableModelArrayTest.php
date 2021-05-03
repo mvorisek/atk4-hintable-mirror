@@ -34,7 +34,7 @@ class HintableModelArrayTest extends AtkPhpunit\TestCase
     {
         $model = new Model\Simple();
         $this->expectException(Exception::class);
-        $model->fieldName()->y; // @phpstan-ignore-line
+        $model->fieldName()->undeclared; // @phpstan-ignore-line
     }
 
     protected function createPersistence(): Persistence

@@ -14,11 +14,13 @@ class Prop
      * Returns a magic class, document it using phpdoc as an instance of the target class,
      * any property returns its (short) name.
      *
-     * @param object|string $targetClass
+     * @template T of object
+     *
+     * @param T|class-string<T> $targetClass
      *
      * @return object
      *
-     * @phpstan-return MagicProp<object, string>
+     * @phpstan-return MagicProp<T, string>
      */
     public static function propName($targetClass)
     {
@@ -31,11 +33,13 @@ class Prop
      * Returns a magic class, document it using phpdoc as an instance of the target class,
      * any property returns its full name, ie. class name + "::" + short name.
      *
-     * @param object|string $targetClass
+     * @template T of object
+     *
+     * @param T|class-string<T> $targetClass
      *
      * @return object
      *
-     * @phpstan-return MagicProp<object, string>
+     * @phpstan-return MagicProp<T, string>
      */
     public static function propNameFull($targetClass)
     {

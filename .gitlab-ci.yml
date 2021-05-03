@@ -1,5 +1,5 @@
 variables:
-  CI_PHP_BEFORE_INSTALL_SCRIPT: composer config version 1.2.999999
+  CI_PHP_BEFORE_INSTALL_SCRIPT: composer config version 1.3.999999
 
 include:
   - project: mahalux/php-ci

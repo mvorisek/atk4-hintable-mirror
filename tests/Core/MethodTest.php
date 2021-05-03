@@ -27,14 +27,14 @@ class MethodTest extends AtkPhpunit\TestCase
         $this->assertSame(MethodMock::class . '::pub', $mock->methodNameFull()->pub());
         $this->assertSame(MethodMock::class . '::priv', $mock->methodNameFull()->priv());
         $this->assertSame(MethodMock::class . '::undeclared', $mock->methodNameFull()->undeclared()); // @phpstan-ignore-line
-        $this->assertSame(\stdClass::class . '::undeclared2', Method::methodNameFull(\stdClass::class)->undeclared2()); // @phpstan-ignore-line
+        $this->assertSame(\stdClass::class . '::undeclared', Method::methodNameFull(\stdClass::class)->undeclared()); // @phpstan-ignore-line
     }
 
     public function testPropertyAccessException(): void
     {
         $mock = new MethodMock();
         $this->expectException(Exception::class);
-        $mock->methodName()->unsupported; // @phpstan-ignore-line
+        $mock->methodName()->undeclared; // @phpstan-ignore-line
     }
 
     public function testMethodClosure(): void
@@ -76,8 +76,8 @@ class MethodTest extends AtkPhpunit\TestCase
             }
         };
 
-        $this->assertSame(get_class($mock) . '::privAnon', Method::methodClosureProtected($mock)->privAnon()()); // @phpstan-ignore-line
-        $this->assertSame(get_class($mock) . '::privAnonStat', Method::methodClosureProtected($mock)->privAnonStat()()); // @phpstan-ignore-line
-        $this->assertSame(get_class($mock) . '::privAnonStat', Method::methodClosureProtected(get_class($mock))->privAnonStat()()); // @phpstan-ignore-line
+        $this->assertSame(get_class($mock) . '::privAnon', Method::methodClosureProtected($mock)->privAnon()());
+        $this->assertSame(get_class($mock) . '::privAnonStat', Method::methodClosureProtected($mock)->privAnonStat()());
+        $this->assertSame(get_class($mock) . '::privAnonStat', Method::methodClosureProtected(get_class($mock))->privAnonStat()());
     }
 }

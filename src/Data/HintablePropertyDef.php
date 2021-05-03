@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Mvorisek\Atk4\Hintable\Data;
 
 use Atk4\Data\Exception;
+use Atk4\Data\Model;
 
 // @TODO or using Doctrine Annotation? https://www.doctrine-project.org/projects/doctrine-annotations/en/latest/index.html#reading-annotations
 
@@ -27,7 +28,7 @@ class HintablePropertyDef
     /** @var array<string, static[]> */
     private static $_cacheDefsByClass = [];
 
-    /** @var string */
+    /** @var class-string<Model> */
     public $className;
     /** @var string */
     public $name;
@@ -41,7 +42,8 @@ class HintablePropertyDef
     public $visibility;
 
     /**
-     * @param string[] $allowedTypes
+     * @param class-string<Model> $className
+     * @param string[]            $allowedTypes
      */
     public function __construct(string $className, string $name, string $fieldName, array $allowedTypes)
     {
@@ -52,6 +54,8 @@ class HintablePropertyDef
     }
 
     /**
+     * @param class-string<Model> $className
+     *
      * @return static[]
      */
     public static function createFromClassDoc(string $className): array
@@ -86,6 +90,8 @@ class HintablePropertyDef
     }
 
     /**
+     * @param class-string<Model> $className
+     *
      * @return static|null
      */
     protected static function createFromClassDocLine(string $className, string $classDocLine): ?self
@@ -158,9 +164,12 @@ class HintablePropertyDef
         return $opts;
     }
 
+    /**
+     * @param class-string<Model> $srcClassName
+     */
     public function validateVisibility(string $srcClassName, bool $getOnly): void
     {
-        $fromProtected = $srcClassName instanceof $this->className;
+        $fromProtected = is_a($srcClassName, $this->className, true);
 
         if ($this->visibility === self::VISIBILITY_PUBLIC
             || ($getOnly && $this->visibility === self::VISIBILITY_PROTECTED_SET)

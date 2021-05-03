@@ -30,14 +30,14 @@ class PropTest extends AtkPhpunit\TestCase
         $this->assertSame(PropMock::class . '::pub', $mock->propNameFull()->pub);
         $this->assertSame(PropMock::class . '::priv', $mock->propNameFull()->priv);
         $this->assertSame(PropMock::class . '::undeclared', $mock->propNameFull()->undeclared); // @phpstan-ignore-line
-        $this->assertSame(\stdClass::class . '::undeclared2', Prop::propNameFull(\stdClass::class)->undeclared2); // @phpstan-ignore-line
+        $this->assertSame(\stdClass::class . '::undeclared', Prop::propNameFull(\stdClass::class)->undeclared);
     }
 
     public function testMethodAccessException(): void
     {
         $mock = new PropMock();
         $this->expectException(Exception::class);
-        $mock->propName()->unsupported(); // @phpstan-ignore-line
+        $mock->propName()->undeclared(); // @phpstan-ignore-line
     }
 
     public function testPhpstanPropNameStringType(): void

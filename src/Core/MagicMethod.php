@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Mvorisek\Atk4\Hintable\Core;
 
 /**
- * @template TTargetClass of object
- * @template TReturnType
+ * @template-covariant TTargetClass of object
+ * @template-covariant TReturnType
  * @extends MagicAbstract<TTargetClass, TReturnType>
  */
 class MagicMethod extends MagicAbstract

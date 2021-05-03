@@ -15,6 +15,9 @@ use PHPStan\Type\Type;
 
 class MagicReflectionExtension implements PropertiesClassReflectionExtension, MethodsClassReflectionExtension
 {
+    /**
+     * @param class-string<object> $class
+     */
     private function isA(ClassReflection $classReflection, string $class): bool
     {
         return $classReflection->getName() === $class || $classReflection->isSubclassOf($class);
