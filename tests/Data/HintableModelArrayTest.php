@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Mvorisek\Atk4\Hintable\Tests\Data;
 
-use Atk4\Core\AtkPhpunit;
+use Atk4\Core\Phpunit\TestCase;
 use Atk4\Data\Exception;
 use Atk4\Data\Persistence;
 
 /**
  * @coversDefaultClass \Mvorisek\Atk4\Hintable\Data\HintableModelTrait
  */
-class HintableModelArrayTest extends AtkPhpunit\TestCase
+class HintableModelArrayTest extends TestCase
 {
     public function testFieldName(): void
     {
