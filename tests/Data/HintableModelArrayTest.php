@@ -61,9 +61,9 @@ class HintableModelArrayTest extends TestCase
                 ->set(Model\Standard::hinting()->fieldName()->x, 'xx')
                 ->set(Model\Standard::hinting()->fieldName()->y, 'yy')
                 ->set(Model\Standard::hinting()->fieldName()->_name, 'zz')
-                ->set(Model\Standard::hinting()->fieldName()->dtImmutable, new \DateTime('2000-1-1 12:00:00'))
-                ->set(Model\Standard::hinting()->fieldName()->dtInterface, new \DateTimeImmutable('2000-2-1 12:00:00'))
-                ->set(Model\Standard::hinting()->fieldName()->dtMulti, new \DateTimeImmutable('2000-3-1 12:00:00'));
+                ->set(Model\Standard::hinting()->fieldName()->dtImmutable, new \DateTime('2000-1-1 12:00:00 GMT'))
+                ->set(Model\Standard::hinting()->fieldName()->dtInterface, new \DateTimeImmutable('2000-2-1 12:00:00 GMT'))
+                ->set(Model\Standard::hinting()->fieldName()->dtMulti, new \DateTimeImmutable('2000-3-1 12:00:00 GMT'));
             for ($i = 0; $i < 10; ++$i) {
                 (clone $standardTemplate)->save()->delete();
             }
