@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Mvorisek\Atk4\Hintable\Tests\Data;
 
 use Atk4\Data\Persistence;
-use Atk4\Schema\Migration;
+use Atk4\Data\Schema\Migration;
 
 /**
  * @coversDefaultClass \Mvorisek\Atk4\Hintable\Data\HintableModelTrait
