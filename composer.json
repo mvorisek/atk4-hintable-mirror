@@ -1,8 +1,8 @@
 {
-    "name": "mahalux/atk4-hintable",
+    "name": "mvorisek/atk4-hintable",
     "type": "library",
     "description": "Hintable extension for atk4 libraries",
-    "homepage": "https://www.mahalux.com/",
+    "homepage": "https://www.mvorisek.com/",
     "license": "proprietary",
     "authors": [
         {
