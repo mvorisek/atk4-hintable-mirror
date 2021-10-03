@@ -13,7 +13,7 @@ class HintablePropertyDef
 {
     /** @const string No access restrictions */
     public const VISIBILITY_PUBLIC = 'public';
-    /** @const string Property can not be set outside the Model class */
+    /** @const string Property cannot be set outside the Model class */
     public const VISIBILITY_PROTECTED_SET = 'protected_set';
     /** @const string Like protected property */
     public const VISIBILITY_PROTECTED = 'protected';
@@ -177,7 +177,7 @@ class HintablePropertyDef
             return;
         }
 
-        throw new Exception('Visibility of hintable property is restricted, it can not be '
+        throw new Exception('Visibility of hintable property is restricted, it cannot be '
             . ($this->visibility === self::VISIBILITY_PROTECTED_SET ? 'set' : 'read/set') . ' outside Model class');
     }
 

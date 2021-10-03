@@ -19,7 +19,7 @@ use Mvorisek\Atk4\Hintable\Core\MagicAbstract;
  *      - use "field_name" parameter to change the target field name, by default mapped to the same name
  *      - use "visibility" parameter to limit the visibility, valid values are:
  *        - "public"        = default, no access restrictions
- *        - "protected_set" = property can not be set outside the Model class
+ *        - "protected_set" = property cannot be set outside the Model class
  *        - "protected"     = like protected property
  *      - regular class property MUST NOT be defined as there is no way to unset it when the class is created
  *        at least by "<code>ReflectionClass::newInstanceWithoutConstructor()</code>"
@@ -186,7 +186,7 @@ trait HintableModelTrait
     }
 
     // TODO we can check once initialized (init was called for the 1st time), but not sooner,
-    // otherwise init can not be overridden
+    // otherwise init cannot be overridden
 //    protected function init(): void
 //    {
 //        parent::init();
