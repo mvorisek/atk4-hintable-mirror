@@ -204,7 +204,8 @@ trait HintableModelTrait
     {
         // @TODO this object should not support any modifications, ie. unset everything and prevent any calls except fieldName() and cache this class,
         // or better to allow to access
-        return new class(static::class, '') extends MagicAbstract { // @phpstan-ignore-line
+        // @phpstan-ignore-next-line
+        return new class(static::class, '') extends MagicAbstract {
             public function __call(string $name, array $args)
             {
                 if (in_array($name, ['fieldName'], true)) {
