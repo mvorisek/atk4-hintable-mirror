@@ -1,5 +1,19 @@
 includes:
+    # remove once https://github.com/phpstan/extension-installer/issues/36 is fixed
     - phpstan-ext.neon
+
+services:
+    -
+        factory: Mvorisek\Atk4\Hintable\Phpstan\SeedDmrtExtension(Mvorisek\Atk4\Hintable\Tests\Phpstan\SeedDemo\Bodyshop, acceptCar, 1)
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
+    -
+        factory: Mvorisek\Atk4\Hintable\Phpstan\SeedDmrtExtension(Mvorisek\Atk4\Hintable\Tests\Phpstan\SeedDemo\Car, fromSeed, 0)
+        tags:
+            - phpstan.broker.dynamicStaticMethodReturnTypeExtension
+
+rules:
+    - Mvorisek\Atk4\Hintable\Phpstan\AssertSamePhpstanTypeRule
 
 parameters:
     level: 6
@@ -10,3 +24,7 @@ parameters:
 
     ignoreErrors:
         - '~^Unsafe usage of new static\(\)\.$~'
+        -
+            message: '~^Method Mvorisek\\Atk4\\Hintable\\Phpstan\\PhpstanUtil::fakeNeverReturn\(\) should always throw an exception or terminate script execution but doesn''t do that\.$~'
+            path: 'src/Phpstan/PhpstanUtil.php'
+            count: 1
