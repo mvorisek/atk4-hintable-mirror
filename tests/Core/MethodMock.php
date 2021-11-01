@@ -29,4 +29,10 @@ class MethodMock
     {
         return __METHOD__;
     }
+
+    protected function ignoreUnusedPrivate(): void
+    {
+        $this->priv();
+        self::privStat();
+    }
 }

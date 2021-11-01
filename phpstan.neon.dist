@@ -25,6 +25,18 @@ parameters:
     ignoreErrors:
         - '~^Unsafe usage of new static\(\)\.$~'
         -
-            message: '~^Method Mvorisek\\Atk4\\Hintable\\Phpstan\\PhpstanUtil::fakeNeverReturn\(\) should always throw an exception or terminate script execution but doesn''t do that\.$~'
-            path: 'src/Phpstan/PhpstanUtil.php'
+            message: '~^Extending PHPStan\\Reflection\\Annotations\\AnnotationMethodReflection is not covered by backward compatibility promise\. The class might change in a minor PHPStan version\.$~'
+            path: 'src/Phpstan/WrapMethodReflection.php'
+            count: 1
+        -
+            message: '~^Calling PHPStan\\Reflection\\Annotations\\AnnotationMethodReflection::__construct\(\) is not covered by backward compatibility promise\. The method might change in a minor PHPStan version\.$~'
+            path: 'src/Phpstan/WrapMethodReflection.php'
+            count: 1
+        -
+            message: '~^Extending PHPStan\\Reflection\\Annotations\\AnnotationPropertyReflection is not covered by backward compatibility promise\. The class might change in a minor PHPStan version\.$~'
+            path: 'src/Phpstan/WrapPropertyReflection.php'
+            count: 1
+        -
+            message: '~^Calling PHPStan\\Reflection\\Annotations\\AnnotationPropertyReflection::__construct\(\) is not covered by backward compatibility promise\. The method might change in a minor PHPStan version\.$~'
+            path: 'src/Phpstan/WrapPropertyReflection.php'
             count: 1

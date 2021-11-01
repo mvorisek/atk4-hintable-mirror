@@ -11,14 +11,17 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
+        "php": ">=7.4 <8.2",
         "atk4/data": "^3.1 || dev-develop"
+    },
+    "conflict": {
+        "phpstan/phpstan": "<1.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
         "johnkary/phpunit-speedtrap": "^3.2",
         "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan": "^0.12.82",
+        "phpstan/phpstan": "^1.0",
         "phpunit/phpunit": "^9.3"
     },
     "config": {

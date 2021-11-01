@@ -6,10 +6,7 @@ namespace Mvorisek\Atk4\Hintable\Phpstan;
 
 class PhpstanUtil
 {
-    /**
-     * @return bool
-     */
-    final public static function alwaysFalseAnalyseOnly()
+    final public static function alwaysFalseAnalyseOnly(): bool
     {
         return false;
     }
@@ -25,9 +22,20 @@ class PhpstanUtil
     }
 
     /**
+     * @return true
+     */
+    private static function fakeAlwaysTrue(): bool
+    {
+        return false; // @phpstan-ignore-line
+    }
+
+    /**
      * @return never
      */
     final public static function fakeNeverReturn(): void
     {
+        if (self::fakeAlwaysTrue()) { // @phpstan-ignore-line
+            throw new \Error();
+        }
     }
 }

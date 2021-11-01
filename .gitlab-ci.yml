@@ -1,5 +1,5 @@
 variables:
-  CI_PHP_COMPOSER_ROOT_VERSION: 1.6.9999
+  CI_PHP_COMPOSER_ROOT_VERSION: 1.7.9999
 
 include:
   - project: mahalux/php-ci

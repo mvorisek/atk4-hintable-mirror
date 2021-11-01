@@ -6,7 +6,6 @@ namespace Mvorisek\Atk4\Hintable\Phpstan;
 
 use PhpParser\Node;
 use PHPStan\Analyser\Scope;
-use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Type\Constant\ConstantStringType;
@@ -17,13 +16,6 @@ use PHPStan\Type\VerbosityLevel;
  */
 class AssertSamePhpstanTypeRule implements Rule
 {
-    private ReflectionProvider $reflectionProvider;
-
-    public function __construct(ReflectionProvider $reflectionProvider)
-    {
-        $this->reflectionProvider = $reflectionProvider;
-    }
-
     public function getNodeType(): string
     {
         return Node\Expr\MethodCall::class;

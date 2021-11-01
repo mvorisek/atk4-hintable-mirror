@@ -74,6 +74,12 @@ class MethodTest extends TestCase
             {
                 return __METHOD__;
             }
+
+            protected function ignoreUnusedPrivate(): void
+            {
+                $this->privAnon();
+                self::privAnonStat();
+            }
         };
 
         $this->assertSame(get_class($mock) . '::privAnon', Method::methodClosureProtected($mock)->privAnon()());

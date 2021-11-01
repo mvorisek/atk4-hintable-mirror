@@ -44,11 +44,11 @@ class AssertSamePhpstanTypeTest extends TestCase
     }
 
     /**
-     * @return array{0:positive-int}
+     * @return array{1:positive-int}
      */
     private function demoReturnTypeArrayWithShape()
     {
-        return [0, 'a' => 1]; // @phpstan-ignore-line
+        return [1 => 0, 'a' => 1]; // @phpstan-ignore-line
     }
 
     public function testFromExpression(): void
@@ -68,6 +68,6 @@ class AssertSamePhpstanTypeTest extends TestCase
         $this->assertSamePhpstanType('DateTimeInterface|stdClass', $this->demoReturnTypeUnion());
         $this->assertSamePhpstanType('stdClass&Traversable<mixed, DateTime>', $this->demoReturnTypeIntersect());
         $this->assertSamePhpstanType('class-string<DateTimeInterface>', $this->demoReturnTypeClassString());
-        $this->assertSamePhpstanType('array(int<1, max>)', $this->demoReturnTypeArrayWithShape());
+        $this->assertSamePhpstanType('array{1: int<1, max>}', $this->demoReturnTypeArrayWithShape());
     }
 }
