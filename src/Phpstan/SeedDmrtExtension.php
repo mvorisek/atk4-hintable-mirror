@@ -122,11 +122,11 @@ class SeedDmrtExtension implements DynamicMethodReturnTypeExtension, DynamicStat
     ): Type {
         $returnType = ParametersAcceptorSelector::selectFromArgs(
             $scope,
-            $methodCall->args,
+            $methodCall->getArgs(),
             $methodReflection->getVariants()
         )->getReturnType();
-        if (count($methodCall->args) - 1 >= $this->seedParamIndex) {
-            $paramType = $scope->getType($methodCall->args[$this->seedParamIndex]->value);
+        if (count($methodCall->getArgs()) - 1 >= $this->seedParamIndex) {
+            $paramType = $scope->getType($methodCall->getArgs()[$this->seedParamIndex]->value);
             $typeFromSeed = $this->getTypeFromSeed($paramType);
             if ($typeFromSeed !== null) {
                 $res = TypeCombinator::intersect($typeFromSeed, $returnType);

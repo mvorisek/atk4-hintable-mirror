@@ -58,7 +58,7 @@ class MagicModelField extends MagicAbstract
         [$model, $hintableTraitClass] = $this->_atk__data__hintable_magic__getModelWithHintableTraitClass();
 
         $hProps = \Closure::bind(function () use ($model): array {
-            return $model->getHintableProps(); // @phpstan-ignore-line
+            return $model->getModel(true)->getHintableProps(); // @phpstan-ignore-line
         }, null, $hintableTraitClass)();
 
         if (!isset($hProps[$name])) {

@@ -51,6 +51,8 @@ trait HintableModelTrait
      */
     protected function createHintablePropsFromClassDoc(string $className): array
     {
+        $this->assertIsModel();
+
         return HintablePropertyDef::createFromClassDoc($className);
     }
 
@@ -59,6 +61,8 @@ trait HintableModelTrait
      */
     protected function getHintableProps(): array
     {
+        $this->assertIsModel();
+
         if ($this->_hintableProps === null) {
             $cls = [];
             $cl = static::class;
@@ -100,6 +104,8 @@ trait HintableModelTrait
 
     protected function checkRequireAllFieldsHintable(bool $requireAllHintableFields): void
     {
+        $this->assertIsModel();
+
         // do not check if get_class($this) === this base class or if class is anonymous
 
         // also test if ref type is matching the field/ref type
@@ -109,7 +115,7 @@ trait HintableModelTrait
 
     public function __isset(string $name): bool
     {
-        $hProps = $this->getHintableProps();
+        $hProps = $this->getModel(true)->getHintableProps();
         if (isset($hProps[$name])) {
             return true;
         }
@@ -123,7 +129,7 @@ trait HintableModelTrait
      */
     public function &__get(string $name)
     {
-        $hProps = $this->getHintableProps();
+        $hProps = $this->getModel(true)->getHintableProps();
         if (isset($hProps[$name])) {
             $hProp = $hProps[$name];
             if ($hProp->refType !== HintablePropertyDef::REF_TYPE_NONE) {
@@ -158,7 +164,7 @@ trait HintableModelTrait
      */
     public function __set(string $name, $value): void
     {
-        $hProps = $this->getHintableProps();
+        $hProps = $this->getModel(true)->getHintableProps();
         if (isset($hProps[$name])) {
             // @TODO check visibility - also for __isset, __get, __unset
             // @TODO check value type
@@ -174,7 +180,7 @@ trait HintableModelTrait
 
     public function __unset(string $name): void
     {
-        $hProps = $this->getHintableProps();
+        $hProps = $this->getModel(true)->getHintableProps();
         if (isset($hProps[$name])) {
             $this->setNull($hProps[$name]->fieldName);
 

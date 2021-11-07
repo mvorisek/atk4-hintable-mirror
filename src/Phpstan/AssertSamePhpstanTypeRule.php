@@ -74,7 +74,7 @@ class AssertSamePhpstanTypeRule implements Rule
             return [];
         }
 
-        if (count($node->args) !== 2) {
+        if (count($node->getArgs()) !== 2) {
             return [
                 RuleErrorBuilder::message(sprintf(
                     '%s() method call expects exactly 2 arguments.',
@@ -85,7 +85,7 @@ class AssertSamePhpstanTypeRule implements Rule
             ];
         }
 
-        $expectedTypeStringType = $scope->getType($node->args[0]->value);
+        $expectedTypeStringType = $scope->getType($node->getArgs()[0]->value);
         if (!$expectedTypeStringType instanceof ConstantStringType) {
             return [
                 RuleErrorBuilder::message('Expected type must be a literal string.')->nonIgnorable()->build(),
@@ -93,7 +93,7 @@ class AssertSamePhpstanTypeRule implements Rule
         }
 
         $expectedTypeString = $expectedTypeStringType->getValue();
-        $actualTypeString = $scope->getType($node->args[1]->value)->describe(VerbosityLevel::precise());
+        $actualTypeString = $scope->getType($node->getArgs()[1]->value)->describe(VerbosityLevel::precise());
         if ($actualTypeString !== $expectedTypeString) {
             return [
                 RuleErrorBuilder::message(sprintf('Expected type %s, actual: %s', $expectedTypeString, $actualTypeString))->nonIgnorable()->build(),
