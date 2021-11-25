@@ -5,3 +5,6 @@ services:
         tags:
             - phpstan.broker.propertiesClassReflectionExtension
             - phpstan.broker.methodsClassReflectionExtension
+
+rules:
+    - Mvorisek\Atk4\Hintable\Phpstan\AssertSamePhpstanTypeRule

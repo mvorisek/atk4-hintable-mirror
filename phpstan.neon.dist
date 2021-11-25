@@ -12,9 +12,6 @@ services:
         tags:
             - phpstan.broker.dynamicStaticMethodReturnTypeExtension
 
-rules:
-    - Mvorisek\Atk4\Hintable\Phpstan\AssertSamePhpstanTypeRule
-
 parameters:
     level: 6
     paths:
