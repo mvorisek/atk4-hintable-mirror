@@ -1,21 +1,18 @@
 {
     "name": "mvorisek/atk4-hintable",
-    "type": "library",
     "description": "Hintable extension for atk4 libraries",
-    "homepage": "https://www.mvorisek.com/",
     "license": "proprietary",
+    "type": "library",
     "authors": [
         {
             "name": "Michael Voříšek",
             "email": "mvorisek@mvorisek.cz"
         }
     ],
+    "homepage": "https://www.mvorisek.com/",
     "require": {
         "php": ">=7.4 <8.2",
         "atk4/data": "^3.1 || dev-develop"
-    },
-    "conflict": {
-        "phpstan/phpstan": "<1.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
@@ -25,16 +22,11 @@
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpunit/phpunit": "^9.3"
     },
-    "config": {
-        "sort-packages": true
+    "conflict": {
+        "phpstan/phpstan": "<1.0"
     },
-    "extra": {
-        "phpstan": {
-            "includes": [
-                "phpstan-ext.neon"
-            ]
-        }
-    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Mvorisek\\Atk4\\Hintable\\": "src/"
@@ -45,6 +37,14 @@
             "Mvorisek\\Atk4\\Hintable\\Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "phpstan": {
+            "includes": [
+                "phpstan-ext.neon"
+            ]
+        }
+    }
 }

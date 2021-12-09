@@ -2,11 +2,11 @@ variables:
   CI_PHP_COMPOSER_ROOT_VERSION: 1.7.9999
 
 include:
-  - project: mahalux/php-ci
+  - project: mvorisek/php-ci
     file: /templates/shared.yml
-  - project: mahalux/php-ci
+  - project: mvorisek/php-ci
     file: /templates/php-cs.yml
-  - project: mahalux/php-ci
+  - project: mvorisek/php-ci
     file: /templates/php-phpstan.yml
-  - project: mahalux/php-ci
+  - project: mvorisek/php-ci
     file: /templates/php-phpunit.yml
