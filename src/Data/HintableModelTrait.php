@@ -67,6 +67,10 @@ trait HintableModelTrait
             $cls = [];
             $cl = static::class;
             do {
+                $interfaces = class_implements($cl);
+                if ($interfaces !== false) {
+                    $cls = array_merge($cls, $interfaces);
+                }
                 array_unshift($cls, $cl);
             } while ($cl = get_parent_class($cl));
 
@@ -81,6 +85,10 @@ trait HintableModelTrait
 
             // IMPORTANT: check if all hintable property are not set, otherwise the magic functions will not work!
             foreach ($cls as $cl) {
+                if (interface_exists($cl)) {
+                    continue;
+                }
+
                 \Closure::bind(function () use ($defs, $cl): void {
                     foreach ($defs as $def) {
                         if (array_key_exists($def->name, get_object_vars($this))) {
