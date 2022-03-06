@@ -41,6 +41,9 @@
         "sort-packages": true
     },
     "extra": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        },
         "phpstan": {
             "includes": [
                 "phpstan-ext.neon"
