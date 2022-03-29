@@ -38,12 +38,12 @@
         }
     },
     "config": {
-        "sort-packages": true
-    },
-    "extra": {
         "allow-plugins": {
             "phpstan/extension-installer": true
         },
+        "sort-packages": true
+    },
+    "extra": {
         "phpstan": {
             "includes": [
                 "phpstan-ext.neon"
