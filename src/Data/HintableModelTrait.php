@@ -74,8 +74,7 @@ trait HintableModelTrait
             foreach ($cls as $cl) {
                 $clDefs = $this->createHintablePropsFromClassDoc($cl);
                 foreach ($clDefs as $clDef) {
-                    // if property was defined in parent class already, simply override it
-                    $defs[$clDef->name] = $clDef;
+                    HintablePropertyDef::createFromClassDocMerge($defs, $clDef);
                 }
             }
 

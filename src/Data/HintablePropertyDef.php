@@ -54,6 +54,16 @@ class HintablePropertyDef
     }
 
     /**
+     * @param static[] $defs
+     * @param static   $def
+     */
+    public static function createFromClassDocMerge(array &$defs, self $def): void
+    {
+        // if property was defined in parent class/trait already, simply override it
+        $defs[$def->name] = $def;
+    }
+
+    /**
      * @param class-string<Model> $className
      *
      * @return static[]
@@ -61,28 +71,45 @@ class HintablePropertyDef
     public static function createFromClassDoc(string $className): array
     {
         $classRefl = new \ReflectionClass($className);
+        $className = $classRefl->getName();
 
-        if (!isset(self::$_cacheDefsByClass[$classRefl->getName()])) {
-            $defs = [];
-            $classDoc = preg_replace('~\s+~', ' ', preg_replace('~^\s*(?:/\s*)?\*+(?:/\s*$)?|\s*\*+/\s*$~m', '', $classRefl->getDocComment() ?: ''));
-            foreach (preg_split('~(?<!\w)(?=@property(?!\w))~', $classDoc) as $l) {
-                $def = static::createFromClassDocLine($classRefl->getName(), $l);
-                if ($def !== null) {
-                    if (isset($defs[$def->name])) {
-                        throw (new Exception('Hintable property is defined twice within the same class'))
-                            ->addMoreInfo('property', $def->name)
-                            ->addMoreInfo('class', $classRefl->getName());
-                    }
-
-                    $defs[$def->name] = $def;
+        if (!isset(self::$_cacheDefsByClass[$className])) {
+            $traitDefs = [];
+            foreach (class_uses($className) as $traitName) {
+                $traitDefsSub = static::createFromClassDoc($traitName);
+                foreach ($traitDefsSub as $def) {
+                    static::createFromClassDocMerge($traitDefs, $def);
                 }
             }
 
-            self::$_cacheDefsByClass[$classRefl->getName()] = $defs;
+            $classDefs = [];
+            $classDoc = preg_replace('~\s+~', ' ', preg_replace('~^\s*(?:/\s*)?\*+(?:/\s*$)?|\s*\*+/\s*$~m', '', $classRefl->getDocComment() ?: ''));
+            foreach (preg_split('~(?<!\w)(?=@property(?!\w))~', $classDoc) as $l) {
+                $def = static::createFromClassDocLine($className, $l);
+                if ($def !== null) {
+                    if (isset($classDefs[$def->name])) {
+                        throw (new Exception('Hintable property is defined twice within the same class'))
+                            ->addMoreInfo('property', $def->name)
+                            ->addMoreInfo('class', $className);
+                    }
+
+                    $classDefs[$def->name] = $def;
+                }
+            }
+
+            $defs = [];
+            foreach ($traitDefs as $def) {
+                static::createFromClassDocMerge($defs, $def);
+            }
+            foreach ($classDefs as $def) {
+                static::createFromClassDocMerge($defs, $def);
+            }
+
+            self::$_cacheDefsByClass[$className] = $defs;
         }
 
         $defs = [];
-        foreach (self::$_cacheDefsByClass[$classRefl->getName()] as $k => $def) {
+        foreach (self::$_cacheDefsByClass[$className] as $k => $def) {
             $defs[$k] = clone $def;
         }
 
