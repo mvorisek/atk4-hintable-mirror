@@ -136,6 +136,17 @@ trait HintableModelTrait
                 /** @var Model */
                 $model = $this->ref($hProp->fieldName);
 
+                // HasOne/ContainsOne::ref() method returns an unloaded entity when traversing entity not found
+                if ($model->isEntity()) {
+                    $this->assertIsEntity();
+
+                    if (!$model->isLoaded()) {
+                        $res = null;
+
+                        return $res;
+                    }
+                }
+
                 if ($hProp->refType === HintablePropertyDef::REF_TYPE_ONE) {
                     // TODO this requires checking all parents!
 //                    // ensure no more than one record can load

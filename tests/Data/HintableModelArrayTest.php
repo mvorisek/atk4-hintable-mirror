@@ -7,6 +7,7 @@ namespace Mvorisek\Atk4\Hintable\Tests\Data;
 use Atk4\Core\Phpunit\TestCase;
 use Atk4\Data\Exception;
 use Atk4\Data\Persistence;
+use Mvorisek\Atk4\Hintable\Phpstan\PhpstanUtil;
 
 /**
  * @coversDefaultClass \Mvorisek\Atk4\Hintable\Data\HintableModelTrait
@@ -33,7 +34,9 @@ class HintableModelArrayTest extends TestCase
     public function testFieldNameUndeclaredException(): void
     {
         $model = new Model\Simple();
+
         $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Hintable property is not defined');
         $model->fieldName()->undeclared; // @phpstan-ignore-line
     }
 
@@ -72,6 +75,11 @@ class HintableModelArrayTest extends TestCase
                 ->save();
             $standard12 = (clone $standardTemplate)
                 ->set(Model\Standard::hinting()->fieldName()->simpleOneId, $simple3->id)
+                ->save();
+            /* 13 - null simpleOneId */ (clone $standardTemplate)
+                ->save();
+            /* 14 - invalid simpleOneId */ (clone $standardTemplate)
+                ->set(Model\Standard::hinting()->fieldName()->simpleOneId, 999)
                 ->save();
 
             $simple1
@@ -135,27 +143,57 @@ class HintableModelArrayTest extends TestCase
         }, iterator_to_array($model->load(12)->simpleMany)));
     }
 
-    public function testRefManyIsNotEntity(): void
-    {
-        $db = $this->createDatabaseForRefTest();
-        $model = new Model\Standard($db);
-        $this->assertFalse($model->load(12)->simpleMany->isEntity());
-    }
-
     public function testRefOneLoadOneException(): void
     {
         $db = $this->createDatabaseForRefTest();
         $model = new Model\Standard($db);
+        $modelSimple = $model->simpleOne;
+
         $this->expectException(Exception::class);
-        $model->simpleOne->loadOne();
+        $this->expectExceptionMessage('more than one record can be loaded');
+        $modelSimple->loadOne();
     }
 
     public function testRefManyLoadOneException(): void
     {
         $db = $this->createDatabaseForRefTest();
         $model = new Model\Standard($db);
+        $modelSimple = $model->simpleMany;
+
         $this->expectException(Exception::class);
-        $model->simpleMany->loadOne();
+        $this->expectExceptionMessage('more than one record can be loaded');
+        $modelSimple->loadOne();
+    }
+
+    public function testRefOneTraverseNullException(): void
+    {
+        $db = $this->createDatabaseForRefTest();
+        $model = new Model\Standard($db);
+        $entity13 = $model->load(13);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Unable to traverse on null value');
+        PhpstanUtil::ignoreUnusedVariable($entity13->simpleOne);
+    }
+
+    public function testRefOneTraverseInvalidException(): void
+    {
+        $db = $this->createDatabaseForRefTest();
+        $model = new Model\Standard($db);
+        $entity14 = $model->load(14);
+
+        $this->assertNull($entity14->simpleOne); // TODO should throw
+    }
+
+    public function testRefManyTraverseNullException(): void
+    {
+        $db = $this->createDatabaseForRefTest();
+        $model = new Model\Standard($db);
+        $entityNull = $model->createEntity();
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Unable to traverse on null value');
+        PhpstanUtil::ignoreUnusedVariable($entityNull->simpleMany);
     }
 
     public function testPhpstanModelIteratorAggregate(): void
