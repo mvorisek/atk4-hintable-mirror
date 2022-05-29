@@ -136,10 +136,18 @@ trait HintableModelTrait
                 /** @var Model */
                 $model = $this->ref($hProp->fieldName);
 
+                if ($this->isEntity()) {
+                    if ($hProp->refType === HintablePropertyDef::REF_TYPE_ONE) {
+                        $model->assertIsEntity();
+                    } else {
+                        $model->assertIsModel();
+                    }
+                } else {
+                    $model->assertIsModel();
+                }
+
                 // HasOne/ContainsOne::ref() method returns an unloaded entity when traversing entity not found
                 if ($model->isEntity()) {
-                    $this->assertIsEntity();
-
                     if (!$model->isLoaded()) {
                         $res = null;
 
@@ -147,18 +155,7 @@ trait HintableModelTrait
                     }
                 }
 
-                if ($hProp->refType === HintablePropertyDef::REF_TYPE_ONE) {
-                    // TODO this requires checking all parents!
-//                    // ensure no more than one record can load
-//                    // TOOD this is quite dirty, as extra query to DB is sent
-//                    $model->onHookShort(Model::HOOK_AFTER_LOAD, \Closure::bind(function () {
-//                        (clone $this)->loadOne();
-//                    }, $model, Model::class), [], -11);
-
-                    return $model;
-                } elseif ($hProp->refType === HintablePropertyDef::REF_TYPE_MANY) {
-                    return $model;
-                }
+                return $model;
             }
 
             $resNoRef = $this->get($hProp->fieldName);
