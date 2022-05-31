@@ -156,11 +156,10 @@ class HintableModelArrayTest extends TestCase
         $model->invokeInit();
         $this->assertInstanceOf(Model\Simple::class, $model->simpleOne);
 
-        // TODO seems like a bug in atk4/data
-        $this->markTestSkipped('Atk4 does not support traversing 1:N reference without persistence'); // @phpstan-ignore-next-line
-        $model = new Model\Standard();
-        $model->invokeInit();
-        $this->assertInstanceOf(Model\Simple::class, $model->simpleMany);
+        // TODO atk4/data does not support traversing 1:N reference without persistence
+        // $model = new Model\Standard();
+        // $model->invokeInit();
+        // $this->assertInstanceOf(Model\Simple::class, $model->simpleMany);
     }
 
     public function testRefOne(): void
@@ -209,15 +208,16 @@ class HintableModelArrayTest extends TestCase
         $modelSimple->loadOne();
     }
 
-    public function testRefOneTraverseNullException(): void
+    public function testRefOneTraverseNull(): void
     {
         $db = $this->createDatabaseForRefTest();
         $model = new Model\Standard($db);
-        $entity13 = $model->load(13);
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Unable to traverse on null value');
-        PhpstanUtil::ignoreUnusedVariable($entity13->simpleOne);
+        $entity13 = $model->load(13);
+        $this->assertNull($entity13->simpleOne);
+
+        $entityNull = $model->createEntity();
+        $this->assertNull($entityNull->simpleOne);
     }
 
     public function testRefOneTraverseInvalidException(): void
@@ -226,7 +226,25 @@ class HintableModelArrayTest extends TestCase
         $model = new Model\Standard($db);
         $entity14 = $model->load(14);
 
-        $this->assertNull($entity14->simpleOne); // TODO should throw
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('No record was found');
+        PhpstanUtil::ignoreUnusedVariable($entity14->simpleOne);
+    }
+
+    public function testRefOneReverseTraverseNullException(): void
+    {
+        $db = $this->createDatabaseForRefTest();
+        $model = new Model\Standard($db);
+        $entityNull = $model->createEntity();
+
+        $this->assertNull($entityNull->simpleOne);
+
+        $model->getRef($model->fieldName()->simpleOne)
+            ->setDefaults(['our_field' => $model->fieldName()->id]);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Unable to traverse on null value');
+        PhpstanUtil::ignoreUnusedVariable($entityNull->simpleMany);
     }
 
     public function testRefManyTraverseNullException(): void
