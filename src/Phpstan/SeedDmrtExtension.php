@@ -16,7 +16,6 @@ use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\DynamicStaticMethodReturnTypeExtension;
 use PHPStan\Type\Generic\GenericClassStringType;
 use PHPStan\Type\IntersectionType;
-use PHPStan\Type\NeverType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StaticType;
 use PHPStan\Type\Type;
@@ -130,9 +129,6 @@ class SeedDmrtExtension implements DynamicMethodReturnTypeExtension, DynamicStat
             $typeFromSeed = $this->getTypeFromSeed($paramType);
             if ($typeFromSeed !== null) {
                 $res = TypeCombinator::intersect($typeFromSeed, $returnType);
-                if ($res instanceof NeverType) {
-                    // TODO emit a phpstan error if never
-                }
 
                 return $res;
             }

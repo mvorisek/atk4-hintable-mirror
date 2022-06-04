@@ -39,12 +39,6 @@ trait HintableModelTrait
     private $_hintableProps;
 
     /**
-     * @var bool Enable validation if all fields are hintable after self::init() is called.
-     *           Validation is always skipped if this class is not extended or if extended as anonymous class.
-     */
-    protected $requireAllFieldsHintable = true;
-
-    /**
      * @param class-string<Model> $className
      *
      * @return HintablePropertyDef[]
@@ -74,16 +68,19 @@ trait HintableModelTrait
             foreach ($cls as $cl) {
                 $clDefs = $this->createHintablePropsFromClassDoc($cl);
                 foreach ($clDefs as $clDef) {
-                    HintablePropertyDef::createFromClassDocMerge($defs, $clDef);
+                    // if property was defined in parent class/trait already, simply override it
+                    $clDef->sinceClassName = isset($defs[$clDef->name]) ? $defs[$clDef->name]->sinceClassName : $clDef->className;
+                    $defs[$clDef->name] = $clDef;
                 }
             }
 
             // IMPORTANT: check if all hintable property are not set, otherwise the magic functions will not work!
             foreach ($cls as $cl) {
                 \Closure::bind(function () use ($defs, $cl): void {
+                    $thisProps = array_keys(get_object_vars($this));
                     foreach ($defs as $def) {
-                        if (array_key_exists($def->name, get_object_vars($this))) {
-                            throw (new Exception('Hintable properties must remain magical, they must be not defined in the code'))
+                        if (isset($thisProps[$def->name])) {
+                            throw (new Exception('Hintable property must remain magical'))
                                 ->addMoreInfo('property', $def->name)
                                 ->addMoreInfo('class', $cl);
                         }
@@ -94,28 +91,57 @@ trait HintableModelTrait
             $this->_hintableProps = $defs;
         }
 
-        // check if all already declared fields has a hintable property
-        // full check is done after self::init() when all fields are required to be present
-        $this->checkRequireAllFieldsHintable(false);
-
         return $this->_hintableProps;
     }
 
-    protected function checkRequireAllFieldsHintable(bool $requireAllHintableFields): void
+    private function getScopeClassName(): ?string
     {
-        $this->assertIsModel();
-
-        // do not check if get_class($this) === this base class or if class is anonymous
-
-        // also test if ref type is matching the field/ref type
-
-        // @TODO
+        $limit = 2;
+        $trace = null;
+        $entryMethodName = null;
+        $entryMethodNameRenamed = null;
+        for ($i = 2;; ++$i) {
+            if ($i >= $limit) {
+                $limit *= 2;
+                $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, $limit);
+                if ($entryMethodName === null) {
+                    if (PHP_MAJOR_VERSION === 7 && !str_starts_with($trace[1]['function'], '__hintable_')) {
+                        // https://bugs.php.net/bug.php?id=69180
+                        $entryMethodNameRenamed = [
+                            '__isset' => '__hintable_isset',
+                            '__get' => '__hintable_get',
+                            '__set' => '__hintable_set',
+                            '__unset' => '__hintable_unset',
+                        ][$trace[1]['function']];
+                    } else {
+                        $entryMethodNameRenamed = $trace[1]['function'];
+                    }
+                    $entryMethodName = [
+                        '__hintable_isset' => '__isset',
+                        '__hintable_get' => '__get',
+                        '__hintable_set' => '__set',
+                        '__hintable_unset' => '__unset',
+                    ][$entryMethodNameRenamed];
+                }
+            }
+            if ($i >= count($trace)) {
+                return null; // called directly from a global scope
+            }
+            $frame = $trace[$i];
+            $frameFx = $frame['function'] ?? null;
+            if (($frame['object'] ?? null) !== $this || ($frameFx !== $entryMethodName && $frameFx !== $entryMethodNameRenamed)) {
+                return $frame['class'] ?? null;
+            }
+        }
     }
 
     public function __isset(string $name): bool
     {
         $hProps = $this->getModel(true)->getHintableProps();
         if (isset($hProps[$name])) {
+            $hProp = $hProps[$name];
+            $hProp->assertVisibility($this->getScopeClassName(), true);
+
             return true;
         }
 
@@ -131,6 +157,8 @@ trait HintableModelTrait
         $hProps = $this->getModel(true)->getHintableProps();
         if (isset($hProps[$name])) {
             $hProp = $hProps[$name];
+            $hProp->assertVisibility($this->getScopeClassName(), true);
+
             if ($hProp->refType !== HintablePropertyDef::REF_TYPE_NONE) {
                 /** @var Model */
                 $model = $this->ref($hProp->fieldName);
@@ -173,10 +201,10 @@ trait HintableModelTrait
     {
         $hProps = $this->getModel(true)->getHintableProps();
         if (isset($hProps[$name])) {
-            // @TODO check visibility - also for __isset, __get, __unset
-            // @TODO check value type
+            $hProp = $hProps[$name];
+            $hProp->assertVisibility($this->getScopeClassName(), false);
 
-            $this->set($hProps[$name]->fieldName, $value);
+            $this->set($hProp->fieldName, $value);
 
             return;
         }
@@ -189,7 +217,10 @@ trait HintableModelTrait
     {
         $hProps = $this->getModel(true)->getHintableProps();
         if (isset($hProps[$name])) {
-            $this->setNull($hProps[$name]->fieldName);
+            $hProp = $hProps[$name];
+            $hProp->assertVisibility($this->getScopeClassName(), false);
+
+            $this->setNull($hProp->fieldName);
 
             return;
         }
@@ -197,15 +228,6 @@ trait HintableModelTrait
         // default behaviour
         unset($this->{$name});
     }
-
-    // TODO we can check once initialized (init was called for the 1st time), but not sooner,
-    // otherwise init cannot be overridden
-//    protected function init(): void
-//    {
-//        parent::init();
-//
-//        $this->checkRequireAllFieldsHintable(true);
-//    }
 
     /**
      * Returns a magic class that pretends to be instance of this class, but in reality
@@ -215,8 +237,6 @@ trait HintableModelTrait
      */
     public static function hinting()
     {
-        // @TODO this object should not support any modifications, ie. unset everything and prevent any calls except fieldName() and cache this class,
-        // or better to allow to access
         // @phpstan-ignore-next-line
         return new class(static::class, '') extends MagicAbstract {
             public function __call(string $name, array $args)

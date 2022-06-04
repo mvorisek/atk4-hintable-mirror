@@ -7,7 +7,7 @@ namespace Mvorisek\Atk4\Hintable\Data;
 use Atk4\Data\Exception;
 use Atk4\Data\Model;
 
-// @TODO or using Doctrine Annotation? https://www.doctrine-project.org/projects/doctrine-annotations/en/latest/index.html#reading-annotations
+// @TODO use Doctrine Annotation? https://www.doctrine-project.org/projects/doctrine-annotations/en/latest/index.html#reading-annotations
 
 class HintablePropertyDef
 {
@@ -30,6 +30,8 @@ class HintablePropertyDef
 
     /** @var class-string<Model> */
     public $className;
+    /** @var class-string<Model> */
+    public $sinceClassName;
     /** @var string */
     public $name;
     /** @var string */
@@ -54,16 +56,6 @@ class HintablePropertyDef
     }
 
     /**
-     * @param static[] $defs
-     * @param static   $def
-     */
-    public static function createFromClassDocMerge(array &$defs, self $def): void
-    {
-        // if property was defined in parent class/trait already, simply override it
-        $defs[$def->name] = $def;
-    }
-
-    /**
      * @param class-string<Model> $className
      *
      * @return static[]
@@ -78,7 +70,7 @@ class HintablePropertyDef
             foreach (class_uses($className) as $traitName) {
                 $traitDefsSub = static::createFromClassDoc($traitName);
                 foreach ($traitDefsSub as $def) {
-                    static::createFromClassDocMerge($traitDefs, $def);
+                    $traitDefs[$def->name] = $def;
                 }
             }
 
@@ -99,10 +91,10 @@ class HintablePropertyDef
 
             $defs = [];
             foreach ($traitDefs as $def) {
-                static::createFromClassDocMerge($defs, $def);
+                $defs[$def->name] = $def;
             }
             foreach ($classDefs as $def) {
-                static::createFromClassDocMerge($defs, $def);
+                $defs[$def->name] = $def;
             }
 
             self::$_cacheDefsByClass[$className] = $defs;
@@ -129,7 +121,7 @@ class HintablePropertyDef
 
         $allowedTypes = static::parseDocType($matches[1]);
         $refType = ['RefOne' => self::REF_TYPE_ONE, 'RefMany' => self::REF_TYPE_MANY][$matches[3]] ?? self::REF_TYPE_NONE;
-        $opts = static::parseDocAtkFieldOptions($matches[4]);
+        $opts = static::parseDocFieldOptions($matches[4]);
 
         $fieldName = null;
         $visibility = null;
@@ -172,7 +164,7 @@ class HintablePropertyDef
     /**
      * @return string[]
      */
-    protected static function parseDocAtkFieldOptions(string $doc): array
+    protected static function parseDocFieldOptions(string $doc): array
     {
         if (trim($doc) === '') {
             return [];
@@ -192,87 +184,18 @@ class HintablePropertyDef
     }
 
     /**
-     * @param class-string<Model> $srcClassName
+     * @param class-string|null $scopeClassName
      */
-    public function validateVisibility(string $srcClassName, bool $getOnly): void
+    public function assertVisibility(?string $scopeClassName, bool $readOnly): void
     {
-        $fromProtected = is_a($srcClassName, $this->className, true);
-
         if ($this->visibility === self::VISIBILITY_PUBLIC
-            || ($getOnly && $this->visibility === self::VISIBILITY_PROTECTED_SET)
-            || $fromProtected) {
+            || ($readOnly && $this->visibility === self::VISIBILITY_PROTECTED_SET)
+            || is_a($scopeClassName, $this->sinceClassName, true)) {
             return;
         }
 
-        throw new Exception('Visibility of hintable property is restricted, it cannot be '
-            . ($this->visibility === self::VISIBILITY_PROTECTED_SET ? 'set' : 'read/set') . ' outside Model class');
-    }
+        $visibilityDescribe = ($this->visibility === self::VISIBILITY_PROTECTED_SET ? 'write-' : '') . 'protected';
 
-    /**
-     * @param mixed $val
-     */
-    public function validateSet($val): void
-    {
-        if (count($this->allowedTypes) === 0) {
-            return;
-        }
-
-        foreach ($this->allowedTypes as $t) {
-            if ($this->validateSetSingle($val, $t)) {
-                return;
-            }
-        }
-
-        throw (new Exception('Value type of hintable property is restricted, value is not allowed'))
-            ->addMoreInfo('allowed_types', $this->allowedTypes)
-            ->addMoreInfo('value', $val);
-    }
-
-    /**
-     * @param mixed $val
-     */
-    protected function validateSetSingle($val, string $allowedType): bool
-    {
-        if (substr($allowedType, -1) === ']') {
-            $allowedType = preg_replace('~\[[^\[\]]*\]$~', '', $allowedType, 1, $c);
-            if ($c !== 1 || !is_array($val)) {
-                return false;
-            }
-
-            foreach ($val as $x) {
-                if (!$this->validateSetSingle($x, $allowedType)) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        if ($allowedType === 'null') {
-            return $val === null;
-        }
-        if ($allowedType === 'mixed') { // mixed does not imply null
-            return $val !== null;
-        }
-        if ($allowedType === 'bool' || $allowedType === 'boolean') {
-            return is_bool($val);
-        }
-        if ($allowedType === 'int' || $allowedType === 'integer') {
-            return is_int($val);
-        }
-        if ($allowedType === 'float' || $allowedType === 'double') {
-            return is_float($val);
-        }
-        if ($allowedType === 'string') {
-            return is_string($val);
-        }
-        if ($allowedType === 'array') {
-            return is_array($val);
-        }
-        if ($allowedType === 'object') {
-            return is_object($val);
-        }
-
-        return is_a($val, $allowedType);
+        throw new Exception('Cannot access ' . $visibilityDescribe . ' hintable property ' . $this->className . '::$' . $this->name);
     }
 }

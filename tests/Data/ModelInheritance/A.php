@@ -8,7 +8,7 @@ use Atk4\Data\Model;
 
 /**
  * @property string $ax @Atk4\Field()
- * @property string $pk @Atk4\Field(field_name="id")
+ * @property string $pk @Atk4\Field(field_name="id", visibility="protected_set")
  */
 class A extends Model
 {

@@ -6,7 +6,7 @@ namespace Mvorisek\Atk4\Hintable\Tests\Data\ModelInheritance;
 
 /**
  * @property string $bx @Atk4\Field()
- * @property string $pk @Atk4\Field(field_name="bx")
+ * @property string $pk @Atk4\Field(field_name="bx", visibility="protected_set")
  */
 class B extends A
 {

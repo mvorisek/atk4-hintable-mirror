@@ -15,78 +15,9 @@ use Mvorisek\Atk4\Hintable\Phpstan\PhpstanUtil;
  */
 class HintableModelArrayTest extends TestCase
 {
-    public function testFieldName(): void
-    {
-        $model = new Model\Simple();
-        $this->assertSame('simple', $model->table);
-        $this->assertSame('x', $model->fieldName()->x);
-        $this->assertSame('x', Model\Simple::hinting()->fieldName()->x);
-
-        $model = new Model\Standard();
-        $this->assertSame('prefix_standard', $model->table);
-        $this->assertSame('x', $model->fieldName()->x);
-        $this->assertSame('yy', $model->fieldName()->y);
-        $this->assertSame('id', $model->fieldName()->id);
-        $this->assertSame('name', $model->fieldName()->_name);
-        $this->assertSame('simpleOne', $model->fieldName()->simpleOne);
-        $this->assertSame('simpleMany', $model->fieldName()->simpleMany);
-    }
-
-    public function testFieldNameUndeclaredException(): void
-    {
-        $model = new Model\Simple();
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Hintable property is not defined');
-        $model->fieldName()->undeclared; // @phpstan-ignore-line
-    }
-
     protected function createPersistence(): Persistence
     {
         return new Persistence\Array_();
-    }
-
-    public function testInheritance(): void
-    {
-        $db = $this->createPersistence();
-
-        $model = new ModelInheritance\A($db);
-        $this->assertSame('inheritance', $model->table);
-        $this->assertSame('ax', $model->fieldName()->ax);
-        $this->assertSame('t', $model->fieldName()->t);
-        $this->assertSame('id', $model->fieldName()->pk);
-
-        $model = new ModelInheritance\B($db);
-        $this->assertSame('inheritance', $model->table);
-        $this->assertSame('ax', $model->fieldName()->ax);
-        $this->assertSame('t', $model->fieldName()->t);
-        $this->assertSame('bx', $model->fieldName()->pk);
-        $this->assertSame('bx', $model->fieldName()->bx);
-        $this->assertSame('te', $model->fieldName()->te);
-
-        /**
-         * @property string $anx @Atk4\Field()
-         */
-        $model = new class($db) extends AtkModel {
-            use ModelInheritance\ExtraTrait {
-                ModelInheritance\ExtraTrait::init as private __extra_init;
-            }
-
-            public $table = 'anony';
-
-            protected function init(): void
-            {
-                parent::init();
-                $this->__extra_init();
-
-                $this->addField($this->fieldName()->anx, ['type' => 'string', 'required' => true, 'default' => 'anxDef']);
-            }
-        };
-        $this->assertSame('anony', $model->table);
-        $this->assertSame('t', $model->fieldName()->t);
-        $this->assertSame('te', $model->fieldName()->te);
-        $this->assertSame('anx', $model->fieldName()->anx);
-        $this->assertSame('anxDef', $model->createEntity()->anx); // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/7345
     }
 
     protected function createDatabaseForRefTest(): Persistence
