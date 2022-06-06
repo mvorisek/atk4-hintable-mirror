@@ -41,6 +41,61 @@ class HintableModelTest extends TestCase
         $model->fieldName()->undeclared; // @phpstan-ignore-line
     }
 
+    public function testParseDeclaredTwiceException(): void
+    {
+        /**
+         * @property string $x @Atk4\Field()
+         */
+        $model = new class() extends AtkModel {};
+        $model->invokeInit();
+
+        /**
+         * @property string $x @Atk4\Field()
+         * @property string $x @Atk4\Field()
+         */
+        $model = new class() extends AtkModel {};
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Hintable property is defined twice within the same class');
+        $model->invokeInit();
+    }
+
+    public function testParseInvalidOptionSyntaxException(): void
+    {
+        /**
+         * @property string $x @Atk4\Field(="bar")
+         */
+        $model = new class() extends AtkModel {};
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Hintable property has invalid @Atk4\Field syntax');
+        $model->invokeInit();
+    }
+
+    public function testParseInvalidOptionKeyException(): void
+    {
+        /**
+         * @property string $x @Atk4\Field(foo="bar")
+         */
+        $model = new class() extends AtkModel {};
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Hintable property has invalid @Atk4\Field option');
+        $model->invokeInit();
+    }
+
+    public function testParseInvalidOptionVisibilityException(): void
+    {
+        /**
+         * @property string $x @Atk4\Field(visibility="publicc")
+         */
+        $model = new class() extends AtkModel {};
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Hintable property has invalid @Atk4\Field option');
+        $model->invokeInit();
+    }
+
     public function testInheritance(): void
     {
         $db = new Persistence\Array_();
@@ -163,8 +218,12 @@ class HintableModelTest extends TestCase
             [Mi\B::class, Mi\A::class, 'pk', 'set', null],
             [null, Mi\A::class, 'pk', 'get', null],
             [null, Mi\A::class, 'pk', 'set', 'Cannot access write-protected hintable property ' . Mi\A::class . '::$pk'],
+            [null, Mi\A::class, 'pk', 'isset', null],
+            [null, Mi\A::class, 'pk', 'unset', 'Cannot access write-protected hintable property ' . Mi\A::class . '::$pk'],
             [Exception::class, Mi\A::class, 'pk', 'get', null],
             [Exception::class, Mi\A::class, 'pk', 'set', 'Cannot access write-protected hintable property ' . Mi\A::class . '::$pk'],
+            [Exception::class, Mi\A::class, 'pk', 'isset', null],
+            [Exception::class, Mi\A::class, 'pk', 'unset', 'Cannot access write-protected hintable property ' . Mi\A::class . '::$pk'],
             [AtkModel::class, Mi\A::class, 'pk', 'get', null],
             [AtkModel::class, Mi\A::class, 'pk', 'set', 'Cannot access write-protected hintable property ' . Mi\A::class . '::$pk'],
 
@@ -181,8 +240,12 @@ class HintableModelTest extends TestCase
 
             [Mi\Vis::class, Mi\Vis::class, 'vis', 'get', null],
             [Mi\Vis::class, Mi\Vis::class, 'vis', 'set', null],
+            [Mi\Vis::class, Mi\Vis::class, 'vis', 'isset', null],
+            [Mi\Vis::class, Mi\Vis::class, 'vis', 'unset', null],
             [Mi\Vis2::class, Mi\Vis::class, 'vis', 'get', null],
             [Mi\Vis2::class, Mi\Vis::class, 'vis', 'set', null],
+            [Mi\Vis2::class, Mi\Vis::class, 'vis', 'isset', null],
+            [Mi\Vis2::class, Mi\Vis::class, 'vis', 'unset', null],
             [Mi\Vis3::class, Mi\Vis::class, 'vis', 'get', null],
             [Mi\Vis3::class, Mi\Vis::class, 'vis', 'set', null],
             [Mi\Vis6::class, Mi\Vis::class, 'vis', 'get', null],
@@ -191,18 +254,26 @@ class HintableModelTest extends TestCase
             [get_class(new class() extends Mi\Vis {}), Mi\Vis::class, 'vis', 'set', null],
             [null, Mi\Vis::class, 'vis', 'get', 'Cannot access protected hintable property ' . Mi\Vis::class . '::$vis'],
             [null, Mi\Vis::class, 'vis', 'set', 'Cannot access protected hintable property ' . Mi\Vis::class . '::$vis'],
+            [null, Mi\Vis::class, 'vis', 'isset', 'Cannot access protected hintable property ' . Mi\Vis::class . '::$vis'],
+            [null, Mi\Vis::class, 'vis', 'unset', 'Cannot access protected hintable property ' . Mi\Vis::class . '::$vis'],
             [Exception::class, Mi\Vis::class, 'vis', 'get', 'Cannot access protected hintable property ' . Mi\Vis::class . '::$vis'],
             [Exception::class, Mi\Vis::class, 'vis', 'set', 'Cannot access protected hintable property ' . Mi\Vis::class . '::$vis'],
+            [Exception::class, Mi\Vis::class, 'vis', 'isset', 'Cannot access protected hintable property ' . Mi\Vis::class . '::$vis'],
+            [Exception::class, Mi\Vis::class, 'vis', 'unset', 'Cannot access protected hintable property ' . Mi\Vis::class . '::$vis'],
             [AtkModel::class, Mi\Vis::class, 'vis', 'get', 'Cannot access protected hintable property ' . Mi\Vis::class . '::$vis'],
             [AtkModel::class, Mi\Vis::class, 'vis', 'set', 'Cannot access protected hintable property ' . Mi\Vis::class . '::$vis'],
 
             [Mi\Vis::class, Mi\Vis2::class, 'vis', 'get', null],
             [Mi\Vis::class, Mi\Vis2::class, 'vis', 'set', null],
+            [Mi\Vis::class, Mi\Vis2::class, 'vis', 'isset', null],
+            [Mi\Vis::class, Mi\Vis2::class, 'vis', 'unset', null],
             [null, Mi\Vis2::class, 'vis', 'get', 'Cannot access protected hintable property ' . Mi\Vis::class . '::$vis'],
             [null, Mi\Vis2::class, 'vis', 'set', 'Cannot access protected hintable property ' . Mi\Vis::class . '::$vis'],
 
             [Mi\Vis::class, Mi\Vis3::class, 'vis', 'get', null],
             [Mi\Vis::class, Mi\Vis3::class, 'vis', 'set', null],
+            [Mi\Vis::class, Mi\Vis3::class, 'vis', 'isset', null],
+            [Mi\Vis::class, Mi\Vis3::class, 'vis', 'unset', null],
             [null, Mi\Vis3::class, 'vis', 'get', null],
             [null, Mi\Vis3::class, 'vis', 'set', 'Cannot access write-protected hintable property ' . Mi\Vis3::class . '::$vis'],
 

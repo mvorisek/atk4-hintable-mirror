@@ -12,54 +12,19 @@ use Mvorisek\Atk4\Hintable\Core\MagicAbstract;
  * @template-covariant TTargetClass of object
  * @template-covariant TReturnType
  * @extends MagicAbstract<TTargetClass&Model, TReturnType>
+ *
+ * @property Model $_atk__core__hintable_magic__class
  */
 class MagicModelField extends MagicAbstract
 {
     /** @const string */
     public const TYPE_FIELD_NAME = 'field_n';
 
-    /**
-     * @return array{Model, class-string<Model>}
-     */
-    protected function _atk__data__hintable_magic__getModelWithHintableTraitClass(): array
-    {
-        $model = $this->_atk__core__hintable_magic__class;
-
-        $classUsesFunc = static function (string $class, string $needleTrait) use (&$classUsesFunc): bool {
-            foreach (class_uses($class) as $trait) {
-                if ($trait === $needleTrait || $classUsesFunc($trait, $needleTrait)) {
-                    return true;
-                }
-            }
-
-            return false;
-        };
-
-        $hintableTraitClass = null;
-        $cl = get_class($model);
-        do {
-            if ($classUsesFunc($cl, HintableModelTrait::class)) {
-                $hintableTraitClass = $cl;
-
-                break;
-            }
-        } while ($cl = get_parent_class($cl));
-
-        if ($hintableTraitClass === null) {
-            throw (new Exception('Model does not use hintable model trait'))
-                ->addMoreInfo('class', get_class($model));
-        }
-
-        return [$model, $hintableTraitClass];
-    }
-
     protected function _atk__data__hintable_magic__getModelPropDef(string $name): HintablePropertyDef
     {
-        [$model, $hintableTraitClass] = $this->_atk__data__hintable_magic__getModelWithHintableTraitClass();
+        $model = $this->_atk__core__hintable_magic__class->getModel(true);
 
-        $hProps = \Closure::bind(function () use ($model): array {
-            return $model->getModel(true)->getHintableProps();
-        }, null, $hintableTraitClass)();
+        $hProps = \Closure::bind(fn () => $model->getHintableProps(), null, $model)();
 
         if (!isset($hProps[$name])) {
             throw (new Exception('Hintable property is not defined'))

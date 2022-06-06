@@ -68,7 +68,7 @@ trait HintableModelTrait
             foreach ($cls as $cl) {
                 $clDefs = $this->createHintablePropsFromClassDoc($cl);
                 foreach ($clDefs as $clDef) {
-                    // if property was defined in parent class/trait already, simply override it
+                    // if property was defined in parent class already, simply override it
                     $clDef->sinceClassName = isset($defs[$clDef->name]) ? $defs[$clDef->name]->sinceClassName : $clDef->className;
                     $defs[$clDef->name] = $clDef;
                 }
@@ -76,16 +76,14 @@ trait HintableModelTrait
 
             // IMPORTANT: check if all hintable property are not set, otherwise the magic functions will not work!
             foreach ($cls as $cl) {
-                \Closure::bind(function () use ($defs, $cl): void {
-                    $thisProps = array_keys(get_object_vars($this));
-                    foreach ($defs as $def) {
-                        if (isset($thisProps[$def->name])) {
-                            throw (new Exception('Hintable property must remain magical'))
-                                ->addMoreInfo('property', $def->name)
-                                ->addMoreInfo('class', $cl);
-                        }
+                $thisProps = \Closure::bind(fn () => array_keys(get_object_vars($this)), $this, $cl)();
+                foreach ($defs as $def) {
+                    if (isset($thisProps[$def->name])) {
+                        throw (new Exception('Hintable property must remain magical'))
+                            ->addMoreInfo('property', $def->name)
+                            ->addMoreInfo('class', $cl);
                     }
-                }, $this, $cl)();
+                }
             }
 
             $this->_hintableProps = $defs;
@@ -94,8 +92,22 @@ trait HintableModelTrait
         return $this->_hintableProps;
     }
 
-    private function getScopeClassName(): ?string
+    public function assertIsInitialized(): void
     {
+        $this->getHintableProps(); // assert hintable phpdoc can parse
+    }
+
+    /**
+     * @return class-string|null
+     */
+    private function getHintableScopeClassName(string $optimizeVisibility, bool $optimizeReadOnly): ?string
+    {
+        // optimization only
+        if ($optimizeVisibility === HintablePropertyDef::VISIBILITY_PUBLIC
+            || ($optimizeReadOnly && $optimizeVisibility === HintablePropertyDef::VISIBILITY_PROTECTED_SET)) {
+            return null;
+        }
+
         $limit = 2;
         $trace = null;
         $entryMethodName = null;
@@ -140,7 +152,7 @@ trait HintableModelTrait
         $hProps = $this->getModel(true)->getHintableProps();
         if (isset($hProps[$name])) {
             $hProp = $hProps[$name];
-            $hProp->assertVisibility($this->getScopeClassName(), true);
+            $hProp->assertVisibility($this->getHintableScopeClassName($hProp->visibility, true), true);
 
             return true;
         }
@@ -157,10 +169,9 @@ trait HintableModelTrait
         $hProps = $this->getModel(true)->getHintableProps();
         if (isset($hProps[$name])) {
             $hProp = $hProps[$name];
-            $hProp->assertVisibility($this->getScopeClassName(), true);
+            $hProp->assertVisibility($this->getHintableScopeClassName($hProp->visibility, true), true);
 
             if ($hProp->refType !== HintablePropertyDef::REF_TYPE_NONE) {
-                /** @var Model */
                 $model = $this->ref($hProp->fieldName);
 
                 if ($this->isEntity()) {
@@ -202,7 +213,7 @@ trait HintableModelTrait
         $hProps = $this->getModel(true)->getHintableProps();
         if (isset($hProps[$name])) {
             $hProp = $hProps[$name];
-            $hProp->assertVisibility($this->getScopeClassName(), false);
+            $hProp->assertVisibility($this->getHintableScopeClassName($hProp->visibility, false), false);
 
             $this->set($hProp->fieldName, $value);
 
@@ -218,7 +229,7 @@ trait HintableModelTrait
         $hProps = $this->getModel(true)->getHintableProps();
         if (isset($hProps[$name])) {
             $hProp = $hProps[$name];
-            $hProp->assertVisibility($this->getScopeClassName(), false);
+            $hProp->assertVisibility($this->getHintableScopeClassName($hProp->visibility, false), false);
 
             $this->setNull($hProp->fieldName);
 
