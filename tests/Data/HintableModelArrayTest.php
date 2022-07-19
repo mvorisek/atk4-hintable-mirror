@@ -221,7 +221,7 @@ class HintableModelArrayTest extends TestCase
 
         $this->assertNull($entityNull->simpleOne);
 
-        $model->getRef($model->fieldName()->simpleOne)
+        $model->getReference($model->fieldName()->simpleOne)
             ->setDefaults(['our_field' => $model->fieldName()->id]);
 
         $this->expectException(Exception::class);
