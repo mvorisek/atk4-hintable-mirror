@@ -34,8 +34,8 @@ class Standard extends Model
         $this->addField($this->fieldName()->dtMulti, ['type' => 'datetime', 'required' => true]);
 
         $this->addField($this->fieldName()->simpleOneId, ['type' => 'integer']);
-        $this->hasOne($this->fieldName()->simpleOne, ['model' => [Simple::class], 'our_field' => $this->fieldName()->simpleOneId]);
+        $this->hasOne($this->fieldName()->simpleOne, ['model' => [Simple::class], 'ourField' => $this->fieldName()->simpleOneId]);
 
-        $this->hasMany($this->fieldName()->simpleMany, ['model' => [Simple::class], 'their_field' => Simple::hinting()->fieldName()->refId]);
+        $this->hasMany($this->fieldName()->simpleMany, ['model' => [Simple::class], 'theirField' => Simple::hinting()->fieldName()->refId]);
     }
 }

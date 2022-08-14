@@ -112,7 +112,7 @@ class HintableModelArrayTest extends TestCase
     {
         $resAssoc = array_map(function (AtkModel $model) {
             return $model->id;
-        }, iterator_to_array((clone $model)->setOrder($model->id_field, 'asc')));
+        }, iterator_to_array((clone $model)->setOrder($model->idField, 'asc')));
 
         $this->assertSame(array_values($resAssoc), array_keys($resAssoc));
         $this->assertSame(array_values($resAssoc), $expectedIds);
@@ -222,7 +222,7 @@ class HintableModelArrayTest extends TestCase
         $this->assertNull($entityNull->simpleOne);
 
         $model->getReference($model->fieldName()->simpleOne)
-            ->setDefaults(['our_field' => $model->fieldName()->id]);
+            ->setDefaults(['ourField' => $model->fieldName()->id]);
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Unable to traverse on null value');
