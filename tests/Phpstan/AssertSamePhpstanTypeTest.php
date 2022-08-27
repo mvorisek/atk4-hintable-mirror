@@ -53,21 +53,21 @@ class AssertSamePhpstanTypeTest extends TestCase
 
     public function testFromExpression(): void
     {
-        $this->assertSamePhpstanType('null', null);
+        static::assertSamePhpstanType('null', null);
         $v = 0;
-        $this->assertSamePhpstanType('0', $v);
-        $this->assertSamePhpstanType('int<0, 10>', random_int(0, 10));
-        $this->assertSamePhpstanType(\DateTime::class, new \DateTime());
-        $this->assertSamePhpstanType('class-string<' . \DateTime::class . '>', get_class(new \DateTime()));
-        $this->assertSamePhpstanType('resource|false', fopen('php://memory', 'r'));
+        static::assertSamePhpstanType('0', $v);
+        static::assertSamePhpstanType('int<0, 10>', random_int(0, 10));
+        static::assertSamePhpstanType(\DateTime::class, new \DateTime());
+        static::assertSamePhpstanType('class-string<' . \DateTime::class . '>', get_class(new \DateTime()));
+        static::assertSamePhpstanType('resource|false', fopen('php://memory', 'r'));
     }
 
     public function testFromPhpdoc(): void
     {
-        $this->assertSamePhpstanType('DateTimeInterface', $this->demoReturnTypeSimple());
-        $this->assertSamePhpstanType('DateTimeInterface|stdClass', $this->demoReturnTypeUnion());
-        $this->assertSamePhpstanType('stdClass&Traversable<mixed, DateTime>', $this->demoReturnTypeIntersect());
-        $this->assertSamePhpstanType('class-string<DateTimeInterface>', $this->demoReturnTypeClassString());
-        $this->assertSamePhpstanType('array{1: int<1, max>}', $this->demoReturnTypeArrayWithShape());
+        static::assertSamePhpstanType('DateTimeInterface', $this->demoReturnTypeSimple());
+        static::assertSamePhpstanType('DateTimeInterface|stdClass', $this->demoReturnTypeUnion());
+        static::assertSamePhpstanType('stdClass&Traversable<mixed, DateTime>', $this->demoReturnTypeIntersect());
+        static::assertSamePhpstanType('class-string<DateTimeInterface>', $this->demoReturnTypeClassString());
+        static::assertSamePhpstanType('array{1: int<1, max>}', $this->demoReturnTypeArrayWithShape());
     }
 }

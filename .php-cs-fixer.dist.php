@@ -2,9 +2,7 @@
 
 $finder = PhpCsFixer\Finder::create()
     ->in([__DIR__])
-    ->exclude([
-        'vendor',
-    ]);
+    ->exclude(['vendor']);
 
 return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
@@ -29,6 +27,7 @@ return (new PhpCsFixer\Config())
             'equal' => false,
             'identical' => false,
         ],
+        'native_constant_invocation' => true,
         'native_function_invocation' => false,
         'void_return' => false,
         'blank_line_before_statement' => [
@@ -40,9 +39,6 @@ return (new PhpCsFixer\Config())
         'no_superfluous_elseif' => false,
         'ordered_class_elements' => false,
         'php_unit_internal_class' => false,
-        'php_unit_test_case_static_method_calls' => [
-            'call_type' => 'this',
-        ],
         'php_unit_test_class_requires_covers' => false,
         'phpdoc_add_missing_param_annotation' => false,
         'return_assignment' => false,

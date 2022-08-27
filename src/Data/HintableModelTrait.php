@@ -115,9 +115,9 @@ trait HintableModelTrait
         for ($i = 2;; ++$i) {
             if ($i >= $limit) {
                 $limit *= 2;
-                $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, $limit);
+                $trace = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT | \DEBUG_BACKTRACE_IGNORE_ARGS, $limit);
                 if ($entryMethodName === null) {
-                    if (PHP_MAJOR_VERSION === 7 && !str_starts_with($trace[1]['function'], '__hintable_')) {
+                    if (\PHP_MAJOR_VERSION === 7 && !str_starts_with($trace[1]['function'], '__hintable_')) {
                         // https://bugs.php.net/bug.php?id=69180
                         $entryMethodNameRenamed = [
                             '__isset' => '__hintable_isset',

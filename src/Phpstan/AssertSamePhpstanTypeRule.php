@@ -27,16 +27,16 @@ class AssertSamePhpstanTypeRule implements Rule
     }
 
     /** @var array<class-string, array<string, bool>> */
-    private static $_hasTraitMap = [];
+    private static $_hasTraitCache = [];
 
     /**
-     * Copied from https://github.com/atk4/core/blob/3.0.0/src/TraitUtil.php#L22 .
+     * Copied from https://github.com/atk4/core/blob/3d80f2a57a87c1577eba9734b0b4f291a721f44b/src/TraitUtil.php#L22 .
      *
      * @param class-string $class
      */
     private function hasTrait(string $class, string $traitName): bool
     {
-        if (!isset(self::$_hasTraitMap[$class][$traitName])) {
+        if (!isset(self::$_hasTraitCache[$class][$traitName])) {
             $getUsesFunc = function (string $trait) use (&$getUsesFunc): array {
                 $uses = class_uses($trait);
                 foreach ($uses as $use) {
@@ -47,15 +47,15 @@ class AssertSamePhpstanTypeRule implements Rule
             };
 
             $uses = [];
-            foreach (array_reverse(class_parents($class) ?: []) + [-1 => $class] as $class) {
-                $uses += $getUsesFunc($class);
+            foreach (array_reverse(class_parents($class)) + [-1 => $class] as $v) {
+                $uses += $getUsesFunc($v);
             }
             $uses = array_unique($uses);
 
-            self::$_hasTraitMap[$class][$traitName] = in_array($traitName, $uses, true);
+            self::$_hasTraitCache[$class][$traitName] = in_array($traitName, $uses, true);
         }
 
-        return self::$_hasTraitMap[$class][$traitName];
+        return self::$_hasTraitCache[$class][$traitName];
     }
 
     /**

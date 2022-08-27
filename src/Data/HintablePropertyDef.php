@@ -9,6 +9,9 @@ use Atk4\Data\Model;
 
 // @TODO use Doctrine Annotation? https://www.doctrine-project.org/projects/doctrine-annotations/en/latest/index.html#reading-annotations
 
+/**
+ * @phpstan-consistent-constructor
+ */
 class HintablePropertyDef
 {
     /** @const string No access restrictions */
@@ -82,7 +85,8 @@ class HintablePropertyDef
             }
 
             $classDefs = [];
-            $classDoc = preg_replace('~\s+~', ' ', preg_replace('~^\s*(?:/\s*)?\*+(?:/\s*$)?|\s*\*+/\s*$~m', '', $classRefl->getDocComment() ?: ''));
+            $classDocRaw = $classRefl->getDocComment();
+            $classDoc = $classDocRaw !== false ? preg_replace('~\s+~', ' ', preg_replace('~^\s*(?:/\s*)?\*+(?:/\s*$)?|\s*\*+/\s*$~m', '', $classDocRaw)) : '';
             foreach (preg_split('~(?<!\w)(?=@property(?!\w))~', $classDoc) as $l) {
                 $def = static::createFromClassDocLine($className, $l);
                 if ($def !== null) {
