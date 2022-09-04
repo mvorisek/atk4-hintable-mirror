@@ -11,7 +11,7 @@
     ],
     "homepage": "https://www.mvorisek.com/",
     "require": {
-        "php": ">=7.4 <8.2",
+        "php": ">=7.4 <8.3",
         "atk4/data": "~4.0.0 || dev-develop"
     },
     "require-dev": {
