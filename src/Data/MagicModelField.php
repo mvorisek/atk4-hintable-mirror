@@ -11,6 +11,7 @@ use Mvorisek\Atk4\Hintable\Core\MagicAbstract;
 /**
  * @template-covariant TTargetClass of object
  * @template-covariant TReturnType
+ *
  * @extends MagicAbstract<TTargetClass&Model, TReturnType>
  *
  * @property Model $_atk__core__hintable_magic__class

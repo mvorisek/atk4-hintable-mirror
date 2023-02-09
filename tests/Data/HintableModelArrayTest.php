@@ -99,6 +99,7 @@ class HintableModelArrayTest extends TestCase
         $model = new Model\Standard();
         $model->invokeInit();
 
+        $model->getReference($model->fieldName()->simpleOne)->checkTheirType = false;
         static::assertInstanceOf(Model\Simple::class, $model->simpleOne);
 
         // TODO atk4/data does not support traversing 1:N reference without persistence

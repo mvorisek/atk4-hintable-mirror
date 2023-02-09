@@ -7,6 +7,7 @@ namespace Mvorisek\Atk4\Hintable\Core;
 /**
  * @template-covariant TTargetClass of object
  * @template-covariant TReturnType
+ *
  * @extends MagicAbstract<TTargetClass, TReturnType>
  */
 class MagicProp extends MagicAbstract
