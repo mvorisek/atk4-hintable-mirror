@@ -44,7 +44,7 @@ class PropTest extends TestCase
     {
         $mock = new PropMock();
         static::assertSame(21, $mock->pubInt);
-        static::assertIsString($mock->propName()->pubInt);
+        static::assertIsString($mock->propName()->pubInt); // @phpstan-ignore-line
         $this->expectException(\TypeError::class);
         static::assertSame('unused', chr($mock->propName()->pubInt)); // @phpstan-ignore-line
     }

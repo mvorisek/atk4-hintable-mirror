@@ -15,7 +15,7 @@ use Atk4\Core\Exception;
 abstract class MagicAbstract
 {
     /** @var TTargetClass|class-string<TTargetClass> */
-    protected $_atk__core__hintable_magic__class;
+    protected $_atk__core__hintable_magic__class; // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/9195
     /** @var string */
     protected $_atk__core__hintable_magic__type;
 

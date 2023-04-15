@@ -24,6 +24,32 @@ parameters:
         # relax strict rules
         - '~^Variable (static )?(property access|method call) on .+\.~'
 
+        # TODO https://github.com/phpstan/phpstan/issues/8311#issuecomment-1509916189
+        -
+            message: '~^Doing instanceof PHPStan\\Type\\Constant\\ConstantStringType is error-prone and deprecated\. Use Type::getConstantStrings\(\) instead\.$~'
+            path: 'src/Phpstan/AssertSamePhpstanTypeRule.php'
+            count: 1
+        -
+            message: '~^Doing instanceof PHPStan\\Type\\IntersectionType is error-prone and deprecated\.$~'
+            path: 'src/Phpstan/SeedDmrtExtension.php'
+            count: 1
+        -
+            message: '~^Doing instanceof PHPStan\\Type\\ObjectType is error-prone and deprecated\. Use Type::isObject\(\) or Type::getObjectClassNames\(\) instead\.$~'
+            path: 'src/Phpstan/SeedDmrtExtension.php'
+            count: 1
+        -
+            message: '~^Doing instanceof PHPStan\\Type\\Constant\\ConstantArrayType is error-prone and deprecated\. Use Type::getConstantArrays\(\) instead\.$~'
+            path: 'src/Phpstan/SeedDmrtExtension.php'
+            count: 1
+        -
+            message: '~^Doing instanceof PHPStan\\Type\\Constant\\ConstantStringType is error-prone and deprecated\. Use Type::getConstantStrings\(\) instead\.$~'
+            path: 'src/Phpstan/SeedDmrtExtension.php'
+            count: 1
+        -
+            message: '~^Doing instanceof PHPStan\\Type\\Generic\\GenericClassStringType is error-prone and deprecated\. Use Type::isClassStringType\(\) and Type::getClassStringObjectType\(\) instead\.$~'
+            path: 'src/Phpstan/SeedDmrtExtension.php'
+            count: 1
+
         -
             message: '~^Function class_uses\(\) is a runtime reflection concept that might not work in PHPStan because it uses fully static reflection engine\. Use objects retrieved from ReflectionProvider instead\.$~'
             path: 'src/Phpstan/AssertSamePhpstanTypeRule.php'

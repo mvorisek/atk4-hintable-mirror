@@ -8,6 +8,7 @@ use PhpParser\Node;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\VerbosityLevel;
 
 /**
@@ -83,14 +84,14 @@ class AssertSamePhpstanTypeRule implements Rule
             ];
         }
 
-        $expectedTypeStringTypes = $scope->getType($node->getArgs()[0]->value)->getConstantStrings();
-        if (count($expectedTypeStringTypes) !== 1) {
+        $expectedTypeStringType = $scope->getType($node->getArgs()[0]->value);
+        if (!$expectedTypeStringType instanceof ConstantStringType) {
             return [
                 RuleErrorBuilder::message('Expected type must be a literal string.')->nonIgnorable()->build(),
             ];
         }
 
-        $expectedTypeString = $expectedTypeStringTypes[0]->getValue();
+        $expectedTypeString = $expectedTypeStringType->getValue();
         $actualTypeString = $scope->getType($node->getArgs()[1]->value)->describe(VerbosityLevel::precise());
         if ($actualTypeString !== $expectedTypeString) {
             return [

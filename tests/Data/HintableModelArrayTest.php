@@ -197,10 +197,10 @@ class HintableModelArrayTest extends TestCase
         $model = new Model\Standard($db);
 
         $entity13 = $model->load(13);
-        static::assertNull($entity13->simpleOne);
+        static::assertNull($entity13->simpleOne); // @phpstan-ignore-line
 
         $entityNull = $model->createEntity();
-        static::assertNull($entityNull->simpleOne);
+        static::assertNull($entityNull->simpleOne); // @phpstan-ignore-line
     }
 
     public function testRefOneTraverseInvalidException(): void
@@ -220,7 +220,7 @@ class HintableModelArrayTest extends TestCase
         $model = new Model\Standard($db);
         $entityNull = $model->createEntity();
 
-        static::assertNull($entityNull->simpleOne);
+        static::assertNull($entityNull->simpleOne); // @phpstan-ignore-line
 
         $model->getReference($model->fieldName()->simpleOne)
             ->setDefaults(['ourField' => $model->fieldName()->id]);
@@ -246,9 +246,9 @@ class HintableModelArrayTest extends TestCase
         $db = $this->createDatabaseForRefTest();
         $model = new Model\Simple($db);
 
-        static::assertIsString($model->loadAny()->x);
+        static::assertIsString($model->loadAny()->x); // @phpstan-ignore-line
         foreach ($model as $modelItem) {
-            static::assertIsString($modelItem->x);
+            static::assertIsString($modelItem->x); // @phpstan-ignore-line
         }
     }
 }
