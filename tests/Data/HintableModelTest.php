@@ -129,13 +129,13 @@ class HintableModelTest extends TestCase
                 parent::init();
                 $this->__extra_init();
 
-                $this->addField($this->fieldName()->anx, ['type' => 'string', 'required' => true, 'default' => 'anxDef']);
+                $this->addField($this->fieldName()->anx, ['type' => 'string', 'required' => true, 'default' => 'anxDef']); // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/7345
             }
         };
         static::assertSame('anony', $model->table);
         static::assertSame('t', $model->fieldName()->t);
         static::assertSame('te', $model->fieldName()->te);
-        static::assertSame('anx', $model->fieldName()->anx);
+        static::assertSame('anx', $model->fieldName()->anx); // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/7345
         static::assertSame('anxDef', $model->createEntity()->anx); // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/7345
     }
 

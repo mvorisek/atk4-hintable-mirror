@@ -8,7 +8,6 @@ use PhpParser\Node;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
-use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\VerbosityLevel;
 
 /**
@@ -30,37 +29,36 @@ class AssertSamePhpstanTypeRule implements Rule
     private static $_hasTraitCache = [];
 
     /**
-     * Copied from https://github.com/atk4/core/blob/3d80f2a57a87c1577eba9734b0b4f291a721f44b/src/TraitUtil.php#L22 .
+     * Copied from https://github.com/atk4/core/blob/5aa6a4c3291564114252bc97f0c38660dba1da41/src/TraitUtil.php#L22 .
      *
      * @param class-string $class
      */
-    private function hasTrait(string $class, string $traitName): bool
+    private static function hasTrait($class, string $traitName): bool
     {
         if (!isset(self::$_hasTraitCache[$class][$traitName])) {
-            $getUsesFunc = function (string $trait) use (&$getUsesFunc): array {
-                $uses = class_uses($trait);
-                foreach ($uses as $use) {
-                    $uses += $getUsesFunc($use);
+            $parentClass = get_parent_class($class);
+            if ($parentClass !== false && self::hasTrait($parentClass, $traitName)) {
+                self::$_hasTraitCache[$class][$traitName] = true;
+            } else {
+                $hasTrait = false;
+                foreach (class_uses($class) as $useName) {
+                    if ($useName === $traitName || self::hasTrait($useName, $traitName)) {
+                        $hasTrait = true;
+
+                        break;
+                    }
                 }
 
-                return $uses;
-            };
-
-            $uses = [];
-            foreach (array_reverse(class_parents($class)) + [-1 => $class] as $v) {
-                $uses += $getUsesFunc($v);
+                self::$_hasTraitCache[$class][$traitName] = $hasTrait;
             }
-            $uses = array_unique($uses);
-
-            self::$_hasTraitCache[$class][$traitName] = in_array($traitName, $uses, true);
         }
 
         return self::$_hasTraitCache[$class][$traitName];
     }
 
     /**
-     * Based on https://github.com/phpstan/phpstan-src/blob/03341cc6bf010faf1e99f1dbddf5cea66d56e3cf/src/Rules/Debug/DumpTypeRule.php
-     * and https://github.com/phpstan/phpstan-src/blob/03341cc6bf010faf1e99f1dbddf5cea66d56e3cf/src/Rules/Debug/FileAssertRule.php .
+     * Based on https://github.com/phpstan/phpstan-src/blob/1.10.12/src/Rules/Debug/DumpTypeRule.php#L30
+     * and https://github.com/phpstan/phpstan-src/blob/1.10.12/src/Rules/Debug/FileAssertRule.php#L63 .
      *
      * @param Node\Expr\MethodCall $node
      */
@@ -85,14 +83,14 @@ class AssertSamePhpstanTypeRule implements Rule
             ];
         }
 
-        $expectedTypeStringType = $scope->getType($node->getArgs()[0]->value);
-        if (!$expectedTypeStringType instanceof ConstantStringType) {
+        $expectedTypeStringTypes = $scope->getType($node->getArgs()[0]->value)->getConstantStrings();
+        if (count($expectedTypeStringTypes) !== 1) {
             return [
                 RuleErrorBuilder::message('Expected type must be a literal string.')->nonIgnorable()->build(),
             ];
         }
 
-        $expectedTypeString = $expectedTypeStringType->getValue();
+        $expectedTypeString = $expectedTypeStringTypes[0]->getValue();
         $actualTypeString = $scope->getType($node->getArgs()[1]->value)->describe(VerbosityLevel::precise());
         if ($actualTypeString !== $expectedTypeString) {
             return [

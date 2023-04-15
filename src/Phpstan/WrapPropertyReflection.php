@@ -12,6 +12,6 @@ class WrapPropertyReflection extends AnnotationPropertyReflection
 {
     public function __construct(ClassReflection $declaringClass, Type $type)
     {
-        parent::__construct($declaringClass, $type, true, false);
+        parent::__construct($declaringClass, $type, $type, true, false);
     }
 }

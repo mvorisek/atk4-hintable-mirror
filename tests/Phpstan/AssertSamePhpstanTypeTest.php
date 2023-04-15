@@ -32,7 +32,7 @@ class AssertSamePhpstanTypeTest extends TestCase
      */
     private function demoReturnTypeIntersect()
     {
-        return new \stdClass(); // @phpstan-ignore-line
+        return new \stdClass();
     }
 
     /**

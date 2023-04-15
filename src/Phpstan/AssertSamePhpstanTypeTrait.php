@@ -15,6 +15,7 @@ trait AssertSamePhpstanTypeTrait
         PhpstanUtil::ignoreUnusedVariable($expectedPhpstanType);
         PhpstanUtil::ignoreUnusedVariable($value);
 
-        static::assertTrue(true); // assertion is done by AssertSamePhpstanTypeRule phpstan rule
+        // assertion is done by AssertSamePhpstanTypeRule phpstan rule
+        static::assertFalse(PhpstanUtil::alwaysFalseAnalyseOnly());
     }
 }

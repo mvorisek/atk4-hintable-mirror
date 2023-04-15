@@ -6,6 +6,9 @@ namespace Mvorisek\Atk4\Hintable\Phpstan;
 
 class PhpstanUtil
 {
+    /**
+     * @phpstan-impure
+     */
     final public static function alwaysFalseAnalyseOnly(): bool
     {
         return false;
@@ -23,6 +26,8 @@ class PhpstanUtil
 
     /**
      * @return true
+     *
+     * @phpstan-impure
      */
     private static function fakeAlwaysTrue(): bool
     {

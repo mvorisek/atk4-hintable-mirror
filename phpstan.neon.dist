@@ -29,10 +29,6 @@ parameters:
             path: 'src/Phpstan/AssertSamePhpstanTypeRule.php'
             count: 1
         -
-            message: '~^Function class_parents\(\) is a runtime reflection concept that might not work in PHPStan because it uses fully static reflection engine\. Use objects retrieved from ReflectionProvider instead\.$~'
-            path: 'src/Phpstan/AssertSamePhpstanTypeRule.php'
-            count: 1
-        -
             message: '~^Trait Mvorisek\\Atk4\\Hintable\\Data\\HintableModelTrait is used zero times and is not analysed\.$~'
             path: 'src/Data/HintableModelTrait.php'
             count: 1

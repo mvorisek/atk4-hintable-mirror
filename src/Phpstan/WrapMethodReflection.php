@@ -12,6 +12,6 @@ class WrapMethodReflection extends AnnotationMethodReflection
 {
     public function __construct(string $name, ClassReflection $declaringClass, Type $returnType)
     {
-        parent::__construct($name, $declaringClass, $returnType, [], false, false);
+        parent::__construct($name, $declaringClass, $returnType, [], false, false, null);
     }
 }
