@@ -16,7 +16,7 @@ trait MethodTrait
      */
     public function methodName()
     {
-        return Method::methodName($this); // @phpstan-ignore-line
+        return Method::methodName($this);
     }
 
     /**
@@ -29,7 +29,7 @@ trait MethodTrait
      */
     public function methodNameFull()
     {
-        return Method::methodNameFull($this); // @phpstan-ignore-line
+        return Method::methodNameFull($this);
     }
 
     /**
@@ -42,7 +42,7 @@ trait MethodTrait
      */
     public function methodClosure()
     {
-        return Method::methodClosure($this); // @phpstan-ignore-line
+        return Method::methodClosure($this);
     }
 
     /**
@@ -55,6 +55,6 @@ trait MethodTrait
      */
     public function methodClosureProtected()
     {
-        return Method::methodClosureProtected($this); // @phpstan-ignore-line
+        return Method::methodClosureProtected($this);
     }
 }

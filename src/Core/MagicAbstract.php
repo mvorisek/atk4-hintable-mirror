@@ -7,15 +7,15 @@ namespace Mvorisek\Atk4\Hintable\Core;
 use Atk4\Core\Exception;
 
 /**
- * @template-covariant TTargetClass of object
- * @template-covariant TReturnType
+ * @template TTargetClass of object
+ * @template TReturnType
  *
  * @phpstan-consistent-constructor
  */
 abstract class MagicAbstract
 {
     /** @var TTargetClass|class-string<TTargetClass> */
-    protected $_atk__core__hintable_magic__class; // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/9195
+    protected $_atk__core__hintable_magic__class;
     /** @var string */
     protected $_atk__core__hintable_magic__type;
 

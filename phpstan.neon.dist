@@ -50,6 +50,17 @@ parameters:
             path: 'src/Phpstan/SeedDmrtExtension.php'
             count: 1
 
+        # https://github.com/phpstan/phpstan/issues/4945
+        # https://github.com/phpstan/phpstan/issues/6175
+        -
+            message: '~^Method Mvorisek\\Atk4\\Hintable\\Tests\\Core\\MethodMock::(methodName|methodNameFull|methodClosure|methodClosureProtected)\(\) should return Mvorisek\\Atk4\\Hintable\\Core\\MagicMethod<static\(Mvorisek\\Atk4\\Hintable\\Tests\\Core\\MethodMock\), (string|Closure)> but returns Mvorisek\\Atk4\\Hintable\\Core\\MagicMethod<\$this\(Mvorisek\\Atk4\\Hintable\\Tests\\Core\\MethodMock\), (string|Closure)>\.$~'
+            path: 'src/Core/MethodTrait.php'
+            count: 4
+        -
+            message: '~^Method Mvorisek\\Atk4\\Hintable\\Tests\\Core\\PropMock::(propName|propNameFull)\(\) should return Mvorisek\\Atk4\\Hintable\\Core\\MagicProp<static\(Mvorisek\\Atk4\\Hintable\\Tests\\Core\\PropMock\), string> but returns Mvorisek\\Atk4\\Hintable\\Core\\MagicProp<\$this\(Mvorisek\\Atk4\\Hintable\\Tests\\Core\\PropMock\), string>\.$~'
+            path: 'src/Core/PropTrait.php'
+            count: 2
+
         -
             message: '~^Function class_uses\(\) is a runtime reflection concept that might not work in PHPStan because it uses fully static reflection engine\. Use objects retrieved from ReflectionProvider instead\.$~'
             path: 'src/Phpstan/AssertSamePhpstanTypeRule.php'
