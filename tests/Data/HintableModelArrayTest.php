@@ -77,21 +77,21 @@ class HintableModelArrayTest extends TestCase
         $model = new Model\Simple($db);
 
         $entity = $model->load(1);
-        static::assertSame(1, $entity->getId());
-        static::assertSame(1, $entity->id);
-        static::assertSame('a', $entity->x);
-        static::assertSame(11, $entity->refId);
-        static::assertSame(11, $entity->ref->id);
+        self::assertSame(1, $entity->getId());
+        self::assertSame(1, $entity->id);
+        self::assertSame('a', $entity->x);
+        self::assertSame(11, $entity->refId);
+        self::assertSame(11, $entity->ref->id);
 
         $entity = $model->load(2);
-        static::assertSame('b1', $entity->x);
-        static::assertSame(12, $entity->ref->id);
+        self::assertSame('b1', $entity->x);
+        self::assertSame(12, $entity->ref->id);
 
         $entity = $model->load(3);
-        static::assertSame('b2', $entity->x);
-        static::assertSame(12, $entity->ref->id);
+        self::assertSame('b2', $entity->x);
+        self::assertSame(12, $entity->ref->id);
 
-        static::assertNull($model->tryLoad(4));
+        self::assertNull($model->tryLoad(4));
     }
 
     public function testRefWithoutPersistence(): void
@@ -100,10 +100,10 @@ class HintableModelArrayTest extends TestCase
         $model->invokeInit();
 
         $model->getReference($model->fieldName()->simpleOne)->checkTheirType = false;
-        static::assertInstanceOf(Model\Simple::class, $model->simpleOne);
+        self::assertInstanceOf(Model\Simple::class, $model->simpleOne);
 
         // TODO atk4/data does not support traversing 1:N reference without persistence
-        // $this->assertInstanceOf(Model\Simple::class, $model->simpleMany);
+        // self::assertInstanceOf(Model\Simple::class, $model->simpleMany);
     }
 
     /**
@@ -115,8 +115,8 @@ class HintableModelArrayTest extends TestCase
             return $model->id;
         }, iterator_to_array((clone $model)->setOrder($model->idField, 'asc')));
 
-        static::assertSame(array_values($resAssoc), array_keys($resAssoc));
-        static::assertSame(array_values($resAssoc), $expectedIds);
+        self::assertSame(array_values($resAssoc), array_keys($resAssoc));
+        self::assertSame(array_values($resAssoc), $expectedIds);
     }
 
     public function testRefOne(): void
@@ -124,26 +124,26 @@ class HintableModelArrayTest extends TestCase
         $db = $this->createDatabaseForRefTest();
         $model = new Model\Standard($db);
 
-        static::assertInstanceOf(Model\Simple::class, $model->simpleOne);
-        static::assertInstanceOf(Model\Simple::class, $model->load(11)->simpleOne);
-        static::assertSame(1, $model->load(11)->simpleOne->id);
-        static::assertSame('a', $model->load(11)->simpleOne->x);
-        static::assertSame(3, $model->load(12)->simpleOne->id);
-        static::assertSame('b2', $model->load(12)->simpleOne->x);
-        static::assertSame(3, $model->load(12)->simpleOne->getModel()->loadOne()->id);
+        self::assertInstanceOf(Model\Simple::class, $model->simpleOne);
+        self::assertInstanceOf(Model\Simple::class, $model->load(11)->simpleOne);
+        self::assertSame(1, $model->load(11)->simpleOne->id);
+        self::assertSame('a', $model->load(11)->simpleOne->x);
+        self::assertSame(3, $model->load(12)->simpleOne->id);
+        self::assertSame('b2', $model->load(12)->simpleOne->x);
+        self::assertSame(3, $model->load(12)->simpleOne->getModel()->loadOne()->id);
         $simpleXName = $model->simpleOne->fieldName()->x;
-        static::assertSame('b2', $model->load(12)->simpleOne->getModel()->loadBy($simpleXName, 'b2')->x);
+        self::assertSame('b2', $model->load(12)->simpleOne->getModel()->loadBy($simpleXName, 'b2')->x);
 
         if ($db instanceof Persistence\Array_) { // TODO https://github.com/atk4/data/issues/997
-            static::assertModelIds([1, 2, 3], $model->simpleOne);
+            self::assertModelIds([1, 2, 3], $model->simpleOne);
         } else {
-            static::assertModelIds([1, 3], $model->simpleOne);
+            self::assertModelIds([1, 3], $model->simpleOne);
         }
-        static::assertModelIds([1], $model->load(11)->simpleOne->getModel());
-        static::assertModelIds([3], $model->load(12)->simpleOne->getModel());
-        static::assertSame(3, $model->load(12)->simpleOne->getModel()->loadBy($simpleXName, 'b2')->id);
-        static::assertNull($model->load(11)->simpleOne->getModel()->tryLoadBy($simpleXName, 'b2'));
-        static::assertModelIds([3], $model->load(12)->simpleOne->getModel()->loadBy($simpleXName, 'b2')->getModel());
+        self::assertModelIds([1], $model->load(11)->simpleOne->getModel());
+        self::assertModelIds([3], $model->load(12)->simpleOne->getModel());
+        self::assertSame(3, $model->load(12)->simpleOne->getModel()->loadBy($simpleXName, 'b2')->id);
+        self::assertNull($model->load(11)->simpleOne->getModel()->tryLoadBy($simpleXName, 'b2'));
+        self::assertModelIds([3], $model->load(12)->simpleOne->getModel()->loadBy($simpleXName, 'b2')->getModel());
     }
 
     public function testRefMany(): void
@@ -151,22 +151,22 @@ class HintableModelArrayTest extends TestCase
         $db = $this->createDatabaseForRefTest();
         $model = new Model\Standard($db);
 
-        static::assertInstanceOf(Model\Simple::class, $model->simpleMany);
-        static::assertInstanceOf(Model\Simple::class, $model->load(11)->simpleMany);
-        static::assertSame(1, $model->load(11)->simpleMany->loadOne()->id);
-        static::assertSame('a', $model->load(11)->simpleMany->loadOne()->x);
-        static::assertSame(2, $model->load(12)->simpleMany->load(2)->id);
-        static::assertSame('b1', $model->load(12)->simpleMany->load(2)->x);
-        static::assertSame(3, $model->load(12)->simpleMany->load(3)->id);
-        static::assertSame('b2', $model->load(12)->simpleMany->load(3)->x);
+        self::assertInstanceOf(Model\Simple::class, $model->simpleMany);
+        self::assertInstanceOf(Model\Simple::class, $model->load(11)->simpleMany);
+        self::assertSame(1, $model->load(11)->simpleMany->loadOne()->id);
+        self::assertSame('a', $model->load(11)->simpleMany->loadOne()->x);
+        self::assertSame(2, $model->load(12)->simpleMany->load(2)->id);
+        self::assertSame('b1', $model->load(12)->simpleMany->load(2)->x);
+        self::assertSame(3, $model->load(12)->simpleMany->load(3)->id);
+        self::assertSame('b2', $model->load(12)->simpleMany->load(3)->x);
 
-        static::assertModelIds([1, 2, 3], $model->simpleMany);
-        static::assertModelIds([1], $model->load(11)->simpleMany);
-        static::assertModelIds([2, 3], $model->load(12)->simpleMany);
+        self::assertModelIds([1, 2, 3], $model->simpleMany);
+        self::assertModelIds([1], $model->load(11)->simpleMany);
+        self::assertModelIds([2, 3], $model->load(12)->simpleMany);
         $simpleXName = $model->simpleMany->fieldName()->x;
-        static::assertSame(3, $model->load(12)->simpleMany->loadBy($simpleXName, 'b2')->id);
-        static::assertNull($model->load(11)->simpleMany->tryLoadBy($simpleXName, 'b2'));
-        static::assertModelIds([2, 3], $model->load(12)->simpleMany->loadBy($simpleXName, 'b2')->getModel());
+        self::assertSame(3, $model->load(12)->simpleMany->loadBy($simpleXName, 'b2')->id);
+        self::assertNull($model->load(11)->simpleMany->tryLoadBy($simpleXName, 'b2'));
+        self::assertModelIds([2, 3], $model->load(12)->simpleMany->loadBy($simpleXName, 'b2')->getModel());
     }
 
     public function testRefOneLoadOneException(): void
@@ -197,10 +197,10 @@ class HintableModelArrayTest extends TestCase
         $model = new Model\Standard($db);
 
         $entity13 = $model->load(13);
-        static::assertNull($entity13->simpleOne); // @phpstan-ignore-line
+        self::assertNull($entity13->simpleOne); // @phpstan-ignore-line
 
         $entityNull = $model->createEntity();
-        static::assertNull($entityNull->simpleOne); // @phpstan-ignore-line
+        self::assertNull($entityNull->simpleOne); // @phpstan-ignore-line
     }
 
     public function testRefOneTraverseInvalidException(): void
@@ -220,7 +220,7 @@ class HintableModelArrayTest extends TestCase
         $model = new Model\Standard($db);
         $entityNull = $model->createEntity();
 
-        static::assertNull($entityNull->simpleOne); // @phpstan-ignore-line
+        self::assertNull($entityNull->simpleOne); // @phpstan-ignore-line
 
         $model->getReference($model->fieldName()->simpleOne)
             ->setDefaults(['ourField' => $model->fieldName()->id]);
@@ -246,9 +246,9 @@ class HintableModelArrayTest extends TestCase
         $db = $this->createDatabaseForRefTest();
         $model = new Model\Simple($db);
 
-        static::assertIsString($model->loadAny()->x); // @phpstan-ignore-line
+        self::assertIsString($model->loadAny()->x); // @phpstan-ignore-line
         foreach ($model as $modelItem) {
-            static::assertIsString($modelItem->x); // @phpstan-ignore-line
+            self::assertIsString($modelItem->x); // @phpstan-ignore-line
         }
     }
 }

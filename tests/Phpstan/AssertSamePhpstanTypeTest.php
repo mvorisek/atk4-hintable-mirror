@@ -53,21 +53,21 @@ class AssertSamePhpstanTypeTest extends TestCase
 
     public function testFromExpression(): void
     {
-        static::assertSamePhpstanType('null', null);
+        self::assertSamePhpstanType('null', null);
         $v = 0;
-        static::assertSamePhpstanType('0', $v);
-        static::assertSamePhpstanType('int<0, 10>', random_int(0, 10));
-        static::assertSamePhpstanType(\DateTime::class, new \DateTime());
-        static::assertSamePhpstanType('class-string<' . \DateTime::class . '>', get_class(new \DateTime()));
-        static::assertSamePhpstanType('resource|false', fopen('php://memory', 'r'));
+        self::assertSamePhpstanType('0', $v);
+        self::assertSamePhpstanType('int<0, 10>', random_int(0, 10));
+        self::assertSamePhpstanType(\DateTime::class, new \DateTime());
+        self::assertSamePhpstanType('class-string<' . \DateTime::class . '>', get_class(new \DateTime()));
+        self::assertSamePhpstanType('resource|false', fopen('php://memory', 'r'));
     }
 
     public function testFromPhpdoc(): void
     {
-        static::assertSamePhpstanType('DateTimeInterface', $this->demoReturnTypeSimple());
-        static::assertSamePhpstanType('DateTimeInterface|stdClass', $this->demoReturnTypeUnion());
-        static::assertSamePhpstanType('stdClass&Traversable<mixed, DateTime>', $this->demoReturnTypeIntersect());
-        static::assertSamePhpstanType('class-string<DateTimeInterface>', $this->demoReturnTypeClassString());
-        static::assertSamePhpstanType('array{1: int<1, max>}', $this->demoReturnTypeArrayWithShape());
+        self::assertSamePhpstanType('DateTimeInterface', $this->demoReturnTypeSimple());
+        self::assertSamePhpstanType('DateTimeInterface|stdClass', $this->demoReturnTypeUnion());
+        self::assertSamePhpstanType('stdClass&Traversable<mixed, DateTime>', $this->demoReturnTypeIntersect());
+        self::assertSamePhpstanType('class-string<DateTimeInterface>', $this->demoReturnTypeClassString());
+        self::assertSamePhpstanType('array{1: int<1, max>}', $this->demoReturnTypeArrayWithShape());
     }
 }

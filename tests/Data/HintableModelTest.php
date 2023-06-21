@@ -18,18 +18,18 @@ class HintableModelTest extends TestCase
     public function testFieldName(): void
     {
         $model = new Model\Simple();
-        static::assertSame('simple', $model->table);
-        static::assertSame('x', $model->fieldName()->x);
-        static::assertSame('x', Model\Simple::hinting()->fieldName()->x);
+        self::assertSame('simple', $model->table);
+        self::assertSame('x', $model->fieldName()->x);
+        self::assertSame('x', Model\Simple::hinting()->fieldName()->x);
 
         $model = new Model\Standard();
-        static::assertSame('prefix_standard', $model->table);
-        static::assertSame('x', $model->fieldName()->x);
-        static::assertSame('yy', $model->fieldName()->y);
-        static::assertSame('id', $model->fieldName()->id);
-        static::assertSame('name', $model->fieldName()->_name);
-        static::assertSame('simpleOne', $model->fieldName()->simpleOne);
-        static::assertSame('simpleMany', $model->fieldName()->simpleMany);
+        self::assertSame('prefix_standard', $model->table);
+        self::assertSame('x', $model->fieldName()->x);
+        self::assertSame('yy', $model->fieldName()->y);
+        self::assertSame('id', $model->fieldName()->id);
+        self::assertSame('name', $model->fieldName()->_name);
+        self::assertSame('simpleOne', $model->fieldName()->simpleOne);
+        self::assertSame('simpleMany', $model->fieldName()->simpleMany);
     }
 
     public function testFieldNameUndeclaredException(): void
@@ -101,18 +101,18 @@ class HintableModelTest extends TestCase
         $db = new Persistence\Array_();
 
         $model = new Mi\A($db);
-        static::assertSame('inheritance', $model->table);
-        static::assertSame('ax', $model->fieldName()->ax);
-        static::assertSame('t', $model->fieldName()->t);
-        static::assertSame('id', $model->fieldName()->pk);
+        self::assertSame('inheritance', $model->table);
+        self::assertSame('ax', $model->fieldName()->ax);
+        self::assertSame('t', $model->fieldName()->t);
+        self::assertSame('id', $model->fieldName()->pk);
 
         $model = new Mi\B($db);
-        static::assertSame('inheritance', $model->table);
-        static::assertSame('ax', $model->fieldName()->ax);
-        static::assertSame('t', $model->fieldName()->t);
-        static::assertSame('bx', $model->fieldName()->pk);
-        static::assertSame('bx', $model->fieldName()->bx);
-        static::assertSame('te', $model->fieldName()->te);
+        self::assertSame('inheritance', $model->table);
+        self::assertSame('ax', $model->fieldName()->ax);
+        self::assertSame('t', $model->fieldName()->t);
+        self::assertSame('bx', $model->fieldName()->pk);
+        self::assertSame('bx', $model->fieldName()->bx);
+        self::assertSame('te', $model->fieldName()->te);
 
         /**
          * @property string $anx @Atk4\Field()
@@ -132,11 +132,11 @@ class HintableModelTest extends TestCase
                 $this->addField($this->fieldName()->anx, ['type' => 'string', 'required' => true, 'default' => 'anxDef']); // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/7345
             }
         };
-        static::assertSame('anony', $model->table);
-        static::assertSame('t', $model->fieldName()->t);
-        static::assertSame('te', $model->fieldName()->te);
-        static::assertSame('anx', $model->fieldName()->anx); // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/7345
-        static::assertSame('anxDef', $model->createEntity()->anx); // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/7345
+        self::assertSame('anony', $model->table);
+        self::assertSame('t', $model->fieldName()->t);
+        self::assertSame('te', $model->fieldName()->te);
+        self::assertSame('anx', $model->fieldName()->anx); // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/7345
+        self::assertSame('anxDef', $model->createEntity()->anx); // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/7345
     }
 
     /**
@@ -144,7 +144,7 @@ class HintableModelTest extends TestCase
      * @param class-string<AtkModel>      $modelClass
      * @param 'isset'|'get'|'set'|'unset' $operation
      *
-     * @dataProvider providerVisibility
+     * @dataProvider provideVisibilityCases
      */
     public function testVisibility(?string $scopeClass, string $modelClass, string $propertyName, string $operation, ?string $expectedExceptionMessage): void
     {
@@ -153,9 +153,8 @@ class HintableModelTest extends TestCase
         $entity = $model->createEntity();
         $testCase = $this;
         \Closure::bind(static function () use ($entity, $testCase, $propertyName, $operation, $expectedExceptionMessage): void {
-            $testCaseClass = get_class($testCase);
             $fieldName = $entity->fieldName()->{$propertyName};
-            $testCaseClass::assertSame($fieldName, $entity->getModel()->fieldName()->{$propertyName});
+            TestCase::assertSame($fieldName, $entity->getModel()->fieldName()->{$propertyName});
             $testValue = $entity->getModel()->getField($fieldName)->type === 'integer' ? 2 : '$v';
 
             if ($expectedExceptionMessage !== null) {
@@ -164,17 +163,17 @@ class HintableModelTest extends TestCase
             }
 
             if ($operation === 'isset') {
-                $testCaseClass::assertTrue(isset($entity->{$propertyName}));
+                TestCase::assertTrue(isset($entity->{$propertyName}));
             } elseif ($operation === 'get') {
                 $entity->set($fieldName, $testValue);
-                $testCaseClass::assertSame($testValue, $entity->{$propertyName});
+                TestCase::assertSame($testValue, $entity->{$propertyName});
             } elseif ($operation === 'set') {
                 $entity->{$propertyName} = $testValue;
-                $testCaseClass::assertSame($testValue, $entity->{$propertyName});
+                TestCase::assertSame($testValue, $entity->{$propertyName});
             } else {
                 unset($entity->{$propertyName});
-                $testCaseClass::assertTrue(isset($entity->{$propertyName}));
-                $testCaseClass::assertNull($entity->{$propertyName});
+                TestCase::assertTrue(isset($entity->{$propertyName}));
+                TestCase::assertNull($entity->{$propertyName});
             }
         }, null, $scopeClass)();
     }
@@ -182,7 +181,7 @@ class HintableModelTest extends TestCase
     /**
      * @return array<mixed>[]
      */
-    public function providerVisibility(): array
+    public function provideVisibilityCases(): array
     {
         return [
             [AtkModel::class, AtkModel::class, 'id', 'get', null],

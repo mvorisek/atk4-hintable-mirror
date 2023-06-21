@@ -16,21 +16,21 @@ class PropTest extends TestCase
     public function testPropName(): void
     {
         $mock = new PropMock();
-        static::assertSame('pub', $mock->propName()->pub);
-        static::assertSame('priv', $mock->propName()->priv);
-        static::assertSame('undeclared', $mock->propName()->undeclared); // @phpstan-ignore-line
+        self::assertSame('pub', $mock->propName()->pub);
+        self::assertSame('priv', $mock->propName()->priv);
+        self::assertSame('undeclared', $mock->propName()->undeclared); // @phpstan-ignore-line
 
-        static::assertSame('_pub_', $mock->pub);
-        static::assertSame('_pub_', $mock->{$mock->propName()->pub});
+        self::assertSame('_pub_', $mock->pub);
+        self::assertSame('_pub_', $mock->{$mock->propName()->pub});
     }
 
     public function testPropNameFull(): void
     {
         $mock = new PropMock();
-        static::assertSame(PropMock::class . '::pub', $mock->propNameFull()->pub);
-        static::assertSame(PropMock::class . '::priv', $mock->propNameFull()->priv);
-        static::assertSame(PropMock::class . '::undeclared', $mock->propNameFull()->undeclared); // @phpstan-ignore-line
-        static::assertSame(\stdClass::class . '::undeclared', Prop::propNameFull(\stdClass::class)->undeclared);
+        self::assertSame(PropMock::class . '::pub', $mock->propNameFull()->pub);
+        self::assertSame(PropMock::class . '::priv', $mock->propNameFull()->priv);
+        self::assertSame(PropMock::class . '::undeclared', $mock->propNameFull()->undeclared); // @phpstan-ignore-line
+        self::assertSame(\stdClass::class . '::undeclared', Prop::propNameFull(\stdClass::class)->undeclared);
     }
 
     public function testMethodAccessException(): void
@@ -43,9 +43,9 @@ class PropTest extends TestCase
     public function testPhpstanPropNameStringType(): void
     {
         $mock = new PropMock();
-        static::assertSame(21, $mock->pubInt);
-        static::assertIsString($mock->propName()->pubInt); // @phpstan-ignore-line
+        self::assertSame(21, $mock->pubInt);
+        self::assertIsString($mock->propName()->pubInt); // @phpstan-ignore-line
         $this->expectException(\TypeError::class);
-        static::assertSame('unused', chr($mock->propName()->pubInt)); // @phpstan-ignore-line
+        self::assertSame('unused', chr($mock->propName()->pubInt)); // @phpstan-ignore-line
     }
 }

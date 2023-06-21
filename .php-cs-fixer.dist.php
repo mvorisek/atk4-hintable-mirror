@@ -8,7 +8,7 @@ return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PhpCsFixer' => true,
-        '@PhpCsFixer:risky' =>true,
+        '@PhpCsFixer:risky' => true,
         '@PHP74Migration' => true,
         '@PHP74Migration:risky' => true,
 

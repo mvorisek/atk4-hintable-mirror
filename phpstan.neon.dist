@@ -16,9 +16,9 @@ services:
 parameters:
     level: 6
     paths:
-        - ./
+        - .
     excludePaths:
-        - vendor/
+        - vendor
 
     ignoreErrors:
         # relax strict rules
