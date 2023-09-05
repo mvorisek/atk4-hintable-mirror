@@ -24,7 +24,7 @@ class HintableModelArrayTest extends TestCase
     {
         $db = $this->createPersistence();
 
-        $db->atomic(function () use ($db) {
+        $db->atomic(static function () use ($db) {
             $simple1 = (new Model\Simple($db))->createEntity()
                 ->set(Model\Simple::hinting()->fieldName()->x, 'a')
                 ->save();
@@ -111,7 +111,7 @@ class HintableModelArrayTest extends TestCase
      */
     protected static function assertModelIds(array $expectedIds, AtkModel $model): void
     {
-        $resAssoc = array_map(function (AtkModel $model) {
+        $resAssoc = array_map(static function (AtkModel $model) {
             return $model->id;
         }, iterator_to_array((clone $model)->setOrder($model->idField, 'asc')));
 

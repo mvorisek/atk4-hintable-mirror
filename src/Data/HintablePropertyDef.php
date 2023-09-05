@@ -14,18 +14,16 @@ use Atk4\Data\Model;
  */
 class HintablePropertyDef
 {
-    /** @const string No access restrictions */
+    /** No access restrictions */
     public const VISIBILITY_PUBLIC = 'public';
-    /** @const string Property cannot be set outside the Model class */
+    /** Property cannot be set outside the Model class */
     public const VISIBILITY_PROTECTED_SET = 'protected_set';
-    /** @const string Like protected property */
+    /** Like protected property */
     public const VISIBILITY_PROTECTED = 'protected';
 
-    /** @const int Field is not a reference */
+    /** Field is not a reference */
     public const REF_TYPE_NONE = 0;
-    /** @const int */
     public const REF_TYPE_ONE = 1;
-    /** @const int */
     public const REF_TYPE_MANY = 2;
 
     /** @var array<string> */
@@ -35,7 +33,7 @@ class HintablePropertyDef
         self::VISIBILITY_PROTECTED,
     ];
 
-    /** @var array<string, static[]> */
+    /** @var array<class-string<Model>, static[]> */
     private static $_cacheDefsByClass = [];
 
     /** @var class-string<Model> */

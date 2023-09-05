@@ -18,14 +18,13 @@ use Mvorisek\Atk4\Hintable\Core\MagicAbstract;
  */
 class MagicModelField extends MagicAbstract
 {
-    /** @const string */
     public const TYPE_FIELD_NAME = 'field_n';
 
     protected function _atk__data__hintable_magic__getModelPropDef(string $name): HintablePropertyDef
     {
         $model = $this->_atk__core__hintable_magic__class->getModel(true);
 
-        $hProps = \Closure::bind(fn () => $model->getHintableProps(), null, $model)();
+        $hProps = \Closure::bind(static fn () => $model->getHintableProps(), null, $model)();
 
         if (!isset($hProps[$name])) {
             throw (new Exception('Hintable property is not defined'))

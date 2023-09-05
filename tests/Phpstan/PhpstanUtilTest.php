@@ -21,11 +21,11 @@ class PhpstanUtilTest extends TestCase
 
     public function testUseVariable(): void
     {
-        (function (string $name): void { // ignore this line once phpstan emits an error for unused variable
+        (static function (string $name): void { // ignore this line once phpstan emits an error for unused variable
             self::assertTrue(true); // @phpstan-ignore-line
         })('');
 
-        (function (string $name): void {
+        (static function (string $name): void {
             PhpstanUtil::ignoreUnusedVariable($name);
 
             self::assertTrue(true); // @phpstan-ignore-line
@@ -37,7 +37,7 @@ class PhpstanUtilTest extends TestCase
         /**
          * @return never
          */
-        $fx = function () {
+        $fx = static function () {
             PhpstanUtil::fakeNeverReturn();
         };
 

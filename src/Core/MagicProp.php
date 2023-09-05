@@ -12,9 +12,7 @@ namespace Mvorisek\Atk4\Hintable\Core;
  */
 class MagicProp extends MagicAbstract
 {
-    /** @const string */
     public const TYPE_PROPERTY_NAME = 'p_n';
-    /** @const string */
     public const TYPE_PROPERTY_NAME_FULL = 'p_nf';
 
     public function __get(string $name): string

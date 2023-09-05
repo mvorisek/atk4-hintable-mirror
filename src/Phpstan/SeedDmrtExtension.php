@@ -24,11 +24,15 @@ use PHPStan\Type\UnionType;
 
 class SeedDmrtExtension implements DynamicMethodReturnTypeExtension, DynamicStaticMethodReturnTypeExtension
 {
+    /** @var class-string */
     protected string $className;
     protected string $methodName;
     protected bool $methodIsStatic;
     protected int $seedParamIndex;
 
+    /**
+     * @param class-string $className
+     */
     public function __construct(string $className, string $methodName, int $seedParamIndex)
     {
         $methodRefl = new \ReflectionMethod($className, $methodName);
@@ -39,6 +43,9 @@ class SeedDmrtExtension implements DynamicMethodReturnTypeExtension, DynamicStat
         $this->seedParamIndex = $seedParamIndex;
     }
 
+    /**
+     * @return class-string
+     */
     public function getClass(): string
     {
         return $this->className;
