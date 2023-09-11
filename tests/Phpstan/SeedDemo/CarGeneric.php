@@ -7,6 +7,4 @@ namespace Mvorisek\Atk4\Hintable\Tests\Phpstan\SeedDemo;
 /**
  * @template T
  */
-class CarGeneric extends Car
-{
-}
+class CarGeneric extends Car {}

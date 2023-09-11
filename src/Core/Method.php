@@ -6,9 +6,7 @@ namespace Mvorisek\Atk4\Hintable\Core;
 
 class Method
 {
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     /**
      * Returns a magic class, document it using phpdoc as an instance of the target class,

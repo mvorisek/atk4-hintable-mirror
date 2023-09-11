@@ -51,16 +51,12 @@ class Vis3 extends Vis2
     }
 }
 
-class Vis4 extends Vis3
-{
-}
+class Vis4 extends Vis3 {}
 
 /**
  * @property string $vis @Atk4\Field()
  */
-class Vis5 extends Vis4
-{
-}
+class Vis5 extends Vis4 {}
 
 /**
  * @property string $vis @Atk4\Field(visibility="public")
