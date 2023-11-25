@@ -181,7 +181,7 @@ class HintableModelTest extends TestCase
     /**
      * @return iterable<list<mixed>>
      */
-    public function provideVisibilityCases(): iterable
+    public static function provideVisibilityCases(): iterable
     {
         return [
             [AtkModel::class, AtkModel::class, 'id', 'get', null],
