@@ -46,16 +46,19 @@ class SeedDmrtExtension implements DynamicMethodReturnTypeExtension, DynamicStat
     /**
      * @return class-string
      */
+    #[\Override]
     public function getClass(): string
     {
         return $this->className;
     }
 
+    #[\Override]
     public function isMethodSupported(MethodReflection $methodReflection): bool
     {
         return $methodReflection->getName() === $this->methodName && !$this->methodIsStatic;
     }
 
+    #[\Override]
     public function isStaticMethodSupported(MethodReflection $methodReflection): bool
     {
         return $methodReflection->getName() === $this->methodName && $this->methodIsStatic;
@@ -121,6 +124,7 @@ class SeedDmrtExtension implements DynamicMethodReturnTypeExtension, DynamicStat
     /**
      * @param MethodCall|StaticCall $methodCall
      */
+    #[\Override]
     public function getTypeFromMethodCall(
         MethodReflection $methodReflection,
         $methodCall,
@@ -144,6 +148,7 @@ class SeedDmrtExtension implements DynamicMethodReturnTypeExtension, DynamicStat
         return $returnType;
     }
 
+    #[\Override]
     public function getTypeFromStaticMethodCall(
         MethodReflection $methodReflection,
         StaticCall $methodCall,

@@ -124,6 +124,7 @@ class HintableModelTest extends TestCase
 
             public $table = 'anony';
 
+            #[\Override]
             protected function init(): void
             {
                 parent::init();

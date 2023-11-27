@@ -22,6 +22,7 @@ class MagicMethod extends MagicAbstract
     /**
      * @return string|\Closure
      */
+    #[\Override]
     public function __call(string $name, array $args)
     {
         if ($this->_atk__core__hintable_magic__type === self::TYPE_METHOD_NAME) {

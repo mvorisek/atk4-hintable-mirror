@@ -20,6 +20,8 @@ parameters:
     excludePaths:
         - vendor
 
+    checkMissingOverrideMethodAttribute: true
+
     ignoreErrors:
         # relax strict rules
         - '~^Variable (static )?(property access|method call) on .+\.~'

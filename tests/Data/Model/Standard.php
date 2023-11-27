@@ -21,6 +21,7 @@ class Standard extends Model
 {
     public $table = 'prefix_standard';
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();

@@ -14,6 +14,7 @@ class B extends A
         ExtraTrait::init as private __extra_init;
     }
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();

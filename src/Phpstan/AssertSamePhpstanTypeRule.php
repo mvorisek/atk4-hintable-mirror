@@ -16,6 +16,7 @@ use PHPStan\Type\VerbosityLevel;
  */
 class AssertSamePhpstanTypeRule implements Rule
 {
+    #[\Override]
     public function getNodeType(): string
     {
         return Node\Expr\MethodCall::class;
@@ -30,8 +31,6 @@ class AssertSamePhpstanTypeRule implements Rule
     private static $_hasTraitCache = [];
 
     /**
-     * Copied from https://github.com/atk4/core/blob/5aa6a4c3291564114252bc97f0c38660dba1da41/src/TraitUtil.php#L22 .
-     *
      * @param class-string $class
      */
     private static function hasTrait($class, string $traitName): bool
@@ -63,6 +62,7 @@ class AssertSamePhpstanTypeRule implements Rule
      *
      * @param Node\Expr\MethodCall $node
      */
+    #[\Override]
     public function processNode(Node $node, Scope $scope): array
     {
         if (!$node->name instanceof Node\Identifier || strcasecmp($node->name->name, 'assertSamePhpstanType') !== 0) {

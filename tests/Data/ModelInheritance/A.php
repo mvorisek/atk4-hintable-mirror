@@ -18,6 +18,7 @@ class A extends Model
 
     public $table = 'inheritance';
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();

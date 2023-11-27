@@ -15,6 +15,7 @@ class MagicProp extends MagicAbstract
     public const TYPE_PROPERTY_NAME = 'p_n';
     public const TYPE_PROPERTY_NAME_FULL = 'p_nf';
 
+    #[\Override]
     public function __get(string $name): string
     {
         if ($this->_atk__core__hintable_magic__type === self::TYPE_PROPERTY_NAME) {

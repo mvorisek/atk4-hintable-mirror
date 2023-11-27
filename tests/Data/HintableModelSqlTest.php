@@ -12,6 +12,7 @@ use Atk4\Data\Schema\Migrator;
  */
 class HintableModelSqlTest extends HintableModelArrayTest
 {
+    #[\Override]
     protected function createPersistence(): Persistence
     {
         $db = new Persistence\Sql('sqlite::memory:');

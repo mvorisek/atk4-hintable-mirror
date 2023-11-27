@@ -11,6 +11,7 @@ use Atk4\Data\Model;
  */
 class Vis extends Model
 {
+    #[\Override]
     protected function init(): void
     {
         parent::init();
@@ -18,6 +19,7 @@ class Vis extends Model
         $this->addField($this->fieldName()->vis, ['type' => 'string', 'required' => true]);
     }
 
+    #[\Override]
     public function &__get(string $name)
     {
         return parent::__get($name);
@@ -34,6 +36,7 @@ class Vis2 extends Vis
         return parent::__get($name);
     }
 
+    #[\Override]
     public function &__get(string $name)
     {
         return $this->__hintable_get($name);
@@ -45,6 +48,7 @@ class Vis2 extends Vis
  */
 class Vis3 extends Vis2
 {
+    #[\Override]
     public function &__get(string $name)
     {
         return parent::__get($name);
@@ -63,6 +67,7 @@ class Vis5 extends Vis4 {}
  */
 class Vis6 extends Vis5
 {
+    #[\Override]
     public function &__get(string $name)
     {
         return parent::__get($name);

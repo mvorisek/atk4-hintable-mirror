@@ -35,6 +35,7 @@ class MagicModelField extends MagicAbstract
         return $hProps[$name];
     }
 
+    #[\Override]
     public function __get(string $name): string
     {
         if ($this->_atk__core__hintable_magic__type === self::TYPE_FIELD_NAME) {

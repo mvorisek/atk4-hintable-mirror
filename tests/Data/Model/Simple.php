@@ -15,6 +15,7 @@ class Simple extends Model
 {
     public $table = 'simple';
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();

@@ -33,6 +33,7 @@ class MagicReflectionExtension implements PropertiesClassReflectionExtension, Me
         return $classReflection->getActiveTemplateTypeMap()->getType('TReturnType');
     }
 
+    #[\Override]
     public function hasProperty(ClassReflection $classReflection, string $propertyName): bool
     {
         if (!$this->isA($classReflection, MagicAbstract::class)) {
@@ -44,6 +45,7 @@ class MagicReflectionExtension implements PropertiesClassReflectionExtension, Me
         return $targetClassType->hasProperty($propertyName)->yes();
     }
 
+    #[\Override]
     public function hasMethod(ClassReflection $classReflection, string $methodName): bool
     {
         if (!$this->isA($classReflection, MagicAbstract::class)) {
@@ -55,6 +57,7 @@ class MagicReflectionExtension implements PropertiesClassReflectionExtension, Me
         return $targetClassType->hasMethod($methodName)->yes();
     }
 
+    #[\Override]
     public function getProperty(ClassReflection $classReflection, string $propertyName): PropertyReflection
     {
         $targetClassType = $this->getTargetClassType($classReflection);
@@ -65,6 +68,7 @@ class MagicReflectionExtension implements PropertiesClassReflectionExtension, Me
         return new WrapPropertyReflection($targetProperty->getDeclaringClass(), $returnTypeType);
     }
 
+    #[\Override]
     public function getMethod(ClassReflection $classReflection, string $methodName): MethodReflection
     {
         $targetClassType = $this->getTargetClassType($classReflection);
