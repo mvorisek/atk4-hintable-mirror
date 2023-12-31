@@ -15,7 +15,7 @@
         "atk4/data": "~5.1.0 || dev-develop"
     },
     "require-dev": {
-        "atk4/ergebnis-phpunit-slow-test-detector": "^2.4",
+        "ergebnis/phpunit-slow-test-detector": "^2.9",
         "friendsofphp/php-cs-fixer": "^3.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.0",
