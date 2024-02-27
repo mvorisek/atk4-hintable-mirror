@@ -43,17 +43,19 @@ class HintableModelTest extends TestCase
 
     public function testParseDeclaredTwiceException(): void
     {
+        $model = new
         /**
          * @property string $x @Atk4\Field()
          */
-        $model = new class() extends AtkModel {};
+        class() extends AtkModel {};
         $model->invokeInit();
 
+        $model = new
         /**
          * @property string $x @Atk4\Field()
          * @property string $x @Atk4\Field()
          */
-        $model = new class() extends AtkModel {};
+        class() extends AtkModel {};
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Hintable property is defined twice within the same class');
@@ -62,10 +64,11 @@ class HintableModelTest extends TestCase
 
     public function testParseInvalidOptionSyntaxException(): void
     {
+        $model = new
         /**
          * @property string $x @Atk4\Field(="bar")
          */
-        $model = new class() extends AtkModel {};
+        class() extends AtkModel {};
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Hintable property has invalid @Atk4\Field syntax');
@@ -74,10 +77,11 @@ class HintableModelTest extends TestCase
 
     public function testParseInvalidOptionKeyException(): void
     {
+        $model = new
         /**
          * @property string $x @Atk4\Field(foo="bar")
          */
-        $model = new class() extends AtkModel {};
+        class() extends AtkModel {};
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Hintable property has invalid @Atk4\Field option');
@@ -86,10 +90,11 @@ class HintableModelTest extends TestCase
 
     public function testParseInvalidOptionVisibilityException(): void
     {
+        $model = new
         /**
          * @property string $x @Atk4\Field(visibility="publicc")
          */
-        $model = new class() extends AtkModel {};
+        class() extends AtkModel {};
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Hintable property has invalid @Atk4\Field option');
@@ -114,10 +119,11 @@ class HintableModelTest extends TestCase
         self::assertSame('bx', $model->fieldName()->bx);
         self::assertSame('te', $model->fieldName()->te);
 
+        $model = new
         /**
          * @property string $anx @Atk4\Field()
          */
-        $model = new class($db) extends AtkModel {
+        class($db) extends AtkModel {
             use Mi\ExtraTrait {
                 Mi\ExtraTrait::init as private __extra_init;
             }
@@ -130,14 +136,14 @@ class HintableModelTest extends TestCase
                 parent::init();
                 $this->__extra_init();
 
-                $this->addField($this->fieldName()->anx, ['type' => 'string', 'required' => true, 'default' => 'anxDef']); // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/7345
+                $this->addField($this->fieldName()->anx, ['type' => 'string', 'required' => true, 'default' => 'anxDef']);
             }
         };
         self::assertSame('anony', $model->table);
         self::assertSame('t', $model->fieldName()->t);
         self::assertSame('te', $model->fieldName()->te);
-        self::assertSame('anx', $model->fieldName()->anx); // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/7345
-        self::assertSame('anxDef', $model->createEntity()->anx); // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/7345
+        self::assertSame('anx', $model->fieldName()->anx);
+        self::assertSame('anxDef', $model->createEntity()->anx);
     }
 
     /**

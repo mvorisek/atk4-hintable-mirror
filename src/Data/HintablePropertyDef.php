@@ -124,7 +124,7 @@ class HintablePropertyDef
      */
     protected static function createFromClassDocLine(string $className, string $classDocLine): ?self
     {
-        if (!preg_match('~^@property[ \t]+([^\$()]+?)[ \t]+\$([^ ]+)[ \t]+.*@Atk4\\\\(Field|RefOne|RefMany)\(((?:[^()"]+|="[^"]*")*)\)~s', $classDocLine, $matches)) {
+        if (!preg_match('~^@property[ \t]+([^\$()]+?)[ \t]+\$([^ ]+)[ \t]+.*@Atk4\\\(Field|RefOne|RefMany)\(((?:[^()"]+|="[^"]*")*)\)~s', $classDocLine, $matches)) {
             return null;
         }
 
@@ -183,7 +183,7 @@ class HintablePropertyDef
         foreach (preg_split('~(?:[^",]+|="[^"]*")*\K,~', $doc) as $opt) {
             if (!preg_match('~^([^"=]+)=(?:([^"=]+)|"(.*)")$~s', $opt, $matches)
                 || ($matches[2] !== '' && $matches[2] !== (string) (int) $matches[2])) {
-                throw (new Exception('Hintable property has invalid @Atk4\\Field syntax'))
+                throw (new Exception('Hintable property has invalid @Atk4\Field syntax'))
                     ->addMoreInfo('value', $opt);
             }
             $opts[trim($matches[1])] = $matches[2] !== '' ? (int) $matches[2] : trim($matches[3]);
