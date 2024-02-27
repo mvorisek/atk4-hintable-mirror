@@ -15,12 +15,11 @@ services:
 
 parameters:
     level: 6
+    checkMissingOverrideMethodAttribute: true
     paths:
         - .
     excludePaths:
         - vendor
-
-    checkMissingOverrideMethodAttribute: true
 
     ignoreErrors:
         # relax strict rules
