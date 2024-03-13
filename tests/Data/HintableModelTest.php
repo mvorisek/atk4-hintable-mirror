@@ -155,8 +155,13 @@ class HintableModelTest extends TestCase
      */
     public function testVisibility(?string $scopeClass, string $modelClass, string $propertyName, string $operation, ?string $expectedExceptionMessage): void
     {
-        $model = new $modelClass();
-        $model->invokeInit();
+        if ($modelClass === Model\Simple::class) {
+            $db = new Persistence\Array_();
+            $model = new $modelClass($db);
+        } else {
+            $model = new $modelClass();
+            $model->invokeInit();
+        }
         $entity = $model->createEntity();
         $testCase = $this;
         \Closure::bind(static function () use ($entity, $testCase, $propertyName, $operation, $expectedExceptionMessage): void {

@@ -94,18 +94,6 @@ class HintableModelArrayTest extends TestCase
         self::assertNull($model->tryLoad(4));
     }
 
-    public function testRefWithoutPersistence(): void
-    {
-        $model = new Model\Standard();
-        $model->invokeInit();
-
-        $model->getReference($model->fieldName()->simpleOne)->checkTheirType = false;
-        self::assertInstanceOf(Model\Simple::class, $model->simpleOne);
-
-        // TODO atk4/data does not support traversing 1:N reference without persistence
-        // self::assertInstanceOf(Model\Simple::class, $model->simpleMany);
-    }
-
     /**
      * @param array<int> $expectedIds
      */

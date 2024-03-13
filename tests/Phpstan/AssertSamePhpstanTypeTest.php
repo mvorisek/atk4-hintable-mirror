@@ -59,7 +59,7 @@ class AssertSamePhpstanTypeTest extends TestCase
         self::assertSamePhpstanType('int<0, 10>', random_int(0, 10));
         self::assertSamePhpstanType(\DateTime::class, new \DateTime());
         self::assertSamePhpstanType('class-string<' . \DateTime::class . '>', get_class(new \DateTime()));
-        self::assertSamePhpstanType('resource|false', fopen('php://memory', 'r'));
+        self::assertSamePhpstanType('resource|false', fopen('php://memory', 'r+'));
     }
 
     public function testFromPhpdoc(): void
