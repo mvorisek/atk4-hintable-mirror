@@ -6,12 +6,14 @@ namespace Mvorisek\Atk4\Hintable\Tests\Phpstan;
 
 use Atk4\Core\Phpunit\TestCase;
 use Mvorisek\Atk4\Hintable\Phpstan\PhpstanUtil;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 class PhpstanUtilTest extends TestCase
 {
     /**
      * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testAlwaysFalseAnalyseOnly(): void
     {
         if (PhpstanUtil::alwaysFalseAnalyseOnly()) {

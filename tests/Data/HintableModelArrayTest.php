@@ -10,9 +10,6 @@ use Atk4\Data\Model as AtkModel;
 use Atk4\Data\Persistence;
 use Mvorisek\Atk4\Hintable\Phpstan\PhpstanUtil;
 
-/**
- * @coversDefaultClass \Mvorisek\Atk4\Hintable\Data\HintableModelTrait
- */
 class HintableModelArrayTest extends TestCase
 {
     protected function createPersistence(): Persistence
@@ -235,8 +232,8 @@ class HintableModelArrayTest extends TestCase
         $model = new Model\Simple($db);
 
         self::assertIsString($model->loadAny()->x); // @phpstan-ignore-line
-        foreach ($model as $modelItem) {
-            self::assertIsString($modelItem->x); // @phpstan-ignore-line
+        foreach ($model as $entity) {
+            self::assertIsString($entity->x); // @phpstan-ignore-line
         }
     }
 }

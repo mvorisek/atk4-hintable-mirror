@@ -7,9 +7,6 @@ namespace Mvorisek\Atk4\Hintable\Tests\Data;
 use Atk4\Data\Persistence;
 use Atk4\Data\Schema\Migrator;
 
-/**
- * @coversDefaultClass \Mvorisek\Atk4\Hintable\Data\HintableModelTrait
- */
 class HintableModelSqlTest extends HintableModelArrayTest
 {
     #[\Override]

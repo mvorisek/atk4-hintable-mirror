@@ -8,9 +8,6 @@ use Atk4\Core\Exception;
 use Atk4\Core\Phpunit\TestCase;
 use Mvorisek\Atk4\Hintable\Core\Method;
 
-/**
- * @coversDefaultClass \Mvorisek\Atk4\Hintable\Core\MagicMethod
- */
 class MethodTest extends TestCase
 {
     public function testMethodName(): void

@@ -9,10 +9,8 @@ use Atk4\Data\Exception;
 use Atk4\Data\Model as AtkModel;
 use Atk4\Data\Persistence;
 use Mvorisek\Atk4\Hintable\Tests\Data\ModelInheritance as Mi;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @coversDefaultClass \Mvorisek\Atk4\Hintable\Data\HintableModelTrait
- */
 class HintableModelTest extends TestCase
 {
     public function testFieldName(): void
@@ -153,6 +151,7 @@ class HintableModelTest extends TestCase
      *
      * @dataProvider provideVisibilityCases
      */
+    #[DataProvider('provideVisibilityCases')]
     public function testVisibility(?string $scopeClass, string $modelClass, string $propertyName, string $operation, ?string $expectedExceptionMessage): void
     {
         if ($modelClass === Model\Simple::class) {
@@ -170,8 +169,10 @@ class HintableModelTest extends TestCase
             $testValue = $entity->getModel()->getField($fieldName)->type === 'integer' ? 2 : '$v';
 
             if ($expectedExceptionMessage !== null) {
-                $testCase->expectException(Exception::class);
-                $testCase->expectExceptionMessage($expectedExceptionMessage);
+                \Closure::bind(static function () use ($testCase, $expectedExceptionMessage): void {
+                    $testCase->expectException(Exception::class);
+                    $testCase->expectExceptionMessage($expectedExceptionMessage);
+                }, null, TestCase::class)();
             }
 
             if ($operation === 'isset') {

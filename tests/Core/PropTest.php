@@ -8,9 +8,6 @@ use Atk4\Core\Exception;
 use Atk4\Core\Phpunit\TestCase;
 use Mvorisek\Atk4\Hintable\Core\Prop;
 
-/**
- * @coversDefaultClass \Mvorisek\Atk4\Hintable\Core\MagicProp
- */
 class PropTest extends TestCase
 {
     public function testPropName(): void
