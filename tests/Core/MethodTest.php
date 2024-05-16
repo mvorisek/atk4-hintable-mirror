@@ -15,7 +15,7 @@ class MethodTest extends TestCase
         $mock = new MethodMock();
         self::assertSame('pub', $mock->methodName()->pub());
         self::assertSame('priv', $mock->methodName()->priv());
-        self::assertSame('undeclared', $mock->methodName()->undeclared()); // @phpstan-ignore-line
+        self::assertSame('undeclared', $mock->methodName()->undeclared()); // @phpstan-ignore method.notFound
     }
 
     public function testMethodNameFull(): void
@@ -23,15 +23,15 @@ class MethodTest extends TestCase
         $mock = new MethodMock();
         self::assertSame(MethodMock::class . '::pub', $mock->methodNameFull()->pub());
         self::assertSame(MethodMock::class . '::priv', $mock->methodNameFull()->priv());
-        self::assertSame(MethodMock::class . '::undeclared', $mock->methodNameFull()->undeclared()); // @phpstan-ignore-line
-        self::assertSame(\stdClass::class . '::undeclared', Method::methodNameFull(\stdClass::class)->undeclared()); // @phpstan-ignore-line
+        self::assertSame(MethodMock::class . '::undeclared', $mock->methodNameFull()->undeclared()); // @phpstan-ignore method.notFound
+        self::assertSame(\stdClass::class . '::undeclared', Method::methodNameFull(\stdClass::class)->undeclared()); // @phpstan-ignore method.notFound
     }
 
     public function testPropertyAccessException(): void
     {
         $mock = new MethodMock();
         $this->expectException(Exception::class);
-        $mock->methodName()->undeclared; // @phpstan-ignore-line
+        $mock->methodName()->undeclared; // @phpstan-ignore property.notFound
     }
 
     public function testMethodClosure(): void
@@ -49,7 +49,7 @@ class MethodTest extends TestCase
         self::assertSame(MethodMock::class . '::pubStat', $mock->methodClosure()->pubStat()());
 
         $this->expectException(Exception::class);
-        self::assertSame(MethodMock::class . '::pubStat', $mock->methodClosure()::pubStat()()); // @phpstan-ignore-line
+        self::assertSame(MethodMock::class . '::pubStat', $mock->methodClosure()::pubStat()()); // @phpstan-ignore method.staticCall
     }
 
     public function testMethodClosureProtected(): void
@@ -62,20 +62,14 @@ class MethodTest extends TestCase
     public function testMethodClosureAnonymous(): void
     {
         $mock = new class() extends \stdClass {
-            private function privAnon(): string
+            private function privAnon(): string // @phpstan-ignore method.unused
             {
                 return __METHOD__;
             }
 
-            private static function privAnonStat(): string
+            private static function privAnonStat(): string // @phpstan-ignore method.unused
             {
                 return __METHOD__;
-            }
-
-            protected function ignoreUnusedPrivate(): void
-            {
-                $this->privAnon();
-                self::privAnonStat();
             }
         };
 

@@ -9,7 +9,7 @@ class PhpstanUtil
     /**
      * @phpstan-impure
      */
-    final public static function alwaysFalseAnalyseOnly(): bool
+    final public static function alwaysFalseAnalyseOnly(): bool // @phpstan-ignore impureMethod.pure
     {
         return false;
     }
@@ -29,9 +29,9 @@ class PhpstanUtil
      *
      * @phpstan-impure
      */
-    private static function fakeAlwaysTrue(): bool
+    private static function fakeAlwaysTrue(): bool // @phpstan-ignore impureMethod.pure
     {
-        return false; // @phpstan-ignore-line
+        return false; // @phpstan-ignore return.type
     }
 
     /**
@@ -39,7 +39,7 @@ class PhpstanUtil
      */
     final public static function fakeNeverReturn(): void
     {
-        if (self::fakeAlwaysTrue()) { // @phpstan-ignore-line
+        if (self::fakeAlwaysTrue()) { // @phpstan-ignore if.alwaysTrue
             throw new \Error();
         }
     }

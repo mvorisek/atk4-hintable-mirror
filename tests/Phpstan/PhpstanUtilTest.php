@@ -17,20 +17,20 @@ class PhpstanUtilTest extends TestCase
     public function testAlwaysFalseAnalyseOnly(): void
     {
         if (PhpstanUtil::alwaysFalseAnalyseOnly()) {
-            self::assertTrue(false); // @phpstan-ignore-line
+            self::assertTrue(false); // @phpstan-ignore staticMethod.impossibleType
         }
     }
 
-    public function testUseVariable(): void
+    public function testIgnoreUnusedVariable(): void
     {
         (static function (string $name): void { // ignore this line once phpstan emits an error for unused variable
-            self::assertTrue(true); // @phpstan-ignore-line
+            self::assertTrue(true); // @phpstan-ignore staticMethod.alreadyNarrowedType
         })('');
 
         (static function (string $name): void {
             PhpstanUtil::ignoreUnusedVariable($name);
 
-            self::assertTrue(true); // @phpstan-ignore-line
+            self::assertTrue(true); // @phpstan-ignore staticMethod.alreadyNarrowedType
         })('');
     }
 
@@ -45,8 +45,8 @@ class PhpstanUtilTest extends TestCase
 
         $fxRes = PhpstanUtil::alwaysFalseAnalyseOnly() ? false : $fx();
         if (PhpstanUtil::alwaysFalseAnalyseOnly()) {
-            self::assertFalse($fxRes); // @phpstan-ignore-line
+            self::assertFalse($fxRes); // @phpstan-ignore staticMethod.impossibleType
         }
-        self::assertNull($fxRes); // @phpstan-ignore-line
+        self::assertNull($fxRes); // @phpstan-ignore staticMethod.impossibleType
     }
 }

@@ -10,7 +10,7 @@ class MethodMock
 {
     use MethodTrait;
 
-    private function priv(): string
+    private function priv(): string // @phpstan-ignore method.unused
     {
         return __METHOD__;
     }
@@ -20,7 +20,7 @@ class MethodMock
         return __METHOD__;
     }
 
-    private static function privStat(): string
+    private static function privStat(): string // @phpstan-ignore method.unused
     {
         return __METHOD__;
     }
@@ -28,11 +28,5 @@ class MethodMock
     public static function pubStat(): string
     {
         return __METHOD__;
-    }
-
-    protected function ignoreUnusedPrivate(): void
-    {
-        $this->priv();
-        self::privStat();
     }
 }

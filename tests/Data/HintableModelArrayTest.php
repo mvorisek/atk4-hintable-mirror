@@ -8,7 +8,6 @@ use Atk4\Core\Phpunit\TestCase;
 use Atk4\Data\Exception;
 use Atk4\Data\Model as AtkModel;
 use Atk4\Data\Persistence;
-use Mvorisek\Atk4\Hintable\Phpstan\PhpstanUtil;
 
 class HintableModelArrayTest extends TestCase
 {
@@ -182,10 +181,10 @@ class HintableModelArrayTest extends TestCase
         $model = new Model\Standard($db);
 
         $entity13 = $model->load(13);
-        self::assertNull($entity13->simpleOne); // @phpstan-ignore-line
+        self::assertNull($entity13->simpleOne); // @phpstan-ignore staticMethod.impossibleType
 
         $entityNull = $model->createEntity();
-        self::assertNull($entityNull->simpleOne); // @phpstan-ignore-line
+        self::assertNull($entityNull->simpleOne); // @phpstan-ignore staticMethod.impossibleType
     }
 
     public function testRefOneTraverseInvalidException(): void
@@ -196,7 +195,7 @@ class HintableModelArrayTest extends TestCase
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('No record was found');
-        PhpstanUtil::ignoreUnusedVariable($entity14->simpleOne);
+        $entity14->simpleOne; // @phpstan-ignore expr.resultUnused
     }
 
     public function testRefOneReverseTraverseNullException(): void
@@ -205,14 +204,14 @@ class HintableModelArrayTest extends TestCase
         $model = new Model\Standard($db);
         $entityNull = $model->createEntity();
 
-        self::assertNull($entityNull->simpleOne); // @phpstan-ignore-line
+        self::assertNull($entityNull->simpleOne); // @phpstan-ignore staticMethod.impossibleType
 
         $model->getReference($model->fieldName()->simpleOne)
             ->setDefaults(['ourField' => $model->fieldName()->id]);
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Unable to traverse on null value');
-        PhpstanUtil::ignoreUnusedVariable($entityNull->simpleMany);
+        $entityNull->simpleMany; // @phpstan-ignore expr.resultUnused
     }
 
     public function testRefManyTraverseNullException(): void
@@ -223,7 +222,7 @@ class HintableModelArrayTest extends TestCase
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Unable to traverse on null value');
-        PhpstanUtil::ignoreUnusedVariable($entityNull->simpleMany);
+        $entityNull->simpleMany; // @phpstan-ignore expr.resultUnused
     }
 
     public function testPhpstanModelIteratorAggregate(): void
@@ -231,9 +230,9 @@ class HintableModelArrayTest extends TestCase
         $db = $this->createDatabaseForRefTest();
         $model = new Model\Simple($db);
 
-        self::assertIsString($model->loadAny()->x); // @phpstan-ignore-line
+        self::assertIsString($model->loadAny()->x); // @phpstan-ignore staticMethod.alreadyNarrowedType
         foreach ($model as $entity) {
-            self::assertIsString($entity->x); // @phpstan-ignore-line
+            self::assertIsString($entity->x); // @phpstan-ignore staticMethod.alreadyNarrowedType
         }
     }
 }

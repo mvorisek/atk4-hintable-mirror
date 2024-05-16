@@ -40,7 +40,7 @@ class SeedDmrtExtensionTest extends TestCase
     public function testSeedArrayithGeneric(): void
     {
         /** @var array{0:class-string<CarGeneric<\DateTime>>} */
-        $seed = [CarGeneric::class]; // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/9189
+        $seed = [CarGeneric::class]; // @phpstan-ignore varTag.nativeType (https://github.com/phpstan/phpstan/issues/9189)
         $car = Car::fromSeed($seed);
         self::assertSamePhpstanType(CarGeneric::class . '<DateTime>', $car);
         self::assertSame(CarGeneric::class, get_class($car));

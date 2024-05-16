@@ -15,7 +15,7 @@ class PropTest extends TestCase
         $mock = new PropMock();
         self::assertSame('pub', $mock->propName()->pub);
         self::assertSame('priv', $mock->propName()->priv);
-        self::assertSame('undeclared', $mock->propName()->undeclared); // @phpstan-ignore-line
+        self::assertSame('undeclared', $mock->propName()->undeclared); // @phpstan-ignore property.notFound
 
         self::assertSame('_pub_', $mock->pub);
         self::assertSame('_pub_', $mock->{$mock->propName()->pub});
@@ -26,7 +26,7 @@ class PropTest extends TestCase
         $mock = new PropMock();
         self::assertSame(PropMock::class . '::pub', $mock->propNameFull()->pub);
         self::assertSame(PropMock::class . '::priv', $mock->propNameFull()->priv);
-        self::assertSame(PropMock::class . '::undeclared', $mock->propNameFull()->undeclared); // @phpstan-ignore-line
+        self::assertSame(PropMock::class . '::undeclared', $mock->propNameFull()->undeclared); // @phpstan-ignore property.notFound
         self::assertSame(\stdClass::class . '::undeclared', Prop::propNameFull(\stdClass::class)->undeclared);
     }
 
@@ -34,15 +34,15 @@ class PropTest extends TestCase
     {
         $mock = new PropMock();
         $this->expectException(Exception::class);
-        $mock->propName()->undeclared(); // @phpstan-ignore-line
+        $mock->propName()->undeclared(); // @phpstan-ignore method.notFound
     }
 
     public function testPhpstanPropNameStringType(): void
     {
         $mock = new PropMock();
         self::assertSame(21, $mock->pubInt);
-        self::assertIsString($mock->propName()->pubInt); // @phpstan-ignore-line
+        self::assertIsString($mock->propName()->pubInt); // @phpstan-ignore staticMethod.alreadyNarrowedType
         $this->expectException(\TypeError::class);
-        self::assertSame('unused', chr($mock->propName()->pubInt)); // @phpstan-ignore-line
+        self::assertSame('unused', chr($mock->propName()->pubInt)); // @phpstan-ignore argument.type
     }
 }

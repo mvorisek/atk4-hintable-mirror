@@ -48,7 +48,7 @@ class AssertSamePhpstanTypeTest extends TestCase
      */
     private function demoReturnTypeArrayWithShape()
     {
-        return [1 => 0, 'a' => 1]; // @phpstan-ignore-line
+        return [1 => 0, 'a' => 1]; // @phpstan-ignore return.type
     }
 
     public function testFromExpression(): void

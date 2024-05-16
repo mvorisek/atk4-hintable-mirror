@@ -248,7 +248,6 @@ trait HintableModelTrait
      */
     public static function hinting()
     {
-        // @phpstan-ignore-next-line
         return new class(static::class, '') extends MagicAbstract {
             public function __call(string $name, array $args)
             {

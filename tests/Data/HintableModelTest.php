@@ -36,7 +36,7 @@ class HintableModelTest extends TestCase
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Hintable property is not defined');
-        $model->fieldName()->undeclared; // @phpstan-ignore-line
+        $model->fieldName()->undeclared; // @phpstan-ignore property.notFound
     }
 
     public function testParseDeclaredTwiceException(): void
