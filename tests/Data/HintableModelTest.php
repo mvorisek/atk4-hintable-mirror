@@ -166,7 +166,7 @@ class HintableModelTest extends TestCase
         \Closure::bind(static function () use ($entity, $testCase, $propertyName, $operation, $expectedExceptionMessage): void {
             $fieldName = $entity->fieldName()->{$propertyName};
             TestCase::assertSame($fieldName, $entity->getModel()->fieldName()->{$propertyName});
-            $testValue = $entity->getModel()->getField($fieldName)->type === 'integer' ? 2 : '$v';
+            $testValue = $entity->getModel()->getField($fieldName)->type === 'bigint' ? 2 : '$v';
 
             if ($expectedExceptionMessage !== null) {
                 \Closure::bind(static function () use ($testCase, $expectedExceptionMessage): void {
