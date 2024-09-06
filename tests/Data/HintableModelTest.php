@@ -45,7 +45,7 @@ class HintableModelTest extends TestCase
         /**
          * @property string $x @Atk4\Field()
          */
-        class() extends AtkModel {};
+        class extends AtkModel {};
         $model->invokeInit();
 
         $model = new
@@ -53,7 +53,7 @@ class HintableModelTest extends TestCase
          * @property string $x @Atk4\Field()
          * @property string $x @Atk4\Field()
          */
-        class() extends AtkModel {};
+        class extends AtkModel {};
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Hintable property is defined twice within the same class');
@@ -66,7 +66,7 @@ class HintableModelTest extends TestCase
         /**
          * @property string $x @Atk4\Field(="bar")
          */
-        class() extends AtkModel {};
+        class extends AtkModel {};
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Hintable property has invalid @Atk4\Field syntax');
@@ -79,7 +79,7 @@ class HintableModelTest extends TestCase
         /**
          * @property string $x @Atk4\Field(foo="bar")
          */
-        class() extends AtkModel {};
+        class extends AtkModel {};
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Hintable property has invalid @Atk4\Field option');
@@ -92,7 +92,7 @@ class HintableModelTest extends TestCase
         /**
          * @property string $x @Atk4\Field(visibility="publicc")
          */
-        class() extends AtkModel {};
+        class extends AtkModel {};
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Hintable property has invalid @Atk4\Field option');
@@ -205,8 +205,8 @@ class HintableModelTest extends TestCase
             [Model\Simple::class, AtkModel::class, 'id', 'set', null],
             [Model\Simple::class, AtkModel::class, 'id', 'isset', null],
             [Model\Simple::class, AtkModel::class, 'id', 'unset', null],
-            [get_class(new class() extends Model\Simple {}), AtkModel::class, 'id', 'get', null],
-            [get_class(new class() extends Model\Simple {}), AtkModel::class, 'id', 'set', null],
+            [get_class(new class extends Model\Simple {}), AtkModel::class, 'id', 'get', null],
+            [get_class(new class extends Model\Simple {}), AtkModel::class, 'id', 'set', null],
             [null, AtkModel::class, 'id', 'get', null],
             [null, AtkModel::class, 'id', 'set', null],
             [null, AtkModel::class, 'id', 'isset', null],
@@ -216,8 +216,8 @@ class HintableModelTest extends TestCase
 
             [Model\Simple::class, Model\Simple::class, 'id', 'get', null],
             [Model\Simple::class, Model\Simple::class, 'id', 'set', null],
-            [get_class(new class() extends Model\Simple {}), Model\Simple::class, 'id', 'get', null],
-            [get_class(new class() extends Model\Simple {}), Model\Simple::class, 'id', 'set', null],
+            [get_class(new class extends Model\Simple {}), Model\Simple::class, 'id', 'get', null],
+            [get_class(new class extends Model\Simple {}), Model\Simple::class, 'id', 'set', null],
             [null, Model\Simple::class, 'id', 'get', null],
             [null, Model\Simple::class, 'id', 'set', null],
             [Exception::class, Model\Simple::class, 'id', 'get', null],
@@ -263,8 +263,8 @@ class HintableModelTest extends TestCase
             [Mi\Vis3::class, Mi\Vis::class, 'vis', 'set', null],
             [Mi\Vis6::class, Mi\Vis::class, 'vis', 'get', null],
             [Mi\Vis6::class, Mi\Vis::class, 'vis', 'set', null],
-            [get_class(new class() extends Mi\Vis {}), Mi\Vis::class, 'vis', 'get', null],
-            [get_class(new class() extends Mi\Vis {}), Mi\Vis::class, 'vis', 'set', null],
+            [get_class(new class extends Mi\Vis {}), Mi\Vis::class, 'vis', 'get', null],
+            [get_class(new class extends Mi\Vis {}), Mi\Vis::class, 'vis', 'set', null],
             [null, Mi\Vis::class, 'vis', 'get', 'Cannot access protected hintable property ' . Mi\Vis::class . '::$vis'],
             [null, Mi\Vis::class, 'vis', 'set', 'Cannot access protected hintable property ' . Mi\Vis::class . '::$vis'],
             [null, Mi\Vis::class, 'vis', 'isset', 'Cannot access protected hintable property ' . Mi\Vis::class . '::$vis'],

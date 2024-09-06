@@ -61,7 +61,7 @@ class MethodTest extends TestCase
 
     public function testMethodClosureAnonymous(): void
     {
-        $mock = new class() extends \stdClass {
+        $mock = new class extends \stdClass {
             private function privAnon(): string // @phpstan-ignore method.unused
             {
                 return __METHOD__;
