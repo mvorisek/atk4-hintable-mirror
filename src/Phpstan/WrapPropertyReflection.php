@@ -12,7 +12,7 @@ use PHPStan\Type\Type;
 
 class WrapPropertyReflection implements PropertyReflection
 {
-    public AnnotationPropertyReflection $reflection;
+    protected AnnotationPropertyReflection $reflection;
 
     public function __construct(ClassReflection $declaringClass, Type $type)
     {

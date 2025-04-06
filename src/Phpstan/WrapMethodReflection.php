@@ -8,14 +8,13 @@ use PHPStan\Reflection\Annotations\AnnotationMethodReflection;
 use PHPStan\Reflection\ClassMemberReflection;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptor;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Type\Type;
 
 class WrapMethodReflection implements MethodReflection
 {
-    public AnnotationMethodReflection $reflection;
+    protected AnnotationMethodReflection $reflection;
 
     public function __construct(string $name, ClassReflection $declaringClass, Type $returnType)
     {
@@ -73,9 +72,6 @@ class WrapMethodReflection implements MethodReflection
         return $this->reflection->getPrototype(); // @phpstan-ignore phpstanApi.method
     }
 
-    /**
-     * @return ParametersAcceptor[]
-     */
     #[\Override]
     public function getVariants(): array
     {

@@ -20,7 +20,7 @@ class MagicReflectionExtension implements PropertiesClassReflectionExtension, Me
      */
     private function isA(ClassReflection $classReflection, string $class): bool
     {
-        return $classReflection->getName() === $class || $classReflection->isSubclassOf($class);
+        return $classReflection->getName() === $class || $classReflection->isSubclassOf($class); // @phpstan-ignore method.deprecated
     }
 
     private function getTargetClassType(ClassReflection $classReflection): Type

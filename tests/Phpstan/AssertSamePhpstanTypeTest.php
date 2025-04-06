@@ -22,7 +22,7 @@ class AssertSamePhpstanTypeTest extends TestCase
     /**
      * @return \DateTimeInterface|\stdClass
      */
-    private function demoReturnTypeUnion()
+    private function demoReturnTypeUnion() // @phpstan-ignore return.unusedType
     {
         return new \stdClass();
     }
@@ -32,7 +32,7 @@ class AssertSamePhpstanTypeTest extends TestCase
      */
     private function demoReturnTypeIntersect()
     {
-        return new \stdClass();
+        return new \stdClass(); // @phpstan-ignore return.type
     }
 
     /**

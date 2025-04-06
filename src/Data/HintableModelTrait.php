@@ -35,13 +35,13 @@ use Mvorisek\Atk4\Hintable\Core\MagicAbstract;
  */
 trait HintableModelTrait
 {
-    /** @var HintablePropertyDef[] */
+    /** @var array<string, HintablePropertyDef> */
     private $_hintableProps;
 
     /**
      * @param class-string<Model> $className
      *
-     * @return HintablePropertyDef[]
+     * @return array<string, HintablePropertyDef>
      */
     protected function createHintablePropsFromClassDoc(string $className): array
     {
@@ -51,7 +51,7 @@ trait HintableModelTrait
     }
 
     /**
-     * @return HintablePropertyDef[]
+     * @return array<string, HintablePropertyDef>
      */
     protected function getHintableProps(): array
     {

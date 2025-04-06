@@ -33,7 +33,7 @@ class HintablePropertyDef
         self::VISIBILITY_PROTECTED,
     ];
 
-    /** @var array<class-string<Model>, static[]> */
+    /** @var array<class-string<Model>, array<string, static>> */
     private static $_cacheDefsByClass = [];
 
     /** @var class-string<Model> */
@@ -44,7 +44,7 @@ class HintablePropertyDef
     public $name;
     /** @var string */
     public $fieldName;
-    /** @var string[] */
+    /** @var list<string> */
     public $allowedTypes;
     /** @var int */
     public $refType;
@@ -53,7 +53,7 @@ class HintablePropertyDef
 
     /**
      * @param class-string<Model> $className
-     * @param string[]            $allowedTypes
+     * @param list<string>        $allowedTypes
      */
     public function __construct(string $className, string $name, string $fieldName, array $allowedTypes)
     {
@@ -66,7 +66,7 @@ class HintablePropertyDef
     /**
      * @param class-string<Model> $className
      *
-     * @return static[]
+     * @return array<string, static>
      */
     public static function createFromClassDoc(string $className): array
     {
@@ -154,7 +154,7 @@ class HintablePropertyDef
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     protected static function parseDocType(string $doc): array
     {
@@ -167,11 +167,11 @@ class HintablePropertyDef
             $types[] = $t;
         }
 
-        return array_unique($types);
+        return array_values(array_unique($types));
     }
 
     /**
-     * @return string[]
+     * @return array<string, string>
      */
     protected static function parseDocFieldOptions(string $doc): array
     {
