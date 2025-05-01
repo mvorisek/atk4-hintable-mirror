@@ -14,9 +14,10 @@ class WrapPropertyReflection implements PropertyReflection
 {
     protected AnnotationPropertyReflection $reflection;
 
-    public function __construct(ClassReflection $declaringClass, Type $type)
+    public function __construct(string $name, ClassReflection $declaringClass, Type $type)
     {
         $this->reflection = new AnnotationPropertyReflection( // @phpstan-ignore phpstanApi.constructor
+            $name,
             $declaringClass,
             $type,
             $type,

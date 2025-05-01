@@ -65,7 +65,7 @@ class MagicReflectionExtension implements PropertiesClassReflectionExtension, Me
 
         $targetProperty = $targetClassType->getProperty($propertyName, new OutOfClassScope());
 
-        return new WrapPropertyReflection($targetProperty->getDeclaringClass(), $returnTypeType);
+        return new WrapPropertyReflection($propertyName, $targetProperty->getDeclaringClass(), $returnTypeType);
     }
 
     #[\Override]
